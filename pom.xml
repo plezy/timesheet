@@ -104,6 +104,7 @@
 				<spring.active.profiles>mysql</spring.active.profiles>
 			</properties>
 			<dependencies>
+				<!-- the only way found to remove h2 dependency when using mysql profile -->
 				<dependency>
 					<groupId>com.h2database</groupId>
 					<artifactId>h2</artifactId>
