@@ -68,9 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //@formatter:off
         http.authorizeRequests()
-                .antMatchers("/h2/**").permitAll()
-                .anyRequest().authenticated();
-        //@formatter:on
+            .antMatchers("/h2/**").permitAll()
+            .antMatchers("/auth/**").permitAll()
+            .anyRequest().authenticated();
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
@@ -79,6 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        //@formatter:on
     }
 
     /*

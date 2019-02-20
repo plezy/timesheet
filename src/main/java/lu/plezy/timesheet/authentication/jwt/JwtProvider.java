@@ -1,8 +1,9 @@
 package lu.plezy.timesheet.authentication.jwt;
 
+import java.security.Key;
 import java.util.Date;
 
-import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +14,8 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.Keys;
-
 import lu.plezy.timesheet.authentication.service.UserInfo;
 
 /*
@@ -39,12 +39,10 @@ public class JwtProvider {
     public String generateJwtToken(Authentication authentication) {
         UserInfo userPrincipal = (UserInfo) authentication.getPrincipal();
 
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        Key signingKey = new SecretKeySpec(jwtSecret.getBytes(), SignatureAlgorithm.HS512.getJcaName());
 
         return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000)).signWith(key).compact();
-        // deprecated in jwtt 0.10
-        // .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+                .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000)).signWith(signingKey).compact();
     }
 
     public boolean validateJwtToken(String authToken) {

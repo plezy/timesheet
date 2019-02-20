@@ -18,16 +18,16 @@ import lu.plezy.timesheet.entities.messages.JwtResponse;
 import lu.plezy.timesheet.entities.messages.LoginForm;
 
 @RestController
-@RequestMapping(path="/auth")
+@RequestMapping(path = "/auth")
 public class AuthenticationController {
 
     @Autowired
     AuthenticationManager authenticationManager;
-    
+
     @Autowired
     JwtProvider jwtProvider;
 
-    @PostMapping("/signin")
+    @PostMapping("/logon")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
  
         Authentication authentication = authenticationManager.authenticate(
