@@ -49,7 +49,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
                 logger.debug("Got Valid JWT Token");
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
-                logger.debug("Found in JWT token username", username);
+                logger.debug("Found in JWT token username {}", username);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 

@@ -2,18 +2,85 @@ package lu.plezy.timesheet.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import lu.plezy.timesheet.entities.RoleEnum;
+import lu.plezy.timesheet.entities.User;
+import lu.plezy.timesheet.entities.messages.Role;
+import lu.plezy.timesheet.i18n.StaticText;
+import lu.plezy.timesheet.repository.UsersRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping(path="/users")
+@RequestMapping(path = "/user")
 public class ManageUserController {
- /*   
-    @GetMapping(value="/list")
 
-    public SomeData getMethodName(@RequestParam String param) {
-        return new SomeData();
+    @Autowired
+    UsersRepository usersRepository;
+
+    @GetMapping(value = "")
+    @PreAuthorize("isAuthenticated()")
+    public User getUser(Authentication authentication) {
+        Optional<User> result = usersRepository.findByUsername(authentication.getName());
+        return result.isPresent() ? result.get() : null;
     }
-    */
+
+    @GetMapping(value = "/all/{size}")
+    @PreAuthorize("isAuthenticated()")
+    public Page<User> getUsers(@PathVariable("size") int pageSize) {
+        Pageable p = PageRequest.of(0, pageSize, Sort.by("lastName", "firstName"));
+        return usersRepository.findAll(p);
+    }
+
+    @GetMapping(value = "/all/{size}/{page}")
+    @PreAuthorize("isAuthenticated()")
+    public Page<User> getUsers(@PathVariable("size") int pageSize, @PathVariable("page") int page) {
+        Pageable p = PageRequest.of(page, pageSize, Sort.by("lastName", "firstName"));
+        return usersRepository.findAll(p);
+    }
+
+    @GetMapping(value = "/roles")
+    @PreAuthorize("isAuthenticated()")
+    public List<Role> getRoles(Authentication authentication) {
+        List<Role> response = null;
+
+        Optional<User> result = usersRepository.findByUsername(authentication.getName());
+        if (result.isPresent()) {
+            response = new ArrayList<>();
+            for (RoleEnum role : result.get().getRoles()) {
+                Role roleEntry = new Role(role.name());
+                roleEntry.setRoleDescription(StaticText.getInstance().getText(role.toString()));
+                response.add(roleEntry);
+            }
+        }
+        return response;
+    }
+
+    @GetMapping(value = "/roles/all")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public List<Role> getAllRoles() {
+        List<Role> response = new ArrayList<>();
+
+        for (RoleEnum role : EnumSet.allOf( RoleEnum.class )) {
+            Role roleEntry = new Role(role.name());
+            roleEntry.setRoleDescription(StaticText.getInstance().getText(role.toString()));
+            response.add(roleEntry);
+        }
+        return response;
+    }
+
 }

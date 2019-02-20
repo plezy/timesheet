@@ -36,19 +36,27 @@ public class JwtProvider {
     @Value("${auth.jwtExpiration}")
     private int jwtExpiration;
 
+    private Key signingKey = null;
+
+    private Key getSigningKey() {
+        if (signingKey == null) {
+            signingKey = new SecretKeySpec(jwtSecret.getBytes(), SignatureAlgorithm.HS512.getJcaName());
+        }
+        return signingKey;
+    }
+
     public String generateJwtToken(Authentication authentication) {
         UserInfo userPrincipal = (UserInfo) authentication.getPrincipal();
 
-        Key signingKey = new SecretKeySpec(jwtSecret.getBytes(), SignatureAlgorithm.HS512.getJcaName());
-
         return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000)).signWith(signingKey).compact();
+                .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000)).signWith(getSigningKey())
+                .compact();
     }
 
     public boolean validateJwtToken(String authToken) {
         logger.info("Validating token {}", authToken);
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(authToken);
             return true;
 
             // Do not exists any more in jwtt 0.10
@@ -70,7 +78,7 @@ public class JwtProvider {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        String username = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        String username = Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(token).getBody().getSubject();
         logger.debug("Extracted username from token : {}", username);
         return username;
     }
