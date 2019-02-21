@@ -38,6 +38,13 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    @GetMapping(value = "{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public User getUser(@PathVariable("id") long id) {
+        Optional<User> result = usersRepository.findById(id);
+        return result.isPresent() ? result.get() : null;
+    }
+
     @GetMapping(value = "/all/{size}")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers(@PathVariable("size") int pageSize) {

@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -29,8 +31,9 @@ public class User {
     private long id;
 
     @NonNull
-    @Column(name = "USERNAME", nullable = false, length=32)
+    @Column(name = "USERNAME", nullable = false, length=32, unique=true)
     private String username;
+    @JsonIgnore
     @NonNull
     @Column(name = "PASSWORD", nullable = false, length=128)
     private String password;
@@ -51,6 +54,10 @@ public class User {
     @Column(name = "LOCKED", length=1)
     @Convert(converter=BooleanToStringConverter.class)
     private boolean locked = false;
+
+    @Column(name = "DELETED", length=1)
+    @Convert(converter=BooleanToStringConverter.class)
+    private boolean deleted = false;
 
     @ElementCollection(targetClass=RoleEnum.class)
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USR_ID"))

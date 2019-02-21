@@ -28,12 +28,13 @@ public class UserInfo implements UserDetails {
     private String username;
     private String email;
     private boolean locked;
+    private boolean deleted;
 
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserInfo(Long id, String name, String username, String email, String password, boolean locked,
+    public UserInfo(Long id, String name, String username, String email, String password, boolean locked, boolean deleted,
             Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
@@ -41,6 +42,7 @@ public class UserInfo implements UserDetails {
         this.email = email;
         this.password = password;
         this.locked = locked;
+        this.deleted = deleted;
         this.authorities = authorities;
     }
 
@@ -50,7 +52,7 @@ public class UserInfo implements UserDetails {
         StringBuilder givenName = new StringBuilder(user.getFirstName());
         givenName.append(' ').append(user.getLastName());
         return new UserInfo(user.getId(), givenName.toString(), user.getUsername(), user.getEmail(), user.getPassword(),
-                user.isLocked(), authorities);
+                user.isLocked(), user.isDeleted(), authorities);
     }
 
     public String getName() {
@@ -93,7 +95,7 @@ public class UserInfo implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !deleted;
     }
 
     @Override
