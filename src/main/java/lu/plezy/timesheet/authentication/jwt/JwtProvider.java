@@ -77,10 +77,16 @@ public class JwtProvider {
         return false;
     }
 
-    public String getUserNameFromJwtToken(String token) {
-        String username = Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(token).getBody().getSubject();
+    public String getUserNameFromJwtToken(String authToken) {
+        String username = Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(authToken).getBody().getSubject();
         logger.debug("Extracted username from token : {}", username);
         return username;
+    }
+
+    public Date getExpirationDateFromJwtToken(String authToken) {
+        Date date = Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(authToken).getBody().getExpiration();
+        logger.debug("Extracted expiration date from token : {}", date);
+        return date;
     }
 
 }

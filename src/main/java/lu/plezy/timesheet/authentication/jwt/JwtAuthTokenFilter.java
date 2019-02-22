@@ -36,6 +36,9 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     private JwtProvider tokenProvider;
 
     @Autowired
+    private JwtBlacklistManager blacklistManager;
+
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
@@ -48,6 +51,11 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             String jwt = getJwt(request);
             if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
                 logger.debug("Got Valid JWT Token");
+
+                if (blacklistManager.isBlacklisted(jwt)) {
+                    throw new Exception("JWT token blacklisted");
+                }
+
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
                 logger.debug("Found in JWT token username {}", username);
 
