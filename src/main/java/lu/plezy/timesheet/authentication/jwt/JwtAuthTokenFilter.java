@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +36,9 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtProvider tokenProvider;
 
+    @Value("${auth.jwtHeader}")
+    private String jwtHeader;
+    
     @Autowired
     private JwtBlacklistManager blacklistManager;
 
@@ -52,7 +56,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
                 logger.debug("Got Valid JWT Token");
 
-                if (blacklistManager.isBlacklisted(jwt)) {
+                if (blacklistManager.isBlacklisted(request.getHeader(jwtHeader))) {
                     throw new Exception("JWT token blacklisted");
                 }
 
@@ -68,17 +72,17 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            logger.error("Can NOT set user authentication -> Message: {}", e.getMessage());
+            logger.info("Can NOT set user authentication -> Message: {}", e.getMessage());
         }
 
         filterChain.doFilter(request, response);
     }
 
     private String getJwt(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader(jwtHeader);
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.replace("Bearer ", "");
+        if (authHeader != null && authHeader.startsWith(tokenProvider.getJwtTypeStr())) {
+            return authHeader.replace(tokenProvider.getJwtTypeStr(), "");
         }
 
         return null;

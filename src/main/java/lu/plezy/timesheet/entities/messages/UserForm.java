@@ -28,5 +28,5 @@ public class UserForm {
     private String email;
 
     private boolean locked = false;
-    private Set<RoleEnum> roles;    
+    private Set<RoleEnum> roles;
 }

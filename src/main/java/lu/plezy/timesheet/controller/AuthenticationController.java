@@ -3,17 +3,22 @@ package lu.plezy.timesheet.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lu.plezy.timesheet.authentication.jwt.JwtBlacklistManager;
 import lu.plezy.timesheet.authentication.jwt.JwtProvider;
 import lu.plezy.timesheet.entities.messages.JwtResponse;
 import lu.plezy.timesheet.entities.messages.LoginForm;
@@ -23,11 +28,17 @@ import lu.plezy.timesheet.entities.messages.LoginForm;
 public class AuthenticationController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    JwtProvider jwtProvider;
+    private JwtProvider jwtProvider;
 
+    @Value("${auth.jwtHeader}")
+    private String jwtHeader;
+
+    @Autowired
+    private JwtBlacklistManager blacklistMgr;
+    
     @PostMapping("/logon")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
  
@@ -46,10 +57,18 @@ public class AuthenticationController {
 
     @PostMapping("/renew")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> renewToken(Authentication authentication) {
+    public ResponseEntity<?> renewToken(Authentication authentication, @RequestHeader HttpHeaders headers) {
+        String actualJwt = headers.getFirst(jwtHeader);
         String jwt = jwtProvider.generateJwtToken(authentication);
+        blacklistMgr.blacklist(actualJwt, null);
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
     
-    
+    @GetMapping("/logout")
+    @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
+    public void logout(Authentication authentication, @RequestHeader HttpHeaders headers) {
+        String actualJwt = headers.getFirst(jwtHeader);
+        blacklistMgr.blacklist(actualJwt, null);
+    }
 }

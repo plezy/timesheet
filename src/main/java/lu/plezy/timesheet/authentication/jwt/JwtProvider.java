@@ -36,6 +36,17 @@ public class JwtProvider {
     @Value("${auth.jwtExpiration}")
     private int jwtExpiration;
 
+    private static final String jwtType = "Bearer";
+    private static final String jwtTypeStr = jwtType + " ";
+
+    public static String getJwtType() {
+        return jwtType;
+    }
+
+    public String getJwtTypeStr() {
+        return jwtTypeStr;
+    }
+
     private Key signingKey = null;
 
     private Key getSigningKey() {
@@ -54,24 +65,18 @@ public class JwtProvider {
     }
 
     public boolean validateJwtToken(String authToken) {
-        logger.info("Validating token {}", authToken);
+        logger.debug("Validating token {}", authToken);
         try {
             Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(authToken);
             return true;
-
-            // Do not exists any more in jwtt 0.10
-            /*
-             * } catch (SignatureException e) {
-             * logger.error("Invalid JWT signature -> Message: {} ", e);
-             */
         } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token -> Message: {}", e);
+            logger.info("Invalid JWT token -> Message: {}", e);
         } catch (ExpiredJwtException e) {
-            logger.error("Expired JWT token -> Message: {}", e);
+            logger.info("Expired JWT token -> Message: {}", e);
         } catch (UnsupportedJwtException e) {
-            logger.error("Unsupported JWT token -> Message: {}", e);
+            logger.info("Unsupported JWT token -> Message: {}", e);
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty -> Message: {}", e);
+            logger.info("JWT claims string is empty -> Message: {}", e);
         }
 
         return false;
