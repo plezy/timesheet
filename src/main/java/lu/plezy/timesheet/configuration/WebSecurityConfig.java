@@ -61,10 +61,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         logger.info("Configuring HttpSecurity and setup JwtAuthTokenFilter");
-        /*
-         * http .authorizeRequests() .antMatchers("/h2/*").permitAll()
-         * .anyRequest().authenticated();
-         */
 
         //@formatter:off
         http.authorizeRequests()
@@ -83,28 +79,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //@formatter:on
     }
 
-    /*
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        logger.info("Configuring HttpSecurity and setup JwtAuthTokenFilter");
-
-        //@formatter:off
-        http.cors()
-            .and()
-            .csrf().disable()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/ui/**").permitAll()
-                .antMatchers("/index.html").permitAll()
-                .antMatchers("/").permitAll()
-                .anyRequest().authenticated()
-            .and()
-            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        //@formatter:on
-
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-    }
-*/
 }
