@@ -14,13 +14,21 @@ const httpOptions = {
 })
 export class AuthService {
 
-  private loginUrl = 'http://localhost:8080/auth/logon';
+  private loginUrl = '/auth/logon';
+  private logoutUrl = '/auth/logout';
 
   constructor(private http: HttpClient) {
   }
 
   attemptAuth(credentials: AuthLoginInfo): Observable<JwtResponse> {
+    console.log('Attempt authorization ...');
     return this.http.post<JwtResponse>(this.loginUrl, credentials, httpOptions);
   }
 
+  logout() {
+    console.log('Logging out ...');
+    this.http.get(this.logoutUrl, httpOptions).subscribe((res) => {
+        console.log(res);
+      });
+  }
 }

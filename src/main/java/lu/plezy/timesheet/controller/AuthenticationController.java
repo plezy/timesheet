@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +53,9 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
  
         String jwt = jwtProvider.generateJwtToken(authentication);
-        return ResponseEntity.ok(new JwtResponse(jwt));
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
 
     @PostMapping("/renew")
@@ -61,7 +64,8 @@ public class AuthenticationController {
         String actualJwt = headers.getFirst(jwtHeader);
         String jwt = jwtProvider.generateJwtToken(authentication);
         blacklistMgr.blacklist(actualJwt, null);
-        return ResponseEntity.ok(new JwtResponse(jwt));
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
     
     @GetMapping("/logout")
