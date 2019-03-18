@@ -6,9 +6,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 
+import { CoreModule } from './core/core.module';
+
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { httpInterceptorProviders } from './auth/auth-interceptor';
+import { LoginComponent } from './core/auth/login/login.component';
+import { httpInterceptorProviders } from './core/auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { httpInterceptorProviders } from './auth/auth-interceptor';
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CoreModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AuthService } from './auth/auth.service';
-import { TokenStoreService } from './auth/token-store.service';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,17 +14,16 @@ export class AppComponent {
   username: string;
   authority: boolean;
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStoreService) {
-    this.authorities = tokenStorage.getAuthorities();
-    this.username = tokenStorage.getUsername();
+  constructor(private authService: AuthService) {
+    this.authorities = this.authService.getAuthorities();
+    this.username = this.authService.getUsername();
     console.log('Authorities ', this.authorities);
-    this.authority = this.authorities.length > 0;
+    this.authority = this.authService.isAuthenticated();
     console.log('Authority   ', this.authority);
   }
 
   onLogout() {
     this.authService.logout();
-    this.tokenStorage.clear();
     window.location.reload();
   }
 }
