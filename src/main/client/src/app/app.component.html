@@ -21,10 +21,6 @@
     </ul>
   </div>
 </nav>
-<div *ngIf="!authority" class="container">
-  <!-- No auth then display login page -->
-  <app-login></app-login>
-</div>
-<div *ngIf="authority" class="container">
+<div class="container">
   <router-outlet></router-outlet>
 </div>
