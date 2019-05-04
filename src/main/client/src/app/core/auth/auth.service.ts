@@ -37,10 +37,11 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    if (this.tokenStorage.getAuthorities().length > 0)
+    if (this.tokenStorage.getAuthorities().length > 0) {
       return true;
-    else
+    } else {
       return false;
+    }
   }
 
   getAuthorities(): any {

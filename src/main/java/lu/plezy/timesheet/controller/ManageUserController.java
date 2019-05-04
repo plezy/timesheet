@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping(path = "/user")
 public class ManageUserController {
 
+    private int defaultPageSize = 10;
+
     @Autowired
     UsersRepository usersRepository;
 
@@ -45,17 +47,24 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
-    @GetMapping(value = "/all/{size}")
+    @GetMapping(value = "/list")
     @PreAuthorize("isAuthenticated()")
-    public Page<User> getUsers(@PathVariable("size") int pageSize) {
-        Pageable p = PageRequest.of(0, pageSize, Sort.by("lastName", "firstName"));
+    public Page<User> getUsers() {
+        Pageable p = PageRequest.of(0, defaultPageSize, Sort.by("lastName", "firstName"));
         return usersRepository.findAll(p);
     }
 
-    @GetMapping(value = "/all/{size}/{page}")
+    @GetMapping(value = "/list/{page}")
     @PreAuthorize("isAuthenticated()")
-    public Page<User> getUsers(@PathVariable("size") int pageSize, @PathVariable("page") int page) {
-        Pageable p = PageRequest.of(page, pageSize, Sort.by("lastName", "firstName"));
+    public Page<User> getUsers(@PathVariable("page") int page) {
+        Pageable p = PageRequest.of(page, defaultPageSize, Sort.by("lastName", "firstName"));
+        return usersRepository.findAll(p);
+    }
+
+    @GetMapping(value = "/list/{page}/{size}")
+    @PreAuthorize("isAuthenticated()")
+    public Page<User> getUsers(@PathVariable("page") int page, @PathVariable("size") int size) {
+        Pageable p = PageRequest.of(page, size, Sort.by("lastName", "firstName"));
         return usersRepository.findAll(p);
     }
 
@@ -81,7 +90,7 @@ public class ManageUserController {
     public List<Role> getAllRoles() {
         List<Role> response = new ArrayList<>();
 
-        for (RoleEnum role : EnumSet.allOf( RoleEnum.class )) {
+        for (RoleEnum role : EnumSet.allOf(RoleEnum.class)) {
             Role roleEntry = new Role(role.name());
             roleEntry.setRoleDescription(StaticText.getInstance().getText(role.toString()));
             response.add(roleEntry);
