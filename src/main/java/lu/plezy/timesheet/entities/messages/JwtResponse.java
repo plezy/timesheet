@@ -14,10 +14,12 @@ import lu.plezy.timesheet.authentication.jwt.JwtProvider;
 public class JwtResponse {
     @NonNull
     private String token;
-    private String type = JwtProvider.getJwtType();    
+    private String type = JwtProvider.getJwtType();
     @NonNull
     private String username;
     @NonNull
     private Collection<? extends GrantedAuthority> authorities;
+    @NonNull
+    private Integer ttl;
 
 }

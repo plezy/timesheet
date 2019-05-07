@@ -47,6 +47,10 @@ public class JwtProvider {
         return jwtTypeStr;
     }
 
+    public Integer getJwtExpiration() {
+        return jwtExpiration;
+    }
+
     private Key signingKey = null;
 
     private Key getSigningKey() {
