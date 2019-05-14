@@ -71,46 +71,17 @@ export class TokenStoreService {
     return this.roles;
   }
 
-  /*
-  public saveAuthTTL(ttl: number) {
-    window.sessionStorage.removeItem(AUTH_TTL);
-    window.sessionStorage.setItem(AUTH_TTL, ttl.toString());
-  }
-
-  public getAuthTTL(): number {
-    // tslint:disable-next-line:radix
-    return parseInt(sessionStorage.getItem(AUTH_TTL));
-  }
-
-  public saveAuthRenew(ttl?: number) {
-    let delay: number;
-    if (typeof ttl !== undefined) {
-      this.saveAuthTTL(ttl);
-      delay = ttl;
-    } else {
-      delay = this.getAuthTTL();
-    }
-    delay = delay * 900; // convert delay to 90% of milliseconds
-    const now = _moment();
-    now.add(delay, 'ms');
-    window.sessionStorage.removeItem(AUTH_RENEW);
-    window.sessionStorage.setItem(AUTH_RENEW, now.toString());
-    const source = timer(1000, 2000);
-    const subscribe = source.subscribe(val => console.log(val));
-  }
-  */
-
   public saveAuthRenew(ttl: number) {
     const delay = ttl * 900; // convert delay to 90% of milliseconds
     const now = _moment();
     now.add(delay, 'ms');
     window.sessionStorage.removeItem(AUTH_RENEW);
-    window.sessionStorage.setItem(AUTH_RENEW, now.toString());
+    window.sessionStorage.setItem(AUTH_RENEW, now.format());
   }
 
   public getAuthRenew(): Date {
     const authRenew = _moment( sessionStorage.getItem(AUTH_RENEW));
-    console.log('authRenew : ' + authRenew);
+    // console.log('authRenew : ' + authRenew);
     return authRenew.toDate();
   }
 
