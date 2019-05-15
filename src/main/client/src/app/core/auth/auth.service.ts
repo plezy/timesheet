@@ -38,12 +38,12 @@ export class AuthService {
   }
 
   attemptAuth(credentials: AuthLoginInfo): Observable<JwtResponse> {
-    console.log('Attempt authorization ...');
+    // console.log('Attempt authorization ...');
     return this.http.post<JwtResponse>(this.loginUrl, credentials, httpOptions);
   }
 
   logout() {
-    console.log('Logging out ...');
+    // console.log('Logging out ...');
     this.http.get(this.logoutUrl, httpOptions).subscribe((res) => {
         console.log(res);
       });
@@ -91,9 +91,10 @@ export class AuthService {
     // console.log('Check for renewal ...');
     const expireAt = this.tokenStorage.getAuthRenew().getTime();
     const now = Date.now();
-
+    console.log('expireAt : ' + expireAt);
+    console.log('now      : ' + now);
     if (now >= expireAt) {
-      // console.log('Renew Token ....');
+      console.log('Renew Token ....');
       this.renewToken();
     }
   }
