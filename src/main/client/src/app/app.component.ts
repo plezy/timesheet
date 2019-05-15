@@ -17,9 +17,9 @@ export class AppComponent {
   constructor(private authService: AuthService) {
     this.authorities = this.authService.getAuthorities();
     this.username = this.authService.getUsername();
-    console.log('Authorities ', this.authorities);
+    // console.log('Authorities ', this.authorities);
     this.authority = this.authService.isAuthenticated();
-    console.log('Authority   ', this.authority);
+    // console.log('Authority   ', this.authority);
   }
 
   onLogout() {

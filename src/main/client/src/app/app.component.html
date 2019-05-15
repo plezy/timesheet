@@ -21,6 +21,30 @@
     </ul>
   </div>
 </nav>
-<div>
-  <router-outlet></router-outlet>
-</div>
+<mat-sidenav-container class="app-sidenav-container">
+    <mat-sidenav
+      *ngIf="authority"
+      #sidenav
+      mode="side" opened
+      fixedTopGap="56">
+      <mat-nav-list>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/home">Home</a>
+        <mat-divider></mat-divider>
+        <h3 matSubheader>User</h3>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/user/profile">Profile</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/user/passwd">Set password</a>
+        <mat-divider></mat-divider>
+        <h3 matSubheader>Administration</h3>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/users">Users management</a>
+        <h3 matSubheader>Application information</h3>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/build">Build</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/javaprops">Java properties</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/environment">Environment</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/sources">Sources informations</a>
+      </mat-nav-list>    
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+

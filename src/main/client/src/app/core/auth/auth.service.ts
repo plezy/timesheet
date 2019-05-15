@@ -91,8 +91,8 @@ export class AuthService {
     // console.log('Check for renewal ...');
     const expireAt = this.tokenStorage.getAuthRenew().getTime();
     const now = Date.now();
-    console.log('expireAt : ' + expireAt);
-    console.log('now      : ' + now);
+    // console.log('expireAt : ' + expireAt);
+    // console.log('now      : ' + now);
     if (now >= expireAt) {
       console.log('Renew Token ....');
       this.renewToken();
