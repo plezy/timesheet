@@ -1,0 +1,13 @@
+<h2>Git informations</h2>
+<table>
+  <thead style="background-color: lightgrey;">
+      <td style="min-width: 300px;">Key</td>
+      <td>Value</td>
+  </thead>
+  <tbody>
+    <tr *ngFor="let key of gitInfosKeys">
+      <td>{{key}}</td>
+      <td>{{gitInfos[key]}}</td>
+    </tr>
+  </tbody>
+</table>

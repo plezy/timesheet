@@ -1,6 +1,5 @@
 package lu.plezy.timesheet.controller;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest()
 @AutoConfigureMockMvc
 public class AuthenticationControllerTest {
-    
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -38,15 +37,11 @@ public class AuthenticationControllerTest {
         jo.put("password", "passw0rd");
 
         System.out.println("mockMvc object : " + mockMvc);
-        mockMvc.perform(post("/auth/logon")
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(jo.toString()))
-            .andExpect(status().isOk())
-            .andDo( mvcResult -> { 
-                String json = mvcResult.getResponse().getContentAsString();
-                System.out.println("JSON Result : " + json );
-            } );
+        mockMvc.perform(post("/auth/logon").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
+                .content(jo.toString())).andExpect(status().isOk()).andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    System.out.println("JSON Result : " + json);
+                });
 
     }
 
@@ -58,13 +53,9 @@ public class AuthenticationControllerTest {
         jo.put("password", "badPassword");
 
         System.out.println("mockMvc object : " + mockMvc);
-        mockMvc.perform(post("/auth/logon")
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(jo.toString()))
-            .andExpect(status().is4xxClientError());
+        mockMvc.perform(post("/auth/logon").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
+                .content(jo.toString())).andExpect(status().is4xxClientError());
 
     }
-
 
 }
