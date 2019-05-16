@@ -1,6 +1,6 @@
 <h3 mat-dialog-title>Edit user profile</h3>
 
-<div class="container">
+<div>
   <form [formGroup]="form">
     <div class="row">
       <mat-form-field class="col-md-6">
@@ -21,18 +21,18 @@
       </mat-form-field>
     </div>
     <div class="row">
-        <mat-form-field class="col-md-6">
-            <input matInput placeholder="E-Mail"
-                formControlName="email"
-                required />
-            <mat-error *ngIf="form.controls.email.hasError('required')">
-                E-Mail is required !
-            </mat-error>
-            <mat-error *ngIf="form.controls.email.hasError('email')">
-                E-Mail is not a valid mail address !
-            </mat-error>
-                        </mat-form-field>    
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="E-Mail"
+            formControlName="email"
+            required />
+        <mat-error *ngIf="form.controls.email.hasError('required')">
+            E-Mail is required !
+        </mat-error>
+        <mat-error *ngIf="form.controls.email.hasError('email')">
+            E-Mail is not a valid mail address !
+        </mat-error>
+      </mat-form-field>    
     </div>
-    <button class="mat-raised-button mat-primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button>
+    <button class="btn btn-primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button>
   </form>
 </div>

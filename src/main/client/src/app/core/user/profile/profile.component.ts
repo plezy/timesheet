@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
 
   private form: FormGroup;
   private id: number;
+  private roles: string[];
 
   constructor(private fb: FormBuilder, private userService: UserService, private authService: AuthService, private router: Router) { }
 
@@ -27,6 +28,8 @@ export class ProfileComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required]],
+      mobile: ['', [Validators.required]],
     });
 
     this.userService.getMe().subscribe(
@@ -36,6 +39,9 @@ export class ProfileComponent implements OnInit {
         this.form.controls.firstName.setValue(me.firstName);
         this.form.controls.lastName.setValue(me.lastName);
         this.form.controls.email.setValue(me.email);
+        this.form.controls.email.setValue(me.phone);
+        this.form.controls.email.setValue(me.mobile);
+        this.roles = me.roles;
     });
 
   }

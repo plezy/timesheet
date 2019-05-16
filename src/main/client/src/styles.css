@@ -7,6 +7,12 @@ purple-green.css
 */
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
 /* @import '~bootstrap/dist/css/bootstrap.min.css'; */
 
 .mat-button-focus-overlay { background-color: transparent!important; }
+
+.spacer {
+    flex: 1 1 auto;
+}

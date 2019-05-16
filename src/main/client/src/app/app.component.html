@@ -28,23 +28,32 @@
       mode="side" opened
       fixedTopGap="56">
       <mat-nav-list>
-        <a mat-list-item routerLinkActive="active-link" routerLink="/home">Home</a>
+        <a mat-list-item routerLinkActive="active-link" routerLink="/home">
+          <mat-icon style="padding-right: 15px;">home</mat-icon><span>Home</span></a>
         <mat-divider></mat-divider>
         <h3 matSubheader>User</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/profile">Profile</a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/passwd">Set password</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/profile">
+            <mat-icon style="padding-right: 5px;">face</mat-icon><span>Profile</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/passwd">
+            <mat-icon style="padding-right: 5px;">vpn_key</mat-icon><span>Set password</span></a>
         <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">
         <h3 matSubheader>Administration</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/users" *ngIf="hasAuthority('MANAGE_USERS')">Users management</a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">Set notifications</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/users" *ngIf="hasAuthority('MANAGE_USERS')">
+            <mat-icon style="padding-right: 5px;">people</mat-icon><span>Users management</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">
+            <mat-icon style="padding-right: 5px;">notification_important</mat-icon><span>Set notifications</span></a>
         </div>
         <div *ngIf="hasAuthority('MANAGE_SETTINGS')">
         <h3 matSubheader>Application information</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/build">Build</a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/javaprops">Java properties</a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/environment">Environment</a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/sources">Sources informations</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/build">
+            <mat-icon style="padding-right: 5px;" fontSet="fa" fontIcon="fa-hand-point-right"></mat-icon><span>Build</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/javaprops">
+            <mat-icon style="padding-right: 5px;" fontSet="fa" fontIcon="fa-coffee"></mat-icon><span>Java properties</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/environment">
+            <mat-icon style="padding-right: 5px;" fontSet="fa" fontIcon="fa-wrench"></mat-icon><span>Environment</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/sources">
+            <mat-icon style="padding-right: 5px;" fontSet="fab" fontIcon="fa-git-square"></mat-icon><span>Sources informations</span></a>
         </div>
       </mat-nav-list>
     </mat-sidenav>
