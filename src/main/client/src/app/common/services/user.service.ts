@@ -17,4 +17,9 @@ export class UserService {
     const url = this.userBaseUrl + '/list/' + page + '/' + size;
     return this.http.get<Page<User>>(url);
   }
+
+  getMe(): Observable<User> {
+    const url = this.userBaseUrl + '/me';
+    return this.http.get<User>(url);
+  }
 }

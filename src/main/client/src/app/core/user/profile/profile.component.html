@@ -1,0 +1,38 @@
+<h3 mat-dialog-title>Edit user profile</h3>
+
+<div class="container">
+  <form [formGroup]="form">
+    <div class="row">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="First Name"
+            formControlName="firstName"
+            required/>
+        <mat-error *ngIf="form.controls.firstName.hasError('required')">
+          First Name is required !
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Last Name"
+            formControlName="lastName"
+            required />
+        <mat-error *ngIf="form.controls.lastName.hasError('required')">
+          Last Name is required !
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-form-field class="col-md-6">
+            <input matInput placeholder="E-Mail"
+                formControlName="email"
+                required />
+            <mat-error *ngIf="form.controls.email.hasError('required')">
+                E-Mail is required !
+            </mat-error>
+            <mat-error *ngIf="form.controls.email.hasError('email')">
+                E-Mail is not a valid mail address !
+            </mat-error>
+                        </mat-form-field>    
+    </div>
+    <button class="mat-raised-button mat-primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button>
+  </form>
+</div>

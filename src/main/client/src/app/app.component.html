@@ -16,7 +16,7 @@
       </li-->
     </ul>
     <ul class="nav navbar-nav navbar-right" *ngIf="authority">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
+      <li><a routerLink="/profile"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
       <li><button class="btn btn-primary navbar-btn" style="margin-right:10px;" (click)="onLogout()">Logout</button></li>
     </ul>
   </div>
@@ -31,17 +31,22 @@
         <a mat-list-item routerLinkActive="active-link" routerLink="/home">Home</a>
         <mat-divider></mat-divider>
         <h3 matSubheader>User</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/user/profile">Profile</a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/user/passwd">Set password</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/profile">Profile</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/passwd">Set password</a>
         <mat-divider></mat-divider>
+        <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">
         <h3 matSubheader>Administration</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/users">Users management</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/users" *ngIf="hasAuthority('MANAGE_USERS')">Users management</a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">Set notifications</a>
+        </div>
+        <div *ngIf="hasAuthority('MANAGE_SETTINGS')">
         <h3 matSubheader>Application information</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/build">Build</a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/javaprops">Java properties</a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/environment">Environment</a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/sources">Sources informations</a>
-      </mat-nav-list>    
+        </div>
+      </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
       <router-outlet></router-outlet>

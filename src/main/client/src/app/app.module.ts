@@ -7,13 +7,11 @@ import { MaterialModule } from './material.module';
 import { CoreModule } from './core/core.module';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './core/auth/login/login.component';
 import { httpInterceptorProviders } from './core/auth/auth-interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

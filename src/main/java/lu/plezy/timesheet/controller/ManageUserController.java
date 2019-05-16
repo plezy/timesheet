@@ -33,7 +33,7 @@ public class ManageUserController {
     @Autowired
     UsersRepository usersRepository;
 
-    @GetMapping(value = "")
+    @GetMapping(value = "/me")
     @PreAuthorize("isAuthenticated()")
     public User getUser(Authentication authentication) {
         Optional<User> result = usersRepository.findByUsername(authentication.getName());

@@ -26,4 +26,12 @@ export class AppComponent {
     this.authService.logout();
     window.location.reload();
   }
+
+  hasAuthority(auth: string): boolean {
+    return this.authService.hasAuthority(auth);
+  }
+
+  hasOneOfAuthority(auth: string[]): boolean {
+    return this.authService.hasOneOfAuthority(auth);
+  }
 }
