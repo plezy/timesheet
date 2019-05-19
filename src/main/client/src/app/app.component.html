@@ -16,7 +16,7 @@
       </li-->
     </ul>
     <ul class="nav navbar-nav navbar-right" *ngIf="authority">
-      <li><a routerLink="/profile"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
+      <li><a routerLink="/profile"><div class=""><mat-icon>account_circle</mat-icon><span>{{username}}</span></div></a></li>
       <li><button class="btn btn-primary navbar-btn" style="margin-right:10px;" (click)="onLogout()">Logout</button></li>
     </ul>
   </div>
@@ -29,31 +29,31 @@
       fixedTopGap="56">
       <mat-nav-list>
         <a mat-list-item routerLinkActive="active-link" routerLink="/home">
-          <mat-icon style="padding-right: 15px;">home</mat-icon><span>Home</span></a>
+          <div style="padding-right: 5px;"><mat-icon>home</mat-icon></div><span>Home</span></a>
         <mat-divider></mat-divider>
         <h3 matSubheader>User</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/profile">
-            <mat-icon style="padding-right: 5px;">face</mat-icon><span>Profile</span></a>
+            <div style="padding-right: 5px;"><mat-icon>account_circle</mat-icon></div><span>Profile</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/passwd">
-            <mat-icon style="padding-right: 5px;">vpn_key</mat-icon><span>Set password</span></a>
+            <div style="padding-right: 5px;"><mat-icon>vpn_key</mat-icon></div><span>Set password</span></a>
         <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">
         <h3 matSubheader>Administration</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/users" *ngIf="hasAuthority('MANAGE_USERS')">
-            <mat-icon style="padding-right: 5px;">people</mat-icon><span>Users management</span></a>
+            <div style="padding-right: 5px;"><mat-icon>people</mat-icon></div><span>Users management</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">
-            <mat-icon style="padding-right: 5px;">notification_important</mat-icon><span>Set notifications</span></a>
+            <div style="padding-right: 5px;"><mat-icon>notification_important</mat-icon></div><span>Set notifications</span></a>
         </div>
         <div *ngIf="hasAuthority('MANAGE_SETTINGS')">
         <h3 matSubheader>Application information</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/build">
-            <mat-icon style="padding-right: 5px;" fontSet="fa" fontIcon="fa-hand-point-right"></mat-icon><span>Build</span></a>
+            <div style="padding-right: 5px;"><mat-icon fontSet="fa" fontIcon="fa-hand-point-right"></mat-icon></div><span>Build</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/javaprops">
-            <mat-icon style="padding-right: 5px;" fontSet="fa" fontIcon="fa-coffee"></mat-icon><span>Java properties</span></a>
+            <div style="padding-right: 5px;"><mat-icon fontSet="fa" fontIcon="fa-coffee"></mat-icon></div><span>Java properties</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/environment">
-            <mat-icon style="padding-right: 5px;" fontSet="fa" fontIcon="fa-wrench"></mat-icon><span>Environment</span></a>
+            <div style="padding-right: 5px;"><mat-icon fontSet="fa" fontIcon="fa-wrench"></mat-icon></div><span>Environment</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/sources">
-            <mat-icon style="padding-right: 5px;" fontSet="fab" fontIcon="fa-git-square"></mat-icon><span>Sources informations</span></a>
+            <div style="padding-right: 5px;"><mat-icon fontSet="fab" fontIcon="fa-git-square"></mat-icon></div><span>Sources informations</span></a>
         </div>
       </mat-nav-list>
     </mat-sidenav>

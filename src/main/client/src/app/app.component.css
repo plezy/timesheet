@@ -21,6 +21,11 @@
     flex: 1 0 auto;
 }
 
+.navbar-icon {
+    display: inline;
+    padding-right: 5px;
+}
+
 mat-sidenav-container {
     min-height: 800px;
 }
