@@ -1,5 +1,5 @@
 <h3 mat-dialog-title>Edit user profile</h3>
-
+<br/>
 <div>
   <form [formGroup]="form">
     <div class="row">
@@ -33,6 +33,18 @@
         </mat-error>
       </mat-form-field>    
     </div>
+    <div class="row">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Phone Number"
+            formControlName="phone"/>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Mobile"
+            formControlName="mobile"/>
+      </mat-form-field>
+    </div>
     <button class="btn btn-primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button>
   </form>
+  <!--p>Form dirty : {{form.dirty}}</p>
+  <p>Form valid : {{form.valid}}</p-->
 </div>

@@ -22,44 +22,45 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@Entity(name="USERS")
+@Entity(name = "USERS")
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", updatable = false, nullable = false)
     private long id;
 
     @NonNull
-    @Column(name = "USERNAME", nullable = false, length=32, unique=true)
+    @Column(name = "USERNAME", nullable = false, length = 32, unique = true)
     private String username;
     @JsonIgnore
     @NonNull
-    @Column(name = "PASSWORD", nullable = false, length=128)
+    @Column(name = "PASSWORD", nullable = false, length = 128)
     private String password;
     @NonNull
-    @Column(name = "FIRSTNAME", nullable = false, length=64)
+    @Column(name = "FIRSTNAME", nullable = false, length = 64)
     private String firstName;
     @NonNull
-    @Column(name = "LASTNAME", nullable = false, length=64)
+    @Column(name = "LASTNAME", nullable = false, length = 64)
     private String lastName;
 
-    @Column(name = "PHONE", length=64)
+    @Column(name = "PHONE", length = 64)
     private String phone;
-    @Column(name = "MOBILE", length=64)
+    @Column(name = "MOBILE", length = 64)
     private String mobile;
-    @Column(name = "EMAIL", length=92)
+    @NonNull
+    @Column(name = "EMAIL", length = 92)
     private String email;
 
-    @Column(name = "LOCKED", length=1)
-    @Convert(converter=BooleanToStringConverter.class)
+    @Column(name = "LOCKED", length = 1)
+    @Convert(converter = BooleanToStringConverter.class)
     private boolean locked = false;
 
-    @Column(name = "DELETED", length=1)
-    @Convert(converter=BooleanToStringConverter.class)
+    @Column(name = "DELETED", length = 1)
+    @Convert(converter = BooleanToStringConverter.class)
     private boolean deleted = false;
 
-    @ElementCollection(targetClass=RoleEnum.class)
+    @ElementCollection(targetClass = RoleEnum.class)
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USR_ID"))
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE")

@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
 
   private form: FormGroup;
   private id: number;
+  private username: string;
   private roles: string[];
 
   constructor(private fb: FormBuilder, private userService: UserService, private authService: AuthService, private router: Router) { }
@@ -28,19 +29,20 @@ export class ProfileComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      mobile: ['', [Validators.required]],
+      phone: ['', []],
+      mobile: ['', []],
     });
 
     this.userService.getMe().subscribe(
       me => {
         // console.log('Got user Id : ' + me.id);
         this.id = me.id;
+        this.username = me.username;
         this.form.controls.firstName.setValue(me.firstName);
         this.form.controls.lastName.setValue(me.lastName);
         this.form.controls.email.setValue(me.email);
-        this.form.controls.email.setValue(me.phone);
-        this.form.controls.email.setValue(me.mobile);
+        this.form.controls.phone.setValue(me.phone);
+        this.form.controls.mobile.setValue(me.mobile);
         this.roles = me.roles;
     });
 
@@ -51,7 +53,22 @@ export class ProfileComponent implements OnInit {
   }
 
   save() {
+    const user = new User();
+    user.id = this.id;
+    user.username = this.username;
+    user.firstName = this.form.controls.firstName.value;
+    user.lastName = this.form.controls.lastName.value;
+    user.email = this.form.controls.email.value;
+    user.phone = this.form.controls.phone.value;
+    user.mobile = this.form.controls.mobile.value;
 
+    this.userService.saveUser(user).subscribe(
+      res => {
+
+        console.log('Done');
+      },
+      err => console.log(err)
+    );
   }
 
 }

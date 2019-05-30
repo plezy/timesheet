@@ -22,4 +22,9 @@ export class UserService {
     const url = this.userBaseUrl + '/me';
     return this.http.get<User>(url);
   }
+
+  saveUser(user: User) {
+    const url = this.userBaseUrl + '/me';
+    return this.http.put(url, user);
+  }
 }
