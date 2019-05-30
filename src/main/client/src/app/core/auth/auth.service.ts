@@ -70,32 +70,31 @@ export class AuthService {
   }
 
   hasAuthority(authRequested: string): boolean {
-    let result = false;
     const authorities = this.tokenStorage.getAuthorities();
     if (authorities) {
       if (authorities.length > 0) {
         return authorities.includes(authRequested);
       }
     }
-    return result;
+    return false;
   }
-  
+
   hasOneOfAuthority(authRequested: string[]): boolean {
-    let result = false;
     const authorities = this.tokenStorage.getAuthorities();
     if (authorities) {
       if (authorities.length > 0) {
         if (authRequested.length > 0) {
-          for (let i=0; i<authRequested.length; i++) {
-            if (authorities.includes(authRequested[i]))
+          for (let i = 0; i < authRequested.length; i++) {
+            if (authorities.includes(authRequested[i])) {
               return true;
+            }
           }
         }
       }
     }
-    return result;
+    return false;
   }
-  
+
   private renewToken() {
     this.http.post<JwtResponse>(this.renewtUrl, null, httpOptions).subscribe(
       data => {
