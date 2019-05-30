@@ -22,7 +22,12 @@
 }
 
 .navbar-icon {
-    display: inline;
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar-icon div {
+    flex: 1 1;
     padding-right: 5px;
 }
 

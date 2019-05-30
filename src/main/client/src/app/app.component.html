@@ -1,27 +1,28 @@
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Times'App</a>
+<div class="app-container">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Times'App</a>
+      </div>
+      <ul class="nav navbar-nav" routerLinkActive="active">
+        <!--li class="nav-item"><a class="nav-link" routerLink="home">Home</a></li>
+        <li *ngIf="authority === 'ROLE_USER'" class="nav-item">
+          <a class="nav-link" routerLink="user">User Board</a>
+        </li>
+        <li *ngIf="authority === 'ROLE_ADMIN'" class="nav-item">
+          <a class="nav-link" routerLink="admin">Admin Board</a>
+        </li>
+        <li *ngIf="authority === 'ROLE_PM'" class="nav-item">
+          <a class="nav-link" routerLink="pm">PM Board</a>
+        </li-->
+      </ul>
+      <ul class="nav navbar-nav navbar-right" *ngIf="authority">
+        <li><a routerLink="/profile"><div class="navbar-icon"><div><mat-icon>account_circle</mat-icon></div><span>{{username}}</span></div></a></li>
+        <li><button class="btn btn-primary navbar-btn" style="margin-right:10px;" (click)="onLogout()">Logout</button></li>
+      </ul>
     </div>
-    <ul class="nav navbar-nav" routerLinkActive="active">
-      <!--li class="nav-item"><a class="nav-link" routerLink="home">Home</a></li>
-      <li *ngIf="authority === 'ROLE_USER'" class="nav-item">
-        <a class="nav-link" routerLink="user">User Board</a>
-      </li>
-      <li *ngIf="authority === 'ROLE_ADMIN'" class="nav-item">
-        <a class="nav-link" routerLink="admin">Admin Board</a>
-      </li>
-      <li *ngIf="authority === 'ROLE_PM'" class="nav-item">
-        <a class="nav-link" routerLink="pm">PM Board</a>
-      </li-->
-    </ul>
-    <ul class="nav navbar-nav navbar-right" *ngIf="authority">
-      <li><a routerLink="/profile"><div class=""><mat-icon>account_circle</mat-icon><span>{{username}}</span></div></a></li>
-      <li><button class="btn btn-primary navbar-btn" style="margin-right:10px;" (click)="onLogout()">Logout</button></li>
-    </ul>
-  </div>
-</nav>
-<mat-sidenav-container class="app-sidenav-container">
+  </nav>
+  <mat-sidenav-container class="app-sidenav-container">
     <mat-sidenav
       *ngIf="authority"
       #sidenav
@@ -61,4 +62,4 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
-
+</div>
