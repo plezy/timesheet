@@ -27,4 +27,13 @@ export class UserService {
     const url = this.userBaseUrl + '/me';
     return this.http.put(url, user);
   }
+
+  updateUserPassword(userId: number, password: string) {
+    const url = this.userBaseUrl + '/setPassword';
+    const message = {
+      id: userId,
+      message: password
+    };
+    return this.http.put<User>(url, message);
+  }
 }

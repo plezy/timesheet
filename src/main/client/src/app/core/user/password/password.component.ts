@@ -32,8 +32,6 @@ export class PasswordComponent implements OnInit {
       confirm: ['', [Validators.required]],
     }, { validator: this.checkPasswords });
 
-    console.log(this.form);
-
     this.userService.getMe().subscribe(
       me => {
         // console.log('Got user Id : ' + me.id);
@@ -58,7 +56,15 @@ export class PasswordComponent implements OnInit {
     const confirm = this.form.controls.confirm.value;
 
     if (pass === confirm) {
-      console.log('TODO SAVE');
+      this.userService.updateUserPassword(this.id, pass).subscribe(
+        res => {
+          if (res) {
+            console.log('Password updated');
+          }
+        },
+        err => console.log(err)
+      );
     }
+    this.router.navigate(['/profile']);
   }
 }

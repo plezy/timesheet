@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import lu.plezy.timesheet.entities.RoleEnum;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.Role;
+import lu.plezy.timesheet.entities.messages.StringMessage;
 import lu.plezy.timesheet.i18n.StaticText;
 import lu.plezy.timesheet.repository.UsersRepository;
 
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -69,6 +71,27 @@ public class ManageUserController {
 
             usersRepository.save(updated);
 
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+        }
+        return result.isPresent() ? result.get() : null;
+    }
+
+    @PutMapping(value = "/setPassword")
+    public User setUserPassword(Authentication authentication, @Valid @RequestBody StringMessage message) {
+        Optional<User> result = usersRepository.findByUsername(authentication.getName());
+        if (result.isPresent()) {
+            if (result.get().getId() != message.getId().longValue()) {
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                        "Given ID is not the same as currently logged user ID !");
+            }
+
+            User updated = result.get();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode(message.getMessage());
+            updated.setPassword(encodedPassword);
+
+            usersRepository.save(updated);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
         }
