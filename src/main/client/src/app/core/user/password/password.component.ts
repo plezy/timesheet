@@ -13,7 +13,6 @@ import { fbind } from 'q';
 export class PasswordComponent implements OnInit {
 
   private form: FormGroup;
-  private showPassword = false;
 
   private id: number;
   private username: string;
@@ -52,20 +51,6 @@ export class PasswordComponent implements OnInit {
     const confirm = group.controls.confirm.value;
 
     group.controls.confirm.setErrors( pass === confirm ? null : { notSame: true } );
-  }
-
-  toggleShowPassword() {
-    console.log('toggleShowPassword');
-    this.showPassword = ! this.showPassword;
-    if (this.showPassword) {
-      console.log('unset validators');
-      this.form.controls.confirm.setValidators(null);
-      this.form.setValidators(null);
-    } else {
-      console.log('setting back validators');
-      this.form.controls.confirm.setValidators([ Validators.required ]);
-      // this.form.setValidators( this.checkPasswords ) ;
-    }
   }
 
   save() {
