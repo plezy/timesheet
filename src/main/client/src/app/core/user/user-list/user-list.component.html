@@ -4,14 +4,10 @@
 
   <ng-container matColumnDef="selector">
     <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="hasSelection() && isAllSelected()"
-                    [indeterminate]="hasSelection() && !isAllSelected()"
-                    [aria-label]="checkboxLabel()">
-      </mat-checkbox>
     </th>
     <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()"
+      <mat-checkbox *ngIf="!isMe(row)"
+                    (click)="$event.stopPropagation()"
                     (change)="$event ? toggleSelection(row) : null"
                     [checked]="isSelected(row)"
                     [aria-label]="checkboxLabel(row)">
@@ -47,13 +43,13 @@
         </button>  
     </th>
     <td mat-cell *matCellDef="let row">
-      <button mat-icon-button [title]="getLockTitle(row)" (click)="clickLock(row)"> 
+      <button mat-icon-button [title]="getLockTitle(row)" (click)="clickLock(row)" [disabled]="isMe(row)"> 
         <mat-icon>{{getLockIcon(row)}}</mat-icon>
       </button>
       <button mat-icon-button title="Edit user" (click)="clickEdit(row)"> 
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button title="Delete user" (click)="clickDelete(row)">
+      <button mat-icon-button title="Delete user" (click)="clickDelete(row)" [disabled]="isMe(row)">
         <mat-icon>delete_outline</mat-icon>
       </button>
     </td>

@@ -112,16 +112,16 @@ public class ManageUserController {
         return usersRepository.findAll(p);
     }
 
-    @GetMapping(value = "/list/{page}")
+    @GetMapping(value = "/list/{size}")
     @PreAuthorize("isAuthenticated()")
-    public Page<User> getUsers(@PathVariable("page") int page) {
-        Pageable p = PageRequest.of(page, defaultPageSize, Sort.by("lastName", "firstName"));
+    public Page<User> getUsers(@PathVariable("size") int size) {
+        Pageable p = PageRequest.of(0, size, Sort.by("lastName", "firstName"));
         return usersRepository.findAll(p);
     }
 
-    @GetMapping(value = "/list/{page}/{size}")
+    @GetMapping(value = "/list/{size}/{page}")
     @PreAuthorize("isAuthenticated()")
-    public Page<User> getUsers(@PathVariable("page") int page, @PathVariable("size") int size) {
+    public Page<User> getUsers(@PathVariable("size") int size, @PathVariable("page") int page) {
         Pageable p = PageRequest.of(page, size, Sort.by("lastName", "firstName"));
         return usersRepository.findAll(p);
     }
