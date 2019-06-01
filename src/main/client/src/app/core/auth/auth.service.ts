@@ -68,7 +68,11 @@ export class AuthService {
   getUsername(): string {
     return this.tokenStorage.getUsername();
   }
-
+  /*
+  getUserId(): number {
+    return this.tokenStorage.getUserId();
+  }
+  */
   hasAuthority(authRequested: string): boolean {
     const authorities = this.tokenStorage.getAuthorities();
     if (authorities) {

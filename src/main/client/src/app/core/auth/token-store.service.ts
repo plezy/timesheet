@@ -4,6 +4,7 @@ import * as _moment from 'moment';
 const TOKEN_KEY = 'AuthToken';
 const TOKENTYPE_KEY = 'AuthTokenType';
 const USERNAME_KEY = 'AuthUsername';
+// const USERID_KEY = 'AuthUserId';
 const AUTHORITIES_KEY = 'AuthAuthorities';
 const AUTH_TTL = 'AuthTTL';
 const AUTH_RENEW = 'AuthRenewal';
@@ -22,6 +23,7 @@ export class TokenStoreService {
     window.sessionStorage.removeItem(TOKEN_KEY);
     window.sessionStorage.removeItem(TOKENTYPE_KEY);
     window.sessionStorage.removeItem(USERNAME_KEY);
+    // window.sessionStorage.removeItem(USERID_KEY);
     window.sessionStorage.removeItem(AUTHORITIES_KEY);
     window.sessionStorage.removeItem(AUTH_TTL);
     window.sessionStorage.removeItem(AUTH_RENEW);
@@ -53,7 +55,16 @@ export class TokenStoreService {
   public getUsername(): string {
     return sessionStorage.getItem(USERNAME_KEY);
   }
+  /*
+  public saveUserId(userId: number) {
+    window.sessionStorage.removeItem(USERID_KEY);
+    window.sessionStorage.setItem(USERID_KEY, userId.toString());
+  }
 
+  public getUserId(): number {
+    return +sessionStorage.getItem(USERID_KEY);
+  }
+  */
   public saveAuthorities(authorities: string[]) {
     window.sessionStorage.removeItem(AUTHORITIES_KEY);
     window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));

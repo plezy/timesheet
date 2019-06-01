@@ -8,13 +8,14 @@ import { PasswordComponent } from './core/user/password/password.component';
 import { JavaComponent } from './core/version/java/java.component';
 import { EnvComponent } from './core/version/env/env.component';
 import { BuildComponent } from './core/version/build/build.component';
+import { UserListComponent } from './core/user/user-list/user-list.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'users', component: HomeComponent },
+  { path: 'users', component: UserListComponent },
   { path: 'build', component: BuildComponent },
   { path: 'javaprops', component: JavaComponent },
   { path: 'environment', component: EnvComponent },

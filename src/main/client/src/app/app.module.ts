@@ -9,6 +9,8 @@ import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './core/auth/auth-interceptor';
 
+import 'hammerjs';
+
 @NgModule({
   declarations: [
     AppComponent

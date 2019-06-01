@@ -1,0 +1,79 @@
+<h2>Manage Users</h2>
+<br/>
+<table mat-table [dataSource]="page?.content">
+
+  <ng-container matColumnDef="selector">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="hasSelection() && isAllSelected()"
+                    [indeterminate]="hasSelection() && !isAllSelected()"
+                    [aria-label]="checkboxLabel()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? toggleSelection(row) : null"
+                    [checked]="isSelected(row)"
+                    [aria-label]="checkboxLabel(row)">
+      </mat-checkbox>
+    </td>    
+  </ng-container>
+
+  <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="firstname">
+      <th mat-header-cell *matHeaderCellDef> First name </th>
+      <td mat-cell *matCellDef="let user"> {{user.firstName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef> Last name </th>
+      <td mat-cell *matCellDef="let user"> {{user.lastName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> E-mail </th>
+      <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> Action 
+        <span class="fill-space"></span>
+        <button mat-icon-button title="Add new user" (click)="clickAdd()">
+          <mat-icon>add_circle</mat-icon>
+        </button>  
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-icon-button [title]="getLockTitle(row)" (click)="clickLock(row)"> 
+        <mat-icon>{{getLockIcon(row)}}</mat-icon>
+      </button>
+      <button mat-icon-button title="Edit user" (click)="clickEdit(row)"> 
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button title="Delete user" (click)="clickDelete(row)">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
+</table>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-icon-button title="Delete all selected rows" [disabled]="!hasSelection()" (click)="clickDeleteSelected()">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+    <span class="fill-space"></span>
+    <mat-paginator [length]="page?.totalElements"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageIndex]="pageIndex"
+        [showFirstLastButtons]="pageFirstLast"
+        (page)="getData($event)">
+    </mat-paginator>
+  </mat-toolbar-row>
+</mat-toolbar>

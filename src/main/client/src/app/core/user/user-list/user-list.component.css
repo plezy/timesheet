@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+}
+
+.mat-row:hover {
+    background-color: lightgray;
+}
+
+p {
+    padding: 10px, 0px, 10px, 0px;
+}
+
+.fill-space {
+    /* This fills the remaining space, by using flexbox.
+       Every toolbar row uses a flexbox row layout.*/
+    flex: 1 1 auto;
+}
+
+mat-toolbar-row {
+    background-color: white;
+}
