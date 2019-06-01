@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { VersionService } from 'src/app/common/services/version.service';
-import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-git',
-  templateUrl: './git.component.html',
+  selector: 'app-java',
+  templateUrl: './java.component.html',
   styleUrls: ['../version.css']
 })
-export class GitComponent implements OnInit {
+export class JavaComponent implements OnInit {
 
-  private gitInfos: any;
-  private gitInfosKeys: Array<string>;
+  private javaInfos: any;
+  private javaInfosKeys: Array<string>;
 
   displayedColumns: string[] = ['key', 'value'];
 
@@ -28,17 +28,16 @@ export class GitComponent implements OnInit {
       return;
     }
 
-    this.service.getBuildGitInfos().subscribe(
+    this.service.getSysProperties().subscribe(
       result => {
-        this.gitInfos = result;
-        // console.log('GitInfos : ' + this.gitInfos);
-        this.gitInfosKeys = new Array<string>();
-        Object.keys(this.gitInfos).forEach(
+        this.javaInfos = result;
+        this.javaInfosKeys = new Array<string>();
+        Object.keys(this.javaInfos).forEach(
           key => {
-            this.gitInfosKeys.push(key);
-            // console.log('Key : ' + key);
+            this.javaInfosKeys.push(key);
           }
         );
     });
   }
+
 }
