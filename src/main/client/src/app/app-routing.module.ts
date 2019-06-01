@@ -7,6 +7,7 @@ import { ProfileComponent } from './core/user/profile/profile.component';
 import { PasswordComponent } from './core/user/password/password.component';
 import { JavaComponent } from './core/version/java/java.component';
 import { EnvComponent } from './core/version/env/env.component';
+import { BuildComponent } from './core/version/build/build.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'users', component: HomeComponent },
+  { path: 'build', component: BuildComponent },
   { path: 'javaprops', component: JavaComponent },
   { path: 'environment', component: EnvComponent },
   { path: 'git', component: GitComponent },

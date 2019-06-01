@@ -52,18 +52,21 @@ public class ApplicationInfosController {
     @RequestMapping(value = "/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
     public StringResponse getVersion() {
+        log.info("getVersion called");
         return new StringResponse(buildVersion);
     }
 
     @RequestMapping(value = "/timestamp", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
     public StringResponse getTimestamp() {
+        log.info("getTimestamp called");
         return new StringResponse(buildTimestamp);
     }
 
     @RequestMapping(value = "/git", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
     public String getGitInfos() throws IOException {
+        log.info("getGitInfos called");
         if (jsonGitInfos == null) {
             Resource resource = new ClassPathResource(gitInfosFileName);
             Properties gitProps = new Properties();
@@ -80,6 +83,7 @@ public class ApplicationInfosController {
     @RequestMapping(value = "/properties", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
     public String getRuntimeInfos() throws JsonProcessingException {
+        log.info("getRuntimeInfos called");
         if (jsonSysProperties == null) {
             ObjectMapper mapper = new ObjectMapper();
             SimpleModule module = new SimpleModule(JsonPropertiesSerializer.class.getName());
@@ -93,6 +97,7 @@ public class ApplicationInfosController {
     @RequestMapping(value = "/env", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
     public String getEnvironmentVariables() throws JsonProcessingException {
+        log.info("getEnvironmentVariables called");
         if (jsonEnvVariables == null) {
             ObjectMapper mapper = new ObjectMapper();
             jsonEnvVariables = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(System.getenv());

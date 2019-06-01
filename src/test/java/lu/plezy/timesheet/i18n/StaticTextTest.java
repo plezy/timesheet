@@ -41,7 +41,6 @@ public class StaticTextTest {
     @Test
     public void testDefaultResourceBundle() {
         StaticText st = StaticText.getInstance();
-        Locale locale = Locale.getDefault();
 
         ResourceBundle bundle = ResourceBundle.getBundle("i18n/messages", Locale.getDefault());
         for (String key : Collections.list(bundle.getKeys())) {
