@@ -18,6 +18,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,6 +38,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping(path = "/user")
 public class ManageUserController {
+
+    private static Logger log = LoggerFactory.getLogger(ApplicationInfosController.class);
 
     private int defaultPageSize = 10;
 
@@ -105,24 +110,68 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    @DeleteMapping(value = "{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public void deleteUser(@PathVariable("id") long id) {
+        Optional<User> result = usersRepository.findById(id);
+
+        if (result.isPresent()) {
+            User user = result.get();
+            user.setDeleted(true);
+
+            // update user for logical deletion
+            log.info("Perform user logical deletion");
+            usersRepository.save(user);
+
+            // attempt physical deletion is possible ...
+            log.info("Attempt user physical deletion");
+            try {
+                usersRepository.deleteById(user.getId());
+            } catch (Exception ex) {
+                log.info("User can not be deleted physically ...");
+            }
+        }
+    }
+
     @GetMapping(value = "/list")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers() {
-        Pageable p = PageRequest.of(0, defaultPageSize, Sort.by("lastName", "firstName"));
-        return usersRepository.findAll(p);
+        Pageable p = PageRequest.of(0, defaultPageSize, Sort.by("username"));
+        return usersRepository.findAllActive(p);
     }
 
     @GetMapping(value = "/list/{size}")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers(@PathVariable("size") int size) {
-        Pageable p = PageRequest.of(0, size, Sort.by("lastName", "firstName"));
-        return usersRepository.findAll(p);
+        Pageable p = PageRequest.of(0, size, Sort.by("username"));
+        return usersRepository.findAllActive(p);
     }
 
     @GetMapping(value = "/list/{size}/{page}")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers(@PathVariable("size") int size, @PathVariable("page") int page) {
-        Pageable p = PageRequest.of(page, size, Sort.by("lastName", "firstName"));
+        Pageable p = PageRequest.of(page, size, Sort.by("username"));
+        return usersRepository.findAllActive(p);
+    }
+
+    @GetMapping(value = "/listAll")
+    @PreAuthorize("isAuthenticated()")
+    public Page<User> getAllUsers() {
+        Pageable p = PageRequest.of(0, defaultPageSize, Sort.by("username"));
+        return usersRepository.findAll(p);
+    }
+
+    @GetMapping(value = "/listAll/{size}")
+    @PreAuthorize("isAuthenticated()")
+    public Page<User> getAllUsers(@PathVariable("size") int size) {
+        Pageable p = PageRequest.of(0, size, Sort.by("username"));
+        return usersRepository.findAll(p);
+    }
+
+    @GetMapping(value = "/listAll/{size}/{page}")
+    @PreAuthorize("isAuthenticated()")
+    public Page<User> getAllUsers(@PathVariable("size") int size, @PathVariable("page") int page) {
+        Pageable p = PageRequest.of(page, size, Sort.by("username"));
         return usersRepository.findAll(p);
     }
 

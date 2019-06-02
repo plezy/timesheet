@@ -18,6 +18,11 @@ export class UserService {
     return this.http.get<Page<User>>(url);
   }
 
+  getAllUsers(page = 0, size= 10): Observable<Page<User>> {
+    const url = this.userBaseUrl + '/listAll/' + page + '/' + size;
+    return this.http.get<Page<User>>(url);
+  }
+
   getMe(): Observable<User> {
     const url = this.userBaseUrl + '/me';
     return this.http.get<User>(url);
@@ -36,4 +41,10 @@ export class UserService {
     };
     return this.http.put<User>(url, message);
   }
+
+  deleteUser(user: User) {
+    const url = this.userBaseUrl + '/' + user.id.toString();
+    return this.http.delete(url);
+  }
+
 }

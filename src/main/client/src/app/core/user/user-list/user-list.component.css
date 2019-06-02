@@ -19,3 +19,8 @@ p {
 mat-toolbar-row {
     background-color: white;
 }
+
+mat-checkbox {
+    font-size: 14px;
+    font-weight: 400;
+}

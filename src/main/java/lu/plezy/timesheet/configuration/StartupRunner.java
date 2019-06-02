@@ -15,7 +15,8 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component Commented to prevent component loading
+// @Component
 public class StartupRunner implements CommandLineRunner {
     @Autowired
     private Environment env;

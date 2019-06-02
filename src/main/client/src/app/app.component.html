@@ -32,23 +32,32 @@
         <a mat-list-item routerLinkActive="active-link" routerLink="/home">
           <div style="padding-right: 5px;"><mat-icon>home</mat-icon></div><span>Home</span></a>
         <mat-divider></mat-divider>
-        <h3 matSubheader>User</h3>
+        <h3 matSubheader>Current User</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/profile">
             <div style="padding-right: 5px;"><mat-icon>account_circle</mat-icon></div><span>Profile</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/passwd">
             <div style="padding-right: 5px;"><mat-icon>vpn_key</mat-icon></div><span>Set password</span></a>
         <mat-divider></mat-divider>
+        <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_PROJECTS'])">
+          <h3 matSubheader>Customers / Projects</h3>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/customers" *ngIf="hasAuthority('MANAGE_CUSTOMERS')">
+              <div style="padding-right: 5px;"><mat-icon>business</mat-icon></div><span>Customers</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/projects" *ngIf="hasAuthority('MANAGE_PROJECTS')">
+              <div style="padding-right: 5px;"><mat-icon>work</mat-icon></div><span>Projects</span></a>
+        </div>
+        <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">
-        <h3 matSubheader>Administration</h3>
+          <h3 matSubheader>Administration</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/users" *ngIf="hasAuthority('MANAGE_USERS')">
             <div style="padding-right: 5px;"><mat-icon>people</mat-icon></div><span>Users management</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">
             <div style="padding-right: 5px;"><mat-icon>notification_important</mat-icon></div><span>Set notifications</span></a>
         </div>
+        <mat-divider></mat-divider>
         <div *ngIf="hasAuthority('MANAGE_SETTINGS')">
         <h3 matSubheader>Application information</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/build">
-            <div style="padding-right: 5px;"><mat-icon fontSet="fa" fontIcon="fa-hand-point-right"></mat-icon></div><span>Build</span></a>
+            <div style="padding-right: 5px;"><mat-icon fontSet="fas" fontIcon="fa-cog"></mat-icon></div><span>Build</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/javaprops">
             <div style="padding-right: 5px;"><mat-icon fontSet="fa" fontIcon="fa-coffee"></mat-icon></div><span>Java properties</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/environment">

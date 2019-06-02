@@ -9,3 +9,7 @@ table {
 .mat-row:hover .mat-cell {
     color: black;
 }
+
+.wrap-cell {
+    height: auto;
+}

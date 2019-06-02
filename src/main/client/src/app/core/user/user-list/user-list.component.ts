@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Page } from 'src/app/common/model/page';
 import { User } from 'src/app/common/model/user';
 import { UserService } from 'src/app/common/services/user.service';
+import { ShowOnDirtyErrorStateMatcher } from '@angular/material';
 
 const LOCK_ICON = 'lock';
 const UNLOCK_ICON = 'lock_open';
@@ -28,6 +29,8 @@ export class UserListComponent implements OnInit {
 
   /* selection contient les ids des éléments du tableau sélectionnés */
   selection: Array<number> = new Array();
+
+  showDeleted = false;
 
   constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
 
@@ -59,11 +62,19 @@ export class UserListComponent implements OnInit {
   loadData() {
     this.cleanSelection();
     // console.log('loading data ...');
-    this.userService.getUsers(this.pageSize, this.pageIndex).subscribe(
-      result =>  {
-        this.page = result;
-      }
-    );
+    if (this.showDeleted) {
+      this.userService.getAllUsers(this.pageSize, this.pageIndex).subscribe(
+        result =>  {
+          this.page = result;
+        }
+      );
+    } else {
+      this.userService.getUsers(this.pageSize, this.pageIndex).subscribe(
+        result =>  {
+          this.page = result;
+        }
+      );
+    }
   }
 
   getData(event) {
@@ -72,9 +83,22 @@ export class UserListComponent implements OnInit {
     this.loadData();
   }
 
+  /** Delete user */
+  clickDelete(row: User) {
+    this.userService.deleteUser(row).subscribe(
+      res => {
+        this.loadData();
+      }
+    );
+  }
+
   /**
    * Visual Elements
    */
+  toggleShowDeleted() {
+    this.showDeleted = ! this.showDeleted;
+    this.loadData();
+  }
 
   isMe(row?: User): boolean {
     let result = false;
