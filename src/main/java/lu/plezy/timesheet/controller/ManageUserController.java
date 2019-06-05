@@ -133,6 +133,38 @@ public class ManageUserController {
         }
     }
 
+    @PutMapping(value = "/lock/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public void lockUser(@PathVariable("id") long id) {
+        Optional<User> result = usersRepository.findById(id);
+
+        if (result.isPresent()) {
+            User user = result.get();
+
+            setUserLock(user, true);
+        }
+    }
+
+    @PutMapping(value = "/unlock/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public void unlockUser(@PathVariable("id") long id) {
+        Optional<User> result = usersRepository.findById(id);
+
+        if (result.isPresent()) {
+            User user = result.get();
+
+            setUserLock(user, false);
+        }
+    }
+
+    private void setUserLock(User user, boolean lockState) {
+        user.setLocked(lockState);
+
+        // update user for logical deletion
+        log.info("Set user lock State to " + lockState);
+        usersRepository.save(user);
+    }
+
     @GetMapping(value = "/list")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers() {

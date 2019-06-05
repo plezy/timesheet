@@ -47,4 +47,14 @@ export class UserService {
     return this.http.delete(url);
   }
 
+  lockUser(user: User) {
+    const url = this.userBaseUrl + '/lock/' + user.id.toString();
+    return this.http.put(url, null);
+  }
+
+  unlockUser(user: User) {
+    const url = this.userBaseUrl + '/unlock/' + user.id.toString();
+    return this.http.put(url, null);
+  }
+
 }

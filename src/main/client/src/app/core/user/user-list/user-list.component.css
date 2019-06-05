@@ -20,7 +20,7 @@ mat-toolbar-row {
     background-color: white;
 }
 
-mat-checkbox {
+.check-box-label {
     font-size: 14px;
     font-weight: 400;
 }

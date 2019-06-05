@@ -132,6 +132,22 @@ export class UserListComponent implements OnInit {
     return UNLOCK_ICON;
   }
 
+  clickLock(row: User) {
+    if (row.locked) {
+      this.userService.unlockUser(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      );
+    } else {
+      this.userService.lockUser(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      );
+    }
+  }
+
   /**
    *  All the code below handles checkbox behaviour
    */
