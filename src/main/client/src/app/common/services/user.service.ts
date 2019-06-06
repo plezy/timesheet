@@ -57,4 +57,9 @@ export class UserService {
     return this.http.put(url, null);
   }
 
+  undeleteUser(user: User) {
+    const url = this.userBaseUrl + '/undelete/' + user.id.toString();
+    return this.http.put(url, null);
+  }
+
 }

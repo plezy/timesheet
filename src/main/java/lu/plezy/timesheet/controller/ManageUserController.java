@@ -133,6 +133,21 @@ public class ManageUserController {
         }
     }
 
+    @PutMapping(value = "/undelete/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public void undeleteUser(@PathVariable("id") long id) {
+        Optional<User> result = usersRepository.findById(id);
+
+        if (result.isPresent()) {
+            User user = result.get();
+            user.setDeleted(false);
+
+            // update user to reset logical deletion
+            log.info("Undelete user");
+            usersRepository.save(user);
+        }
+    }
+
     @PutMapping(value = "/lock/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public void lockUser(@PathVariable("id") long id) {
@@ -159,8 +174,7 @@ public class ManageUserController {
 
     private void setUserLock(User user, boolean lockState) {
         user.setLocked(lockState);
-
-        // update user for logical deletion
+        // update user lock state
         log.info("Set user lock State to " + lockState);
         usersRepository.save(user);
     }

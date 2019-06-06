@@ -148,6 +148,16 @@ export class UserListComponent implements OnInit {
     }
   }
 
+  clickUndelete(row: User) {
+    if (row.deleted) {
+      this.userService.undeleteUser(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      );
+    }
+  }
+
   /**
    *  All the code below handles checkbox behaviour
    */
