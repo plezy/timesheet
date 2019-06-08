@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { Page } from 'src/app/common/model/page';
 import { User } from 'src/app/common/model/user';
 import { UserService } from 'src/app/common/services/user.service';
-import { ShowOnDirtyErrorStateMatcher } from '@angular/material';
+import { ShowOnDirtyErrorStateMatcher, MatDialog } from '@angular/material';
+import { ConfirmDialogComponent } from 'src/app/common/dialog/confirm-dialog/confirm-dialog.component';
 
 const LOCK_ICON = 'lock';
 const UNLOCK_ICON = 'lock_open';
@@ -32,7 +33,7 @@ export class UserListComponent implements OnInit {
 
   showDeleted = false;
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, public dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
@@ -85,11 +86,22 @@ export class UserListComponent implements OnInit {
 
   /** Delete user */
   clickDelete(row: User) {
-    this.userService.deleteUser(row).subscribe(
-      res => {
-        this.loadData();
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px', data: {title: 'Confirm Deletion',
+        message: 'Are you sure you want to delete user ' + row.username + ' [ ' + row.firstName + ' ' + row.lastName + ' ] ?',
+        cancelText: 'Cancel', confirmText: 'OK'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.userService.deleteUser(row).subscribe(
+          res => {
+            this.loadData();
+          }
+        );
       }
-    );
+    });
   }
 
   /**
@@ -236,4 +248,22 @@ export class UserListComponent implements OnInit {
     return `${this.isSelected(row)} ? 'deselect' : 'select'} row ${row.id}`;
   }
 
+  /** Delete selected ids */
+  clickDeleteSelected() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px', data: {title: 'Confirm Mutiple Deletions',
+        message: 'Are you sure you want to delete the ' + this.selection.length + ' selected users ?',
+        cancelText: 'Cancel', confirmText: 'OK'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log('deleting ', this.selection);
+        this.userService.deleteUsers(this.selection).subscribe(
+          data => { this.loadData(); }
+        );
+      }
+    });
+  }
 }

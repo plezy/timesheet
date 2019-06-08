@@ -12,6 +12,7 @@ import { EnvComponent } from './version/env/env.component';
 import { JavaComponent } from './version/java/java.component';
 import { BuildComponent } from './version/build/build.component';
 import { UserListComponent } from './user/user-list/user-list.component';
+import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,13 +24,15 @@ import { UserListComponent } from './user/user-list/user-list.component';
     EnvComponent,
     JavaComponent,
     BuildComponent,
-    UserListComponent
+    UserListComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
     CoreRoutingModule,
     MaterialModule
-  ]
+  ],
+  entryComponents: [ ConfirmDialogComponent ],
 })
 
 export class CoreModule { }

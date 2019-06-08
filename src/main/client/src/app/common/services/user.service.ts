@@ -42,8 +42,22 @@ export class UserService {
     return this.http.put<User>(url, message);
   }
 
-  deleteUser(user: User) {
+  deleteUser(user: User): Observable<{}> {
     const url = this.userBaseUrl + '/' + user.id.toString();
+    return this.http.delete(url);
+  }
+
+  deleteUsers(ids: number[]): Observable<{}> {
+    let url = this.userBaseUrl + '/list/';
+    let first = true;
+    ids.forEach( value => {
+      if (first) {
+        url = url + value;
+        first = false;
+      } else {
+        url = url + ',' + value;
+      }
+    });
     return this.http.delete(url);
   }
 
