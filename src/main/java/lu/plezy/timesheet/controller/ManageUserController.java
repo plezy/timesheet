@@ -12,9 +12,11 @@ import lu.plezy.timesheet.i18n.StaticText;
 import lu.plezy.timesheet.repository.UsersRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -29,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,20 +120,51 @@ public class ManageUserController {
 
         if (result.isPresent()) {
             User user = result.get();
-            user.setDeleted(true);
 
-            // update user for logical deletion
-            log.info("Perform user logical deletion");
-            usersRepository.save(user);
+            deleteUserLogically(user);
 
-            // attempt physical deletion is possible ...
-            log.info("Attempt user physical deletion");
-            try {
-                usersRepository.deleteById(user.getId());
-            } catch (Exception ex) {
-                log.info("User can not be deleted physically ...");
+            deleteUserPhysically(user.getId());
+        }
+    }
+
+    @Transactional
+    private void deleteUserLogically(User user) {
+        user.setDeleted(true);
+        // update user for logical deletion
+        log.info("Perform user logical deletion");
+        usersRepository.save(user);
+    }
+
+    @Transactional
+    private void deleteUserPhysically(Long id) {
+        // attempt physical deletion is possible ...
+        log.info("Attempt user physical deletion");
+        try {
+            usersRepository.deleteById(id);
+        } catch (Exception ex) {
+            log.info("User can not be deleted physically ...");
+        }
+    }
+
+    @DeleteMapping(path = "/list/{ids}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public void deleteUsers(@PathVariable("ids") String userIds) {
+        log.info("Deleting user's Ids : " + userIds);
+        List<Long> idsList = Arrays.asList(userIds.split(",")).stream().map(Long::parseLong)
+                .collect(Collectors.toList());
+        log.info("list of ids : " + idsList);
+
+        for (Long id : idsList) {
+            Optional<User> result = usersRepository.findById(id);
+            if (result.isPresent()) {
+                User user = result.get();
+
+                deleteUserLogically(user);
+
+                deleteUserPhysically(user.getId());
             }
         }
+
     }
 
     @PutMapping(value = "/undelete/{id}")
