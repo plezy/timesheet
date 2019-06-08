@@ -13,6 +13,7 @@ import { JavaComponent } from './version/java/java.component';
 import { BuildComponent } from './version/build/build.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog/confirm-dialog.component';
+import { UserAddEditDialogComponent } from './user/user-add-edit-dialog/user-add-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,14 +26,15 @@ import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog/confirm-
     JavaComponent,
     BuildComponent,
     UserListComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    UserAddEditDialogComponent
   ],
   imports: [
     CommonModule,
     CoreRoutingModule,
     MaterialModule
   ],
-  entryComponents: [ ConfirmDialogComponent ],
+  entryComponents: [ ConfirmDialogComponent, UserAddEditDialogComponent ],
 })
 
 export class CoreModule { }

@@ -6,6 +6,7 @@ import { User } from 'src/app/common/model/user';
 import { UserService } from 'src/app/common/services/user.service';
 import { ShowOnDirtyErrorStateMatcher, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'src/app/common/dialog/confirm-dialog/confirm-dialog.component';
+import { UserAddEditDialogComponent } from '../user-add-edit-dialog/user-add-edit-dialog.component';
 
 const LOCK_ICON = 'lock';
 const UNLOCK_ICON = 'lock_open';
@@ -168,6 +169,18 @@ export class UserListComponent implements OnInit {
         }
       );
     }
+  }
+
+  clickAdd() {
+    const dialogRef = this.dialog.open(UserAddEditDialogComponent, {
+      width: '700px', data: { title: 'Add User' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log(result);
+      }
+    });
   }
 
   /**

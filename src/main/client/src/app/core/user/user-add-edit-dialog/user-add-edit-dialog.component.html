@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<mat-dialog-content [formGroup]="form" class="container-fluid">
+  <div class="row">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Username" formControlName="username" required>
+        <mat-error *ngIf="form.controls.username.hasError('required')">
+            Username is required !
+        </mat-error>
+      </mat-form-field>
+  </div>
+  <div class="row" *ngIf="!edit">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Password" formControlName="password" required>
+        <mat-error *ngIf="form.controls.password.hasError('required')">
+            Password is required !
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Confirm Password" formControlName="confirmPwd" required>
+        <mat-error *ngIf="form.controls.confirmPwd.hasError('required')">
+            Confirmation password is required !
+        </mat-error>
+        <mat-error *ngIf="form.controls.confirmPwd.hasError('notSame')">
+            Passwords do not match !
+        </mat-error>
+      </mat-form-field>
+  </div>
+  <div class="row">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="First Name" formControlName="firstname" required>
+        <mat-error *ngIf="form.controls.password.hasError('required')">
+            First Name is required !
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Last Name" formControlName="lastname" required>
+        <mat-error *ngIf="form.controls.password.hasError('required')">
+            Last Name is required !
+        </mat-error>
+      </mat-form-field>
+  </div>
+    
+</mat-dialog-content>
+<mat-dialog-actions>
+  <span class="fill-space"></span>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button  color="primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Add</button>
+</mat-dialog-actions>

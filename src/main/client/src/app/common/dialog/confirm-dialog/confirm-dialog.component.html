@@ -5,5 +5,5 @@
 <div mat-dialog-actions>
   <span class="fill-space"></span>
   <button mat-raised-button (click)="onNoClick()">{{data.cancelText}}</button>
-  <button mat-raised-button  color="primary" [mat-dialog-close]="data.confirmText" cdkFocusInitial>Ok</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data.confirmText" cdkFocusInitial>{{data.confirmText}}</button>
 </div>
