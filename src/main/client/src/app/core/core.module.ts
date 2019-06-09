@@ -14,6 +14,7 @@ import { BuildComponent } from './version/build/build.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog/confirm-dialog.component';
 import { UserAddEditDialogComponent } from './user/user-add-edit-dialog/user-add-edit-dialog.component';
+import { UserSetPasswordDialogComponent } from './user/user-set-password-dialog/user-set-password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,14 +28,15 @@ import { UserAddEditDialogComponent } from './user/user-add-edit-dialog/user-add
     BuildComponent,
     UserListComponent,
     ConfirmDialogComponent,
-    UserAddEditDialogComponent
+    UserAddEditDialogComponent,
+    UserSetPasswordDialogComponent
   ],
   imports: [
     CommonModule,
     CoreRoutingModule,
     MaterialModule
   ],
-  entryComponents: [ ConfirmDialogComponent, UserAddEditDialogComponent ],
+  entryComponents: [ ConfirmDialogComponent, UserAddEditDialogComponent, UserSetPasswordDialogComponent ],
 })
 
 export class CoreModule { }

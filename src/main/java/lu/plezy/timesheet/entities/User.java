@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,10 +24,11 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @Entity(name = "USERS")
+@SequenceGenerator(name = "USERS_SEQ", initialValue = 100, allocationSize = 10)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
     @Column(name = "ID", updatable = false, nullable = false)
     private long id;
 

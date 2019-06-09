@@ -10,6 +10,7 @@ import lu.plezy.timesheet.entities.messages.Role;
 import lu.plezy.timesheet.entities.messages.StringMessage;
 import lu.plezy.timesheet.i18n.StaticText;
 import lu.plezy.timesheet.repository.UsersRepository;
+import lu.plezy.tools.RandomString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -48,6 +50,26 @@ public class ManageUserController {
 
     @Autowired
     UsersRepository usersRepository;
+
+    /**
+     * Add a new user.
+     * 
+     * @param newUser User entity to add
+     * @return the newly adde user.
+     */
+    @PostMapping(value = "/add")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public User addNewUser(@Valid @RequestBody User newUser) {
+        Optional<User> result = usersRepository.findByUsername(newUser.getUsername());
+        if (result.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User exists with the same username !");
+        }
+        newUser.setPassword(RandomString.getAlphaNumericString(16));
+        newUser.setLocked(true);
+        User addedUser = usersRepository.save(newUser);
+
+        return addedUser;
+    }
 
     @GetMapping(value = "/me")
     @PreAuthorize("isAuthenticated()")
@@ -85,7 +107,45 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    @GetMapping(value = "/me/roles")
+    @PreAuthorize("isAuthenticated()")
+    public List<Role> getRoles(Authentication authentication) {
+        List<Role> response = null;
+
+        Optional<User> result = usersRepository.findByUsername(authentication.getName());
+        if (result.isPresent()) {
+            response = new ArrayList<>();
+            for (RoleEnum role : result.get().getRoles()) {
+                Role roleEntry = new Role(role.name());
+                roleEntry.setRoleDescription(StaticText.getInstance().getText(role.toString()));
+                response.add(roleEntry);
+            }
+        }
+        return response;
+    }
+
+    @PutMapping(value = "/setPassword/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public User setUserPassword(Authentication authentication, @PathVariable("id") long id,
+            @Valid @RequestBody StringMessage message) {
+        Optional<User> result = usersRepository.findById(id);
+        if (result.isPresent()) {
+
+            User user = result.get();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode(message.getMessage());
+            user.setPassword(encodedPassword);
+            user.setLocked(false);
+
+            usersRepository.save(user);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+        }
+        return result.isPresent() ? result.get() : null;
+    }
+
     @PutMapping(value = "/setPassword")
+    @PreAuthorize("isAuthenticated()")
     public User setUserPassword(Authentication authentication, @Valid @RequestBody StringMessage message) {
         Optional<User> result = usersRepository.findByUsername(authentication.getName());
         if (result.isPresent()) {
@@ -106,14 +166,39 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public User getUser(@PathVariable("id") long id) {
         Optional<User> result = usersRepository.findById(id);
         return result.isPresent() ? result.get() : null;
     }
 
-    @DeleteMapping(value = "{id}")
+    @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public User updateUser(@PathVariable("id") long id, @Valid @RequestBody User userDetails) {
+        Optional<User> result = usersRepository.findById(id);
+        if (result.isPresent()) {
+            User updated = result.get();
+            updated.setFirstName(userDetails.getFirstName());
+            updated.setLastName(userDetails.getLastName());
+            updated.setEmail(userDetails.getEmail());
+            updated.setPhone(userDetails.getPhone());
+            updated.setMobile(userDetails.getMobile());
+
+            usersRepository.save(updated);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+        }
+        return result.isPresent() ? result.get() : null;
+    }
+
+    /**
+     * Delete a user. The user is first logically deleted and then an attempt to
+     * delete the user physically is performed.
+     * 
+     * @param id User's ID
+     */
+    @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public void deleteUser(@PathVariable("id") long id) {
         Optional<User> result = usersRepository.findById(id);
@@ -127,6 +212,11 @@ public class ManageUserController {
         }
     }
 
+    /**
+     * Deletes a user logically.
+     * 
+     * @param user User entity
+     */
     @Transactional
     private void deleteUserLogically(User user) {
         user.setDeleted(true);
@@ -135,6 +225,12 @@ public class ManageUserController {
         usersRepository.save(user);
     }
 
+    /**
+     * Attempt to delete physically a user with ID. If an exception occurs it is
+     * trapped in order to avoir returning an error.
+     * 
+     * @param id user's ID
+     */
     @Transactional
     private void deleteUserPhysically(Long id) {
         // attempt physical deletion is possible ...
@@ -146,6 +242,11 @@ public class ManageUserController {
         }
     }
 
+    /**
+     * Deletes user's in list.
+     * 
+     * @param userIds user's IDs list
+     */
     @DeleteMapping(path = "/list/{ids}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public void deleteUsers(@PathVariable("ids") String userIds) {
@@ -167,6 +268,11 @@ public class ManageUserController {
 
     }
 
+    /**
+     * Undelete (logically deleted) user.
+     * 
+     * @param id
+     */
     @PutMapping(value = "/undelete/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public void undeleteUser(@PathVariable("id") long id) {
@@ -182,6 +288,11 @@ public class ManageUserController {
         }
     }
 
+    /**
+     * lock user.
+     * 
+     * @param id user's ID
+     */
     @PutMapping(value = "/lock/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public void lockUser(@PathVariable("id") long id) {
@@ -194,6 +305,11 @@ public class ManageUserController {
         }
     }
 
+    /**
+     * unlock user.
+     * 
+     * @param id user's ID
+     */
     @PutMapping(value = "/unlock/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public void unlockUser(@PathVariable("id") long id) {
@@ -206,6 +322,12 @@ public class ManageUserController {
         }
     }
 
+    /**
+     * Set users lock state.
+     * 
+     * @param user      User entity
+     * @param lockState status of lock state (true = locked, false = unlocked)
+     */
     private void setUserLock(User user, boolean lockState) {
         user.setLocked(lockState);
         // update user lock state
@@ -213,6 +335,10 @@ public class ManageUserController {
         usersRepository.save(user);
     }
 
+    /**
+     * returns first page of a paged list of all active users. Page sise is equals
+     * to the deafault page size.
+     */
     @GetMapping(value = "/list")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers() {
@@ -220,6 +346,11 @@ public class ManageUserController {
         return usersRepository.findAllActive(p);
     }
 
+    /**
+     * returns first page of a paged list of all active users.
+     * 
+     * @param size list size
+     */
     @GetMapping(value = "/list/{size}")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers(@PathVariable("size") int size) {
@@ -227,6 +358,12 @@ public class ManageUserController {
         return usersRepository.findAllActive(p);
     }
 
+    /**
+     * returns a page of a paged list of all active users.
+     * 
+     * @param size list size
+     * @param page page number (0 based)
+     */
     @GetMapping(value = "/list/{size}/{page}")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getUsers(@PathVariable("size") int size, @PathVariable("page") int page) {
@@ -234,6 +371,10 @@ public class ManageUserController {
         return usersRepository.findAllActive(p);
     }
 
+    /**
+     * returns first page of the paged list of all users (also logically deleted).
+     * Page sise is equals to the deafault page size.
+     */
     @GetMapping(value = "/listAll")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getAllUsers() {
@@ -241,6 +382,11 @@ public class ManageUserController {
         return usersRepository.findAll(p);
     }
 
+    /**
+     * returns first page of the paged list of all users (also logically deleted)
+     * 
+     * @param size list size
+     */
     @GetMapping(value = "/listAll/{size}")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getAllUsers(@PathVariable("size") int size) {
@@ -248,6 +394,12 @@ public class ManageUserController {
         return usersRepository.findAll(p);
     }
 
+    /**
+     * returns a page of a paged list of all users (also logically deleted)
+     * 
+     * @param size list size
+     * @param page page number (0 based)
+     */
     @GetMapping(value = "/listAll/{size}/{page}")
     @PreAuthorize("isAuthenticated()")
     public Page<User> getAllUsers(@PathVariable("size") int size, @PathVariable("page") int page) {
@@ -255,24 +407,10 @@ public class ManageUserController {
         return usersRepository.findAll(p);
     }
 
+    /**
+     * returns complete list of roles
+     */
     @GetMapping(value = "/roles")
-    @PreAuthorize("isAuthenticated()")
-    public List<Role> getRoles(Authentication authentication) {
-        List<Role> response = null;
-
-        Optional<User> result = usersRepository.findByUsername(authentication.getName());
-        if (result.isPresent()) {
-            response = new ArrayList<>();
-            for (RoleEnum role : result.get().getRoles()) {
-                Role roleEntry = new Role(role.name());
-                roleEntry.setRoleDescription(StaticText.getInstance().getText(role.toString()));
-                response.add(roleEntry);
-            }
-        }
-        return response;
-    }
-
-    @GetMapping(value = "/roles/all")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public List<Role> getAllRoles() {
         List<Role> response = new ArrayList<>();
@@ -281,6 +419,26 @@ public class ManageUserController {
             Role roleEntry = new Role(role.name());
             roleEntry.setRoleDescription(StaticText.getInstance().getText(role.toString()));
             response.add(roleEntry);
+        }
+        return response;
+    }
+
+    /**
+     * Returns roles for a given user
+     */
+    @GetMapping(value = "/{id}/roles")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public List<Role> getUserRoles(@PathVariable("id") long id) {
+        List<Role> response = null;
+
+        Optional<User> result = usersRepository.findById(id);
+        if (result.isPresent()) {
+            response = new ArrayList<>();
+            for (RoleEnum role : result.get().getRoles()) {
+                Role roleEntry = new Role(role.name());
+                roleEntry.setRoleDescription(StaticText.getInstance().getText(role.toString()));
+                response.add(roleEntry);
+            }
         }
         return response;
     }

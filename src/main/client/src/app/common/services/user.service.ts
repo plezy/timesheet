@@ -28,13 +28,23 @@ export class UserService {
     return this.http.get<User>(url);
   }
 
-  saveUser(user: User) {
+  updateMe(user: User) {
     const url = this.userBaseUrl + '/me';
     return this.http.put(url, user);
   }
 
+  addUser(user: User): Observable<User> {
+    const url = this.userBaseUrl + '/add';
+    return this.http.post<User>(url, user);
+  }
+
+  updateUser(user: User): Observable<User> {
+    const url = this.userBaseUrl + '/' + user.id;
+    return this.http.put<User>(url, user);
+  }
+
   updateUserPassword(userId: number, password: string) {
-    const url = this.userBaseUrl + '/setPassword';
+    const url = this.userBaseUrl + '/setPassword/' + userId;
     const message = {
       id: userId,
       message: password

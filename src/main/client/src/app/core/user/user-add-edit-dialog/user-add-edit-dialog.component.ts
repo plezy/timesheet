@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { User } from 'src/app/common/model/user';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 export interface UserAddEditDialogData {
   title: string;
@@ -21,32 +21,49 @@ export class UserAddEditDialogComponent implements OnInit {
   private form: FormGroup;
   private title: string;
   private user: User;
-  private edit = true;
+  private editMode = true;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<UserAddEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserAddEditDialogData) {
       this.title = data.title;
-      this.user = data.user;
+      if (data.user) {
+        this.user = data.user;
+      } else {
+        this.user = new User();
+        this.editMode = false;
+      }
+
   }
 
   ngOnInit() {
-    if (! this.user) {
-      // for adding entity
-      this.user = new User();
-      this.edit = false;
+    if (this.editMode) {
+      // Edit entity
+      this.form = this.fb.group({
+        username: [this.user.username, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
+        password: ['', []],
+        confirmPwd: ['', []],
+        firstname: [this.user.firstName, [Validators.required]],
+        lastname: [this.user.lastName, [Validators.required]],
+        phone: [ this.user.phone, []],
+        mobile: [ this.user.mobile, []],
+        email: [ this.user.email, [Validators.required, Validators.email]],
+      });
+      this.form.controls.username.disable();
+    } else {
+        // Adding new entity
+        this.form = this.fb.group({
+          username: [this.user.username, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
+          password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]],
+          confirmPwd: ['', [Validators.required]],
+          firstname: [this.user.firstName, [Validators.required]],
+          lastname: [this.user.lastName, [Validators.required]],
+          phone: [ this.user.phone, []],
+          mobile: [ this.user.mobile, []],
+          email: [ this.user.email, [Validators.required, Validators.email]],
+        }, { validator: this.checkPasswords });
     }
-    this.form = this.fb.group({
-      username: [this.user.username, [Validators.required]],
-      password: ['', [Validators.required]],
-      confirmPwd: ['', [Validators.required]],
-      firstname: [this.user.firstName, [Validators.required]],
-      lastname: [this.user.lastName, [Validators.required]],
-      phone: [ this.user.phone, []],
-      mobile: [ this.user.mobile, []],
-      email: [ this.user.email, []],
-    }, { validator: this.checkPasswords });
   }
 
 

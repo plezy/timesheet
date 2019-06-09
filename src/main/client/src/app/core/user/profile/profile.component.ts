@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
     user.phone = this.form.controls.phone.value;
     user.mobile = this.form.controls.mobile.value;
 
-    this.userService.saveUser(user).subscribe(
+    this.userService.updateMe(user).subscribe(
       res => {
 
         console.log('Done');

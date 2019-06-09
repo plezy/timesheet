@@ -7,6 +7,7 @@ import { UserService } from 'src/app/common/services/user.service';
 import { ShowOnDirtyErrorStateMatcher, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'src/app/common/dialog/confirm-dialog/confirm-dialog.component';
 import { UserAddEditDialogComponent } from '../user-add-edit-dialog/user-add-edit-dialog.component';
+import { UserSetPasswordDialogComponent } from '../user-set-password-dialog/user-set-password-dialog.component';
 
 const LOCK_ICON = 'lock';
 const UNLOCK_ICON = 'lock_open';
@@ -179,6 +180,51 @@ export class UserListComponent implements OnInit {
       console.log('The dialog was closed');
       if (result) {
         console.log(result);
+        if (result.user) {
+          this.userService.addUser(result.user).subscribe(
+            addedUser => {
+              this.userService.updateUserPassword(addedUser.id, result.pwd).subscribe(
+                res => {
+                  console.log('User added');
+                  this.loadData();
+              });
+          });
+        }
+      }
+    });
+  }
+
+  clickEdit(row: User) {
+    const dialogRef = this.dialog.open(UserAddEditDialogComponent, {
+      width: '700px', data: { title: 'Edit User', user: row }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log(result);
+        if (result.user) {
+          this.userService.updateUser(result.user).subscribe(
+            updatedUser => {
+              console.log('User updated');
+              this.loadData();
+          });
+        }
+      }
+    });
+  }
+
+  clickPassword(row: User) {
+    const dialogRef = this.dialog.open(UserSetPasswordDialogComponent, {
+      width: '500px', data: { user: row }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log(result);
+        this.userService.updateUserPassword(row.id, result.pwd).subscribe(
+          user => {
+            console.log('Password updated');
+        });
       }
     });
   }

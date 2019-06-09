@@ -6,17 +6,29 @@
         <mat-error *ngIf="form.controls.username.hasError('required')">
             Username is required !
         </mat-error>
-      </mat-form-field>
+        <mat-error *ngIf="form.controls.username.hasError('minlength')">
+            Minimum username length is 5 !
+          </mat-error>
+          <mat-error *ngIf="form.controls.username.hasError('maxlength')">
+            Maximum username length is 10 !
+          </mat-error>
+        </mat-form-field>
   </div>
-  <div class="row" *ngIf="!edit">
+  <div class="row" *ngIf="!editMode">
       <mat-form-field class="col-md-6">
-        <input matInput placeholder="Password" formControlName="password" required>
+        <input matInput type="password" placeholder="Password" formControlName="password" required>
         <mat-error *ngIf="form.controls.password.hasError('required')">
             Password is required !
         </mat-error>
-      </mat-form-field>
+        <mat-error *ngIf="form.controls.password.hasError('minlength')">
+            Minimum password length is 6 !
+          </mat-error>
+          <mat-error *ngIf="form.controls.password.hasError('maxlength')">
+            Maximum password length is 16 !
+          </mat-error>
+        </mat-form-field>
       <mat-form-field class="col-md-6">
-        <input matInput placeholder="Confirm Password" formControlName="confirmPwd" required>
+        <input matInput type="password" placeholder="Confirm Password" formControlName="confirmPwd" required>
         <mat-error *ngIf="form.controls.confirmPwd.hasError('required')">
             Confirmation password is required !
         </mat-error>
@@ -39,7 +51,29 @@
         </mat-error>
       </mat-form-field>
   </div>
-    
+  <div class="row">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Phone number" formControlName="phone">
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Mobile number" formControlName="mobile">
+      </mat-form-field>
+  </div>
+  <div class="row">
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="E-Mail address" formControlName="email" required>
+        <mat-error *ngIf="form.controls.email.hasError('email')">
+            E-Mail address is not valid !
+        </mat-error>
+      </mat-form-field>
+  </div>
+  <!--
+  <p>Form dirty : {{form.dirty}}</p>
+  <p>Form valid : {{form.valid}}</p>
+  <p>Form value: {{ form.value | json }}</p>
+  <p>Form status: {{ form.status | json }}</p>
+  <p>Form username status: {{ form.controls.firstname.errors | json }}</p>
+  -->
 </mat-dialog-content>
 <mat-dialog-actions>
   <span class="fill-space"></span>
