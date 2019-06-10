@@ -14,6 +14,7 @@ import {
     MatPaginatorModule,
     MatToolbarModule,
     MatDialogModule,
+    MatGridListModule,
 } from '@angular/material';
 
 @NgModule({
@@ -34,6 +35,7 @@ import {
         MatPaginatorModule,
         MatToolbarModule,
         MatDialogModule,
+        MatGridListModule,
     ],
     exports: [
         CommonModule,
@@ -51,6 +53,6 @@ import {
         MatPaginatorModule,
         MatToolbarModule,
         MatDialogModule,
-    ]
+        MatGridListModule,    ]
 })
 export class MaterialModule { }

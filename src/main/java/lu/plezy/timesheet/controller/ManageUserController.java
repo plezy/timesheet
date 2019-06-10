@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import lu.plezy.timesheet.entities.RoleEnum;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.Role;
+import lu.plezy.timesheet.entities.messages.RoleSet;
 import lu.plezy.timesheet.entities.messages.StringMessage;
 import lu.plezy.timesheet.i18n.StaticText;
 import lu.plezy.timesheet.repository.UsersRepository;
@@ -15,8 +16,10 @@ import lu.plezy.tools.RandomString;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -71,6 +74,13 @@ public class ManageUserController {
         return addedUser;
     }
 
+    /**
+     * Gets currently logged user details.
+     * 
+     * @param authentication currently logged user's credentials
+     * 
+     * @return User's details
+     */
     @GetMapping(value = "/me")
     @PreAuthorize("isAuthenticated()")
     public User getUser(Authentication authentication) {
@@ -78,6 +88,13 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    /**
+     * Update the profile of currently logged user.
+     * 
+     * @param authentication currently logged user's credentials
+     * 
+     * @return Updated user's details
+     */
     @PutMapping(value = "/me")
     @PreAuthorize("isAuthenticated()")
     public User setUser(Authentication authentication, @Valid @RequestBody User userDetails) {
@@ -107,6 +124,13 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    /**
+     * Gets the roles of the currently logged user.
+     * 
+     * @param authentication currently logged user's credentials
+     * 
+     * @return List of roles
+     */
     @GetMapping(value = "/me/roles")
     @PreAuthorize("isAuthenticated()")
     public List<Role> getRoles(Authentication authentication) {
@@ -124,6 +148,15 @@ public class ManageUserController {
         return response;
     }
 
+    /**
+     * Sets the password of a user, identified by ID.
+     * 
+     * @param authentication currently logged user's credentials
+     * @param id             user's ID
+     * @param message        message object containing new user's password
+     * 
+     * @return User's details
+     */
     @PutMapping(value = "/setPassword/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public User setUserPassword(Authentication authentication, @PathVariable("id") long id,
@@ -144,6 +177,14 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    /**
+     * Sets the password of the currently logged user.
+     * 
+     * @param authentication currently logged user's credentials
+     * @param message        message object containing new user's password
+     * 
+     * @return User's details
+     */
     @PutMapping(value = "/setPassword")
     @PreAuthorize("isAuthenticated()")
     public User setUserPassword(Authentication authentication, @Valid @RequestBody StringMessage message) {
@@ -166,6 +207,12 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    /**
+     * Gets details of user identified by ID.
+     * 
+     * @param id user's ID
+     * @return User's details
+     */
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public User getUser(@PathVariable("id") long id) {
@@ -173,6 +220,14 @@ public class ManageUserController {
         return result.isPresent() ? result.get() : null;
     }
 
+    /**
+     * Updates profile of a user, identified by ID
+     * 
+     * @param id          user's ID
+     * @param userDetails Updated profile details of user
+     * 
+     * @return User's details
+     */
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public User updateUser(@PathVariable("id") long id, @Valid @RequestBody User userDetails) {
@@ -408,7 +463,9 @@ public class ManageUserController {
     }
 
     /**
-     * returns complete list of roles
+     * Returns complete list of available roles in the application.
+     * 
+     * @return List of all available roles in the application
      */
     @GetMapping(value = "/roles")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
@@ -424,7 +481,10 @@ public class ManageUserController {
     }
 
     /**
-     * Returns roles for a given user
+     * Returns roles for a given user.
+     * 
+     * @param id User's ID
+     * @return List of current user's roles in the application
      */
     @GetMapping(value = "/{id}/roles")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
@@ -441,6 +501,35 @@ public class ManageUserController {
             }
         }
         return response;
+    }
+
+    /**
+     * Updates roles for a given user.
+     * 
+     * @param id    User's ID
+     * @param roles RoleSet body element
+     * @return Updated user's details
+     */
+    @PutMapping(value = "/{id}/roles")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public User getUserRoles(@PathVariable("id") long id, @Valid @RequestBody RoleSet roles) {
+        User user = null;
+        Optional<User> result = usersRepository.findById(id);
+        if (result.isPresent()) {
+            user = result.get();
+
+            Set<RoleEnum> roleSet = new HashSet<>();
+
+            for (String role : roles.getRoles()) {
+                roleSet.add(RoleEnum.valueOf(role));
+            }
+
+            user.setRoles(roleSet);
+            usersRepository.save(user);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+        }
+        return user;
     }
 
 }

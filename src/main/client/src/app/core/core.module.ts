@@ -15,6 +15,7 @@ import { UserListComponent } from './user/user-list/user-list.component';
 import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog/confirm-dialog.component';
 import { UserAddEditDialogComponent } from './user/user-add-edit-dialog/user-add-edit-dialog.component';
 import { UserSetPasswordDialogComponent } from './user/user-set-password-dialog/user-set-password-dialog.component';
+import { UserEditRolesDialogComponent } from './user/user-edit-roles-dialog/user-edit-roles-dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,14 +30,15 @@ import { UserSetPasswordDialogComponent } from './user/user-set-password-dialog/
     UserListComponent,
     ConfirmDialogComponent,
     UserAddEditDialogComponent,
-    UserSetPasswordDialogComponent
+    UserSetPasswordDialogComponent,
+    UserEditRolesDialogComponent
   ],
   imports: [
     CommonModule,
     CoreRoutingModule,
     MaterialModule
   ],
-  entryComponents: [ ConfirmDialogComponent, UserAddEditDialogComponent, UserSetPasswordDialogComponent ],
+  entryComponents: [ ConfirmDialogComponent, UserAddEditDialogComponent, UserSetPasswordDialogComponent, UserEditRolesDialogComponent ],
 })
 
 export class CoreModule { }

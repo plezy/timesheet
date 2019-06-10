@@ -45,7 +45,7 @@
         </button>  
     </th>
     <td mat-cell *matCellDef="let row">
-      <button mat-icon-button *ngIf="!isMe(row)" [title]="getLockTitle(row)" (click)="clickLock(row)"> 
+      <button mat-icon-button *ngIf="!isMe(row)" [title]="getLockTitle(row)" (click)="clickLock(row)" [disabled]="row.username === 'admin'"> 
         <mat-icon>{{getLockIcon(row)}}</mat-icon>
       </button>
       <button mat-icon-button *ngIf="!isMe(row)" title="Edit user" (click)="clickEdit(row)"> 
@@ -54,10 +54,10 @@
       <button mat-icon-button *ngIf="!isMe(row)" title="Set user password" (click)="clickPassword(row)">
           <mat-icon>vpn_key</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="!isMe(row)" title="Set user roles" (click)="clickRoles(row)">
+      <button mat-icon-button *ngIf="!isMe(row)" title="Set user roles" (click)="clickRoles(row)" [disabled]="row.username === 'admin'">
           <mat-icon>playlist_add_check</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="!isMe(row)" title="Delete user" (click)="clickDelete(row)">
+      <button mat-icon-button *ngIf="!isMe(row)" title="Delete user" (click)="clickDelete(row)" [disabled]="row.username === 'admin'">
         <mat-icon>delete_outline</mat-icon>
       </button>
       <button mat-icon-button *ngIf="showDeleted && row.deleted" title="Undelete user" (click)="clickUndelete(row)">

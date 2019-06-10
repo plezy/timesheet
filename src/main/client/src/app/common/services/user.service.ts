@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page } from '../model/page';
 import { User } from '../model/user';
+import { Role } from '../model/role';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,14 @@ export class UserService {
     return this.http.put<User>(url, message);
   }
 
+  updateUserRoles(userId: number, roles: string[]) {
+    const url = this.userBaseUrl + '/' + userId + '/roles';
+    const message = {
+      roles: roles
+    };
+    return this.http.put<User>(url, message);
+  }
+
   deleteUser(user: User): Observable<{}> {
     const url = this.userBaseUrl + '/' + user.id.toString();
     return this.http.delete(url);
@@ -86,4 +95,8 @@ export class UserService {
     return this.http.put(url, null);
   }
 
+  getRoles() {
+    const url = this.userBaseUrl + '/roles';
+    return this.http.get<Role[]>(url);
+  }
 }

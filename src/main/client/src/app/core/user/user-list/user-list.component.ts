@@ -8,6 +8,7 @@ import { ShowOnDirtyErrorStateMatcher, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'src/app/common/dialog/confirm-dialog/confirm-dialog.component';
 import { UserAddEditDialogComponent } from '../user-add-edit-dialog/user-add-edit-dialog.component';
 import { UserSetPasswordDialogComponent } from '../user-set-password-dialog/user-set-password-dialog.component';
+import { UserEditRolesDialogComponent } from '../user-edit-roles-dialog/user-edit-roles-dialog.component';
 
 const LOCK_ICON = 'lock';
 const UNLOCK_ICON = 'lock_open';
@@ -229,6 +230,21 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  clickRoles(row: User) {
+    const dialogRef = this.dialog.open(UserEditRolesDialogComponent, {
+      width: '600px', data: { user: row }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('the dialog was closed');
+      if (result) {
+        console.log(result);
+        this.userService.updateUserRoles(row.id, result.roles).subscribe(res => {
+          console.log('User roles updated');
+          this.loadData();
+        });
+      }
+    });
+  }
   /**
    *  All the code below handles checkbox behaviour
    */

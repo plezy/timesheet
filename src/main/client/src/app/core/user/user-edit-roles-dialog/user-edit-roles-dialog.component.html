@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Set roles</h1>
+<div>
+  <span>Set roles for user <b>{{user.firstName}} {{user.lastName}}</b></span>
+</div>
+<br/>
+<mat-dialog-content [formGroup]="form" class="container-fluid">
+    <div class="row" >
+      
+        <div style="column-count: 2;">
+          <div class="col-md-6" class="left-style" *ngFor="let item of listRoles; let i = index">
+            <label>
+              <input matCheckbox type="checkbox" [formControlName]="item.roleId"/>
+              <span class="check-box-label">{{item.roleDescription}}</span>
+            </label>
+          </div>
+        </div>
+      
+    </div>
+    </mat-dialog-content>
+<mat-dialog-actions>
+  <span class="fill-space"></span>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button  color="primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Add</button>
+</mat-dialog-actions>
