@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -22,10 +23,11 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @Entity(name="CUSTOMERS")
+@SequenceGenerator(name = "CUSTOMERS_SEQ", initialValue = 100, allocationSize = 1)
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMERS_SEQ")
     @Column(name = "ID", updatable = false, nullable = false)
     private long id;
 

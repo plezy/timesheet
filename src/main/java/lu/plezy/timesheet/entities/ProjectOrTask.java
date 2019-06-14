@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,10 +25,11 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity
 @Table(name="PROJECTS_OR_TASKS")
+@SequenceGenerator(name = "PROJECTS_OR_TASKS_SEQ", initialValue = 100, allocationSize = 1)
 public class ProjectOrTask {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECTS_OR_TASKS_SEQ")
     @Column(name = "ID", updatable = false, nullable = false)
     private long id;
     

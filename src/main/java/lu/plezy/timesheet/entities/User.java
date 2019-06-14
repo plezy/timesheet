@@ -24,10 +24,11 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @Entity(name = "USERS")
-@SequenceGenerator(name = "USERS_SEQ", initialValue = 100, allocationSize = 10)
+@SequenceGenerator(name = "USERS_SEQ", initialValue = 100, allocationSize = 1)
 public class User {
 
     @Id
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
     @Column(name = "ID", updatable = false, nullable = false)
     private long id;
