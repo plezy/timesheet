@@ -40,12 +40,12 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/core/login']);
       return;
     }
 
     if (! this.authService.hasAuthority('MANAGE_USERS')) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/core/home']);
       return;
     }
 

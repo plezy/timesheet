@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
-      this.router.navigate(['login']);
+      this.router.navigate(['/core/login']);
       return;
     }
 

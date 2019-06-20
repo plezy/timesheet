@@ -19,12 +19,12 @@ export class JavaComponent implements OnInit {
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
-      this.router.navigate(['login']);
+      this.router.navigate(['/core/login']);
       return;
     }
 
     if (! this.authService.hasAuthority('MANAGE_SETTINGS')) {
-      this.router.navigate(['home']);
+      this.router.navigate(['/core/home']);
       return;
     }
 

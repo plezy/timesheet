@@ -7,7 +7,6 @@ import { GitComponent } from './version/git/git.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { PasswordComponent } from './user/password/password.component';
 import { LoginComponent } from './auth/login/login.component';
-import { MaterialModule } from '../material.module';
 import { EnvComponent } from './version/env/env.component';
 import { JavaComponent } from './version/java/java.component';
 import { BuildComponent } from './version/build/build.component';
@@ -16,6 +15,7 @@ import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog/confirm-
 import { UserAddEditDialogComponent } from './user/user-add-edit-dialog/user-add-edit-dialog.component';
 import { UserSetPasswordDialogComponent } from './user/user-set-password-dialog/user-set-password-dialog.component';
 import { UserEditRolesDialogComponent } from './user/user-edit-roles-dialog/user-edit-roles-dialog.component';
+import { MaterialModule } from '../material.module';
 
 @NgModule({
   declarations: [
@@ -35,8 +35,8 @@ import { UserEditRolesDialogComponent } from './user/user-edit-roles-dialog/user
   ],
   imports: [
     CommonModule,
+    MaterialModule,
     CoreRoutingModule,
-    MaterialModule
   ],
   entryComponents: [ ConfirmDialogComponent, UserAddEditDialogComponent, UserSetPasswordDialogComponent, UserEditRolesDialogComponent ],
 })

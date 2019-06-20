@@ -17,7 +17,7 @@
         </li-->
       </ul>
       <ul class="nav navbar-nav navbar-right" *ngIf="authority">
-        <li><a routerLink="/profile"><div class="navbar-icon"><div><mat-icon>account_circle</mat-icon></div><span>{{username}}</span></div></a></li>
+        <li><a routerLink="/core/profile"><div class="navbar-icon"><div><mat-icon>account_circle</mat-icon></div><span>{{username}}</span></div></a></li>
         <li><button class="btn btn-primary navbar-btn" style="margin-right:10px;" (click)="onLogout()">Logout</button></li>
       </ul>
     </div>
@@ -29,13 +29,13 @@
       mode="side" opened
       fixedTopGap="56">
       <mat-nav-list>
-        <a mat-list-item routerLinkActive="active-link" routerLink="/home">
+        <a mat-list-item routerLinkActive="active-link" routerLink="/core/home">
           <div style="padding-right: 5px;"><mat-icon>home</mat-icon></div><span>Home</span></a>
         <mat-divider></mat-divider>
         <h3 matSubheader>Current User</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/profile">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/profile">
             <div style="padding-right: 5px;"><mat-icon>account_circle</mat-icon></div><span>Profile</span></a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/passwd">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/passwd">
             <div style="padding-right: 5px;"><mat-icon>vpn_key</mat-icon></div><span>Set password</span></a>
         <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_PROJECTS'])">
@@ -48,7 +48,7 @@
         <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">
           <h3 matSubheader>Administration</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/users" *ngIf="hasAuthority('MANAGE_USERS')">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/users" *ngIf="hasAuthority('MANAGE_USERS')">
             <div style="padding-right: 5px;"><mat-icon>people</mat-icon></div><span>Users management</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">
             <div style="padding-right: 5px;"><mat-icon>notification_important</mat-icon></div><span>Set notifications</span></a>
@@ -56,13 +56,13 @@
         <mat-divider></mat-divider>
         <div *ngIf="hasAuthority('MANAGE_SETTINGS')">
         <h3 matSubheader>Application information</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/build">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/build">
             <div style="padding-right: 5px;"><mat-icon fontSet="fas" fontIcon="fa-cog"></mat-icon></div><span>Build</span></a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/javaprops">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/javaprops">
             <div style="padding-right: 5px;"><mat-icon fontSet="fa" fontIcon="fa-coffee"></mat-icon></div><span>Java properties</span></a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/environment">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/environment">
             <div style="padding-right: 5px;"><mat-icon fontSet="fa" fontIcon="fa-wrench"></mat-icon></div><span>Environment</span></a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/git">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/git">
             <div style="padding-right: 5px;"><mat-icon fontSet="fab" fontIcon="fa-git-square"></mat-icon></div><span>Sources informations</span></a>
         </div>
       </mat-nav-list>

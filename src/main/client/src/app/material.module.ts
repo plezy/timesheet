@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
     MatButtonModule,
     MatCheckboxModule,
@@ -23,7 +23,6 @@ import {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        BrowserAnimationsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatSidenavModule,
@@ -41,7 +40,6 @@ import {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        BrowserAnimationsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatSidenavModule,
@@ -53,6 +51,7 @@ import {
         MatPaginatorModule,
         MatToolbarModule,
         MatDialogModule,
-        MatGridListModule,    ]
+        MatGridListModule,
+    ]
 })
 export class MaterialModule { }

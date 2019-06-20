@@ -23,7 +23,7 @@ export class PasswordComponent implements OnInit {
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
-      this.router.navigate(['login']);
+      this.router.navigate(['/core/login']);
       return;
     }
 
@@ -65,6 +65,6 @@ export class PasswordComponent implements OnInit {
         err => console.log(err)
       );
     }
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/core/profile']);
   }
 }

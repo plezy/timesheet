@@ -15,8 +15,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
+      console.log('routing to login');
+      this.router.navigate(['/core/login']);
       return;
+    } else {
+      console.log('authenticated');
     }
   }
 }
