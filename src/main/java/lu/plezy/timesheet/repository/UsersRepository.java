@@ -15,7 +15,6 @@ import lu.plezy.timesheet.entities.User;
 public interface UsersRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
-    // List<User> findAllByOrderByLastNameAscFirstNameAsc();
     Page<User> findAll(Pageable p);
 
     @Query("select u from #{#entityName} u where u.deleted=false")

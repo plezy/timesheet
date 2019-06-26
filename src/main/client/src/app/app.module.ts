@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './core/auth/auth-interceptor';
 
 import 'hammerjs';
+import { CustomerModule } from './customer/customer.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import 'hammerjs';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    CustomerModule
   ],
   providers: [ httpInterceptorProviders ],
   bootstrap: [ AppComponent ]

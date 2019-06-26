@@ -24,3 +24,17 @@ INSERT INTO USER_ROLES (USR_ID, ROLE) VALUES (4, 'MANAGE_PROJECTS');
 
 INSERT INTO USERS (ID, USERNAME, PASSWORD, FIRSTNAME, LASTNAME, EMAIL, LOCKED, DELETED) VALUES (5, 'deleted', '$2a$10$v2LQkXM4tqtNZQ6pvl5h7ORtrWYsEA3VGinU.ykZmQTIE5zcboNZG', 'User', 'deleted', 'deleted@localhost', 'N', 'Y');
 INSERT INTO USER_ROLES (USR_ID, ROLE) VALUES (5, 'MANAGE_SETTINGS');
+
+INSERT INTO `db_timesheet`.`CUSTOMERS`
+(`ID`, `ADDR_LINE1`, `ADDR_LINE2`, `ADDR_AREA`, `ADDR_CITY`, `ADDR_COUNTRY`, `ADDR_POSTCODE`, `ARCHIVED`, `BILL_ADDRLINE1`,
+`BILL_ADDRLINE2`, `BILL_AREA`, `BILL_CITY`, `BILL_COUNTRY1`, `BILL_POSTCODE`, `CREATED_ON`, `DELETED`, `NAME`, `CREATED_BY`)
+VALUES
+(1, "Adresse ligne 1", "Adresse ligne 2", "Area", "City", "France", "12345", 'N', "Bill adresse ligne 1", "Bill adresse ligne 2",
+"Bill area", "BillingVille", "ITALIE", "I-54321", "2019-01-01 00:00:00", 'N', "Customer name", 2);
+
+INSERT INTO `db_timesheet`.`CUSTOMERS`
+(`ID`, `ADDR_LINE1`, `ADDR_LINE2`, `ADDR_AREA`, `ADDR_CITY`, `ADDR_COUNTRY`, `ADDR_POSTCODE`, `ARCHIVED`, `BILL_ADDRLINE1`,
+`BILL_ADDRLINE2`, `BILL_AREA`, `BILL_CITY`, `BILL_COUNTRY1`, `BILL_POSTCODE`, `CREATED_ON`, `DELETED`, `NAME`, `CREATED_BY`)
+VALUES
+(2, "Adresse 2 ligne 1", "Adresse 2 ligne 2", "Area", "City", "Belgique", "1234", 'N', "Bill adresse 2 ligne 1", "Bill adresse 2 ligne 2",
+"Bill area", "BillingVille", "Belgique", "1234", "2019-01-01 00:00:00", 'N', "Customer name", 3);

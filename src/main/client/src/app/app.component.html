@@ -40,7 +40,7 @@
         <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_PROJECTS'])">
           <h3 matSubheader>Customers / Projects</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/customers" *ngIf="hasAuthority('MANAGE_CUSTOMERS')">
+          <a mat-list-item routerLinkActive="active-link" routerLink="/customer/home" *ngIf="hasAuthority('MANAGE_CUSTOMERS')">
               <div style="padding-right: 5px;"><mat-icon>business</mat-icon></div><span>Customers</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/projects" *ngIf="hasAuthority('MANAGE_PROJECTS')">
               <div style="padding-right: 5px;"><mat-icon>work</mat-icon></div><span>Projects</span></a>
