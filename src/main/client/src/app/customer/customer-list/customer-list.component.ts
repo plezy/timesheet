@@ -23,7 +23,7 @@ export class CustomerListComponent implements OnInit {
   pageIndex = 0;
   pageFirstLast = true;
 
-  displayedColumns: string[] = ['name', 'action'];
+  displayedColumns: string[] = ['name', 'siege', 'action'];
 
   constructor(private userService: UserService, private customerService: CustomerService,
               private authService: AuthService, private router: Router) { }
@@ -77,6 +77,48 @@ export class CustomerListComponent implements OnInit {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
+  }
+
+/**
+ * UI 
+ */
+  getAddress(customer: Customer): string {
+    let str: string;
+    if (customer.address.addressLine1.length > 0) {
+        str = str + customer.address.addressLine1;
+    }
+
+    if (customer.address.addressLine2.length > 0) {
+        if (str.length > 0)
+            str = str + ' ';
+        str = str + customer.address.addressLine2;
+    }
+
+    if (customer.address.postCode.length > 0) {
+        if (str.length > 0)
+            str = str + ' ';
+        str = str + customer.address.postCode;
+    }
+
+    if (customer.address.city.length > 0) {
+        if (str.length > 0)
+            str = str + ' ';
+        str = str + customer.address.city;
+    }
+
+    if (customer.address.area.length > 0) {
+        if (str.length > 0)
+            str = str + ' ';
+        str = str + customer.address.area;
+    }
+
+    if (customer.address.country.length > 0) {
+        if (str.length > 0)
+            str = str + ' ';
+        str = str + customer.address.country;
+    }
+
+    return str;
   }
 
 }

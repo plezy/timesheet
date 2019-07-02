@@ -9,6 +9,11 @@
     <td mat-cell *matCellDef="let customer"> {{customer.name}} </td>
   </ng-container>
 
+  <ng-container matColumnDef="siege">
+    <th mat-header-cell *matHeaderCellDef> Social Address </th>
+    <td mat-cell *matCellDef="let customer"> {{getAddress(customer)}} </td>
+  </ng-container>
+
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef> Actions 
         <span class="fill-space"></span>
