@@ -31,6 +31,8 @@ public class CustomerController {
     /**
      * returns first page of a paged list of all active customers. Page sise is
      * equals to the deafault page size.
+     * 
+     * @return first customer page, with default size
      */
     @GetMapping(value = "/list")
     @PreAuthorize("isAuthenticated()")
@@ -42,7 +44,9 @@ public class CustomerController {
     /**
      * returns first page of a paged list of all active customers.
      * 
-     * @param size list size
+     * @param page page to fetch (0 based)
+     * 
+     * @return the page of default size
      */
     @GetMapping(value = "/list/{page}")
     @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS')")
@@ -54,8 +58,10 @@ public class CustomerController {
     /**
      * returns a page of a paged list of all active users.
      * 
-     * @param size list size
-     * @param page page number (0 based)
+     * @param page page to fetch (0 based)
+     * @param size page's size
+     * 
+     * @return the requested page of the given size
      */
     @GetMapping(value = "/list/{page}/{size}")
     @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS')")

@@ -6,6 +6,8 @@ import { User } from 'src/app/common/model/user';
 import { CustomerService } from 'src/app/common/services/customer.service';
 import { Page } from 'src/app/common/model/page';
 import { Customer } from 'src/app/common/model/customer';
+import { MatDialog } from '@angular/material';
+import { CustomerAddEditDialogComponent } from '../cust-add-edit-dialog/cust-add-edit-dialog.component';
 
 @Component({
   selector: 'app-customer-list',
@@ -26,7 +28,7 @@ export class CustomerListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'siege', 'action'];
 
   constructor(private userService: UserService, private customerService: CustomerService,
-              private authService: AuthService, private router: Router) { }
+              private authService: AuthService, public dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
@@ -79,8 +81,46 @@ export class CustomerListComponent implements OnInit {
     this.loadData();
   }
 
+  clickAdd() {
+    const dialogRef = this.dialog.open(CustomerAddEditDialogComponent, {
+      width: '700px', data: { title: 'Add Customer' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log(result);
+        if (result.customer) {
+          this.customerService.addCustomer(result.customer).subscribe(
+            addedCustomer => {
+              console.log('Customer added');
+              this.loadData();
+          });
+        }
+      }
+    });
+  }
+
+  clickEdit(row: Customer) {
+    const dialogRef = this.dialog.open(CustomerAddEditDialogComponent, {
+      width: '700px', data: { title: 'Edit Customer', customer: row }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log(result);
+        if (result.customer) {
+          this.customerService.updateCustomer(result.customer).subscribe(
+            updatedUser => {
+              console.log('Customer updated');
+              this.loadData();
+          });
+        }
+      }
+    });
+  }
+
 /**
- * UI 
+ * UI
  */
   getAddress(customer: Customer): string {
     let str: string;
@@ -89,32 +129,37 @@ export class CustomerListComponent implements OnInit {
     }
 
     if (customer.address.addressLine2.length > 0) {
-        if (str.length > 0)
+        if (str.length > 0) {
             str = str + ' ';
+        }
         str = str + customer.address.addressLine2;
     }
 
     if (customer.address.postCode.length > 0) {
-        if (str.length > 0)
+        if (str.length > 0) {
             str = str + ' ';
+        }
         str = str + customer.address.postCode;
     }
 
     if (customer.address.city.length > 0) {
-        if (str.length > 0)
+        if (str.length > 0) {
             str = str + ' ';
+        }
         str = str + customer.address.city;
     }
 
     if (customer.address.area.length > 0) {
-        if (str.length > 0)
+        if (str.length > 0) {
             str = str + ' ';
+        }
         str = str + customer.address.area;
     }
 
     if (customer.address.country.length > 0) {
-        if (str.length > 0)
+        if (str.length > 0) {
             str = str + ' ';
+        }
         str = str + customer.address.country;
     }
 

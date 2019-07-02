@@ -18,4 +18,13 @@ export class CustomerService {
         const url = this.userBaseUrl + '/list/' + size + '/' + page;
         return this.http.get<Page<Customer>>(url);
     }
+
+    addCustomer(customer: Customer): Observable<Customer> {
+        const url = this.userBaseUrl + '/add';
+        return this.http.post<Customer>(url, customer);
+    }
+
+    updateCustomer(customer: Customer): Observable<Customer> {
+        return null;
+    }
 }
