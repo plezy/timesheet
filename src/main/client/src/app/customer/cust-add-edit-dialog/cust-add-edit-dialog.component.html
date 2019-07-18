@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>{{title}}</h1>
 <mat-dialog-content [formGroup]="form" class="container-fluid">
   <div class="row">
-    <mat-form-field class="col-md-6">
+    <mat-form-field class="col-md-8">
       <input matInput placeholder="Customer Name" formControlName="name" required>
       <mat-error *ngIf="form.controls.name.hasError('required')">
         Username is required !
@@ -14,6 +14,79 @@
       </mat-error>
     </mat-form-field>
   </div>
+  <fieldset>
+    <legend>Social Address</legend>
+    <div class="row">
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Adress (line 1)" formControlName="addressLine1" required>
+        <mat-error *ngIf="form.controls.addressLine1.hasError('required')">
+          Adress line 1 is required !
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Adress (line 2)" formControlName="addressLine2">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-3">
+        <input matInput placeholder="Postal Code" formControlName="addressPostCode">
+      </mat-form-field>
+      <mat-form-field class="col-md-9">
+        <input matInput placeholder="City" formControlName="addressCity" required>
+        <mat-error *ngIf="form.controls.addressCity.hasError('required')">
+          City is required !
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Area / Region / State" formControlName="addressArea">
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Country" formControlName="addressCountry">
+      </mat-form-field>
+    </div>
+  </fieldset>
+  <div>
+    <mat-checkbox formControlName="useBillingAddress" (change)="billingAddressChanged()">Use a specific address for billing</mat-checkbox>
+  </div>
+  <fieldset *ngIf="form.controls.useBillingAddress.value">
+    <legend>Billing Address</legend>
+    <div class="row">
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Adress (line 1)" formControlName="socAddressLine1" required>
+        <mat-error *ngIf="form.controls.socAddressLine1.hasError('required')">
+          Adress line 1 is required !
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Adress (line 2)" formControlName="socAddressLine2">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-3">
+        <input matInput placeholder="Postal Code" formControlName="socAddressPostCode">
+      </mat-form-field>
+      <mat-form-field class="col-md-9">
+        <input matInput placeholder="City" formControlName="socAddressCity" required>
+        <mat-error *ngIf="form.controls.socAddressCity.hasError('required')">
+          City is required !
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Area / Region / State" formControlName="socAddressArea">
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Country" formControlName="socAddressCountry">
+      </mat-form-field>
+    </div>
+  </fieldset>
   <!--
   <p>Form dirty : {{form.dirty}}</p>
   <p>Form valid : {{form.valid}}</p>
@@ -25,5 +98,5 @@
 <mat-dialog-actions>
   <span class="fill-space"></span>
   <button mat-raised-button (click)="cancel()">Cancel</button>
-  <button mat-raised-button  color="primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Add</button>
+  <button mat-raised-button  color="primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button>
 </mat-dialog-actions>

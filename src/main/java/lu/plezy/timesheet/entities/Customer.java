@@ -17,6 +17,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -35,12 +37,26 @@ public class Customer {
     @NonNull
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "CREATED_BY")
+    @JsonIgnore
     private User createdBy;
 
     @NonNull
     @Column(name = "CREATED_ON", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date createdOn;
+
+    @NonNull
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "UPDATED_BY")
+    @JsonIgnore
+    private User updatedBy;
+
+    @NonNull
+    @Column(name = "UPDATED_ON", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
+    private Date updatedOn;
 
     @NonNull
     @Column(name = "NAME", length = 64, nullable = false)
@@ -48,6 +64,10 @@ public class Customer {
 
     @Embedded
     private Address address;
+
+    @Column(name = "USE_BILLING_ADDR", length = 1)
+    @Convert(converter = BooleanToStringConverter.class)
+    private boolean useBillingAddress = false;
 
     @Embedded
     @AttributeOverrides({ @AttributeOverride(name = "addressLine1", column = @Column(name = "BILL_ADDRLINE1")),

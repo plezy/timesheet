@@ -8,6 +8,7 @@ import { Page } from 'src/app/common/model/page';
 import { Customer } from 'src/app/common/model/customer';
 import { MatDialog } from '@angular/material';
 import { CustomerAddEditDialogComponent } from '../cust-add-edit-dialog/cust-add-edit-dialog.component';
+import { ConfirmDialogComponent } from 'src/app/common/dialog/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-customer-list',
@@ -26,6 +27,8 @@ export class CustomerListComponent implements OnInit {
   pageFirstLast = true;
 
   displayedColumns: string[] = ['name', 'siege', 'action'];
+
+  showDeleted = false;
 
   constructor(private userService: UserService, private customerService: CustomerService,
               private authService: AuthService, public dialog: MatDialog, private router: Router) { }
@@ -58,21 +61,21 @@ export class CustomerListComponent implements OnInit {
   loadData() {
     /**
     this.cleanSelection();
-    // console.log('loading data ...');
-    if (this.showDeleted) { */
-      this.customerService.getCustomers(this.pageSize, this.pageIndex).subscribe(
+    // console.log('loading data ...'); */
+    if (this.showDeleted) {
+      this.customerService.getAllCustomers(this.pageSize, this.pageIndex).subscribe(
         result =>  {
           this.page = result;
         }
-      ); /*
+      );
     } else {
-      this.userService.getUsers(this.pageSize, this.pageIndex).subscribe(
+      this.customerService.getCustomers(this.pageSize, this.pageIndex).subscribe(
         result =>  {
           this.page = result;
         }
       );
     }
-    */
+    
   }
 
   getData(event) {
@@ -110,7 +113,7 @@ export class CustomerListComponent implements OnInit {
         console.log(result);
         if (result.customer) {
           this.customerService.updateCustomer(result.customer).subscribe(
-            updatedUser => {
+            updatedCustomer => {
               console.log('Customer updated');
               this.loadData();
           });
@@ -119,51 +122,98 @@ export class CustomerListComponent implements OnInit {
     });
   }
 
+  /** Delete user */
+  clickDelete(row: Customer) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px', data: {title: 'Confirm Deletion',
+        message: 'Are you sure you want to delete customer ' + row.name + ' ?',
+        cancelText: 'Cancel', confirmText: 'OK'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.customerService.deleteCustomer(row).subscribe(
+          res => {
+            this.loadData();
+          }
+        );
+      }
+    });
+  }
+
+  clickUndelete(row: Customer) {
+    if (row.deleted) {
+      this.customerService.undeleteCustomer(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      );
+    }
+  }
+
+
 /**
  * UI
  */
   getAddress(customer: Customer): string {
     let str: string;
+    str = '';
     if (customer.address.addressLine1.length > 0) {
         str = str + customer.address.addressLine1;
     }
 
-    if (customer.address.addressLine2.length > 0) {
+    if (customer.address.addressLine2) {
+      if (customer.address.addressLine2.length > 0) {
         if (str.length > 0) {
             str = str + ' ';
         }
         str = str + customer.address.addressLine2;
+      }
     }
 
-    if (customer.address.postCode.length > 0) {
-        if (str.length > 0) {
-            str = str + ' ';
-        }
-        str = str + customer.address.postCode;
+    if (customer.address.postCode) {
+      if (customer.address.postCode.length > 0) {
+          if (str.length > 0) {
+              str = str + ' ';
+          }
+          str = str + customer.address.postCode;
+      }
     }
 
-    if (customer.address.city.length > 0) {
-        if (str.length > 0) {
-            str = str + ' ';
-        }
-        str = str + customer.address.city;
+    if (customer.address.city) {
+      if (customer.address.city.length > 0) {
+          if (str.length > 0) {
+              str = str + ' ';
+          }
+          str = str + customer.address.city;
+      }
     }
 
-    if (customer.address.area.length > 0) {
-        if (str.length > 0) {
-            str = str + ' ';
-        }
-        str = str + customer.address.area;
+    if (customer.address.area) {
+      if (customer.address.area.length > 0) {
+          if (str.length > 0) {
+              str = str + ' ';
+          }
+          str = str + customer.address.area;
+      }
     }
 
-    if (customer.address.country.length > 0) {
+    if (customer.address.country) {
+      if (customer.address.country.length > 0) {
         if (str.length > 0) {
             str = str + ' ';
         }
         str = str + customer.address.country;
+      }
     }
 
+    // console.log('Adresse : ' + str);
     return str;
   }
 
+  toggleShowDeleted() {
+    this.showDeleted = ! this.showDeleted;
+    this.loadData();
+  }
 }

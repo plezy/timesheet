@@ -19,10 +19,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("select c from #{#entityName} c where c.deleted=false and c.archived=false")
     Page<Customer> findAllActive(Pageable p);
 
-    @Query("select c from #{#entityName} c where c.deleted=false and c.archived=true")
+    @Query("select c from #{#entityName} c where c.archived=true")
     Page<Customer> findAllArchived(Pageable p);
 
-    @Query("select c from #{#entityName} c where c.deleted=true")
-    Page<Customer> findAllDeleted(Pageable p);
+    @Query("select c from #{#entityName} c where c.archived=false")
+    Page<Customer> findAllNotArchived(Pageable p);
 
 }

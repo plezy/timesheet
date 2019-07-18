@@ -11,7 +11,6 @@ import { EnvComponent } from './version/env/env.component';
 import { JavaComponent } from './version/java/java.component';
 import { BuildComponent } from './version/build/build.component';
 import { UserListComponent } from './user/user-list/user-list.component';
-import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog/confirm-dialog.component';
 import { UserAddEditDialogComponent } from './user/user-add-edit-dialog/user-add-edit-dialog.component';
 import { UserSetPasswordDialogComponent } from './user/user-set-password-dialog/user-set-password-dialog.component';
 import { UserEditRolesDialogComponent } from './user/user-edit-roles-dialog/user-edit-roles-dialog.component';
@@ -28,7 +27,6 @@ import { MaterialModule } from '../material.module';
     JavaComponent,
     BuildComponent,
     UserListComponent,
-    ConfirmDialogComponent,
     UserAddEditDialogComponent,
     UserSetPasswordDialogComponent,
     UserEditRolesDialogComponent
@@ -38,7 +36,7 @@ import { MaterialModule } from '../material.module';
     MaterialModule,
     CoreRoutingModule,
   ],
-  entryComponents: [ ConfirmDialogComponent, UserAddEditDialogComponent, UserSetPasswordDialogComponent, UserEditRolesDialogComponent ],
+  entryComponents: [ UserAddEditDialogComponent, UserSetPasswordDialogComponent, UserEditRolesDialogComponent ],
 })
 
 export class CoreModule { }

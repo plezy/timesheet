@@ -6,7 +6,7 @@ import { MaterialModule } from '../material.module';
 import { CustomerAddEditDialogComponent } from './cust-add-edit-dialog/cust-add-edit-dialog.component';
 
 @NgModule({
-  declarations: [CustomerListComponent, CustomerAddEditDialogComponent],
+  declarations: [CustomerListComponent, CustomerAddEditDialogComponent ],
   imports: [
     CommonModule,
     CustomerRoutingModule,

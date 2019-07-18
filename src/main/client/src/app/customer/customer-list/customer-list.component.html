@@ -1,6 +1,6 @@
 <h2>Manage Customers</h2>
 <br/>
-<!--mat-checkbox [checked]="showDeleted" (change)="toggleShowDeleted()"><span class="check-box-label">Show deleted</span></mat-checkbox-->
+ <mat-checkbox [checked]="showDeleted" (change)="toggleShowDeleted()"><span class="check-box-label">Show deleted</span></mat-checkbox>
 <br/>
 <table mat-table [dataSource]="page?.content">
 
@@ -24,6 +24,12 @@
     <td mat-cell *matCellDef="let row">
       <button mat-icon-button title="Edit Customer" (click)="clickEdit(row)"> 
         <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button title="Delete Customer" (click)="clickDelete(row)">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="showDeleted && row.deleted" title="Undelete user" (click)="clickUndelete(row)">
+        <mat-icon>undo</mat-icon>
       </button>
     </td>
   </ng-container>

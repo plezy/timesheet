@@ -10,10 +10,12 @@ import { httpInterceptorProviders } from './core/auth/auth-interceptor';
 
 import 'hammerjs';
 import { CustomerModule } from './customer/customer.module';
+import { ConfirmDialogComponent } from './common/dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +25,7 @@ import { CustomerModule } from './customer/customer.module';
     MaterialModule,
     CustomerModule
   ],
+  entryComponents: [ ConfirmDialogComponent ],
   providers: [ httpInterceptorProviders ],
   bootstrap: [ AppComponent ]
 })
