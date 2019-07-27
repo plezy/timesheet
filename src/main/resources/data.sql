@@ -38,3 +38,28 @@ BILL_ADDRLINE2, BILL_AREA, BILL_CITY, BILL_COUNTRY1, BILL_POSTCODE, CREATED_ON, 
 VALUES
 (2, 'Adresse 2 ligne 1', 'Adresse 2 ligne 2', 'Area', 'City', 'Belgique', '1234', 'N', 'Bill adresse 2 ligne 1', 'Bill adresse 2 ligne 2',
 'Bill area', 'BillingVille', 'Belgique', '1234', '2019-01-01 00:00:00', 'N', 'Customer A name', 3, '2019-01-01 00:00:00', 3, 'Y');
+
+INSERT INTO CUSTOMERS
+(ID, ADDR_LINE1, ADDR_CITY, ARCHIVED, CREATED_ON, DELETED, NAME, CREATED_BY, UPDATED_ON, UPDATED_BY, USE_BILLING_ADDR)
+VALUES
+(3, 'Deleted 1 address', 'Deleted City', 'N', '2019-01-01 00:00:00', 'Y', 'Deleted Customer 1 name', 1, '2019-01-01 00:00:00', 3, 'N');
+
+INSERT INTO CUSTOMERS
+(ID, ADDR_LINE1, ADDR_CITY, ARCHIVED, CREATED_ON, DELETED, NAME, CREATED_BY, UPDATED_ON, UPDATED_BY, USE_BILLING_ADDR)
+VALUES
+(4, 'Deleted 2 address', 'Deleted City', 'N', '2019-01-01 00:00:00', 'Y', 'Deleted Customer 2 name', 1, '2019-01-01 00:00:00', 3, 'N');
+
+INSERT INTO CUSTOMERS
+(ID, ADDR_LINE1, ADDR_CITY, ARCHIVED, CREATED_ON, DELETED, NAME, CREATED_BY, UPDATED_ON, UPDATED_BY, USE_BILLING_ADDR)
+VALUES
+(5, 'Archived 1 address', 'Archived City', 'Y', '2019-01-01 00:00:00', 'N', 'Archived Customer 1 name', 1, '2019-01-01 00:00:00', 3, 'N');
+
+INSERT INTO CUSTOMERS
+(ID, ADDR_LINE1, ADDR_CITY, ARCHIVED, CREATED_ON, DELETED, NAME, CREATED_BY, UPDATED_ON, UPDATED_BY, USE_BILLING_ADDR)
+VALUES
+(6, 'Archived 2 address', 'Archived City', 'Y', '2019-01-01 00:00:00', 'N', 'Archived Customer 2 name', 1, '2019-01-01 00:00:00', 3, 'N');
+
+INSERT INTO CUSTOMERS
+(ID, ADDR_LINE1, ADDR_CITY, ARCHIVED, CREATED_ON, DELETED, NAME, CREATED_BY, UPDATED_ON, UPDATED_BY, USE_BILLING_ADDR)
+VALUES
+(7, 'Archived Del"d 3 address', 'Archived City', 'Y', '2019-01-01 00:00:00', 'Y', 'Archived Del"d Customer 3 name', 3, '2019-01-01 00:00:00', 3, 'N');

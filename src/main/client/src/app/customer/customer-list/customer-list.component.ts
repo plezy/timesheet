@@ -26,9 +26,13 @@ export class CustomerListComponent implements OnInit {
   pageIndex = 0;
   pageFirstLast = true;
 
-  displayedColumns: string[] = ['name', 'siege', 'action'];
+  displayedColumns: string[] = ['selector', 'name', 'siege', 'action'];
 
   showDeleted = false;
+  showArchived = false;
+
+  /* selection contient les ids des éléments du tableau sélectionnés */
+  selection: Array<number> = new Array();
 
   constructor(private userService: UserService, private customerService: CustomerService,
               private authService: AuthService, public dialog: MatDialog, private router: Router) { }
@@ -59,26 +63,34 @@ export class CustomerListComponent implements OnInit {
 
   /** retrieve rows */
   loadData() {
-    /**
-    this.cleanSelection();
-    // console.log('loading data ...'); */
-    if (this.showDeleted) {
-      this.customerService.getAllCustomers(this.pageSize, this.pageIndex).subscribe(
+    
+    // this.cleanSelection();
+    // console.log('loading data ...');
+    if (this.showArchived) {
+      this.customerService.getArchivedCustomers(this.pageSize, this.pageIndex).subscribe(
         result =>  {
           this.page = result;
         }
       );
     } else {
-      this.customerService.getCustomers(this.pageSize, this.pageIndex).subscribe(
-        result =>  {
-          this.page = result;
-        }
-      );
+      if (this.showDeleted) {
+        this.customerService.getAllCustomers(this.pageSize, this.pageIndex).subscribe(
+          result =>  {
+            this.page = result;
+          }
+        );
+      } else {
+        this.customerService.getCustomers(this.pageSize, this.pageIndex).subscribe(
+          result =>  {
+            this.page = result;
+          }
+        );
+      }
     }
-    
   }
 
   getData(event) {
+    console.log('getData');
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
@@ -152,6 +164,27 @@ export class CustomerListComponent implements OnInit {
     }
   }
 
+  clickArchive(row: Customer) {
+    if (!row.archived) {
+      console.log('Archiving customer');
+      this.customerService.archiveCustomer(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      )
+    }
+  }
+
+  clickUnarchive(row: Customer) {
+    if (row.archived) {
+      console.log('Unarchiving customer');
+      this.customerService.unarchiveCustomer(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      )
+    }
+  }
 
 /**
  * UI
@@ -216,4 +249,107 @@ export class CustomerListComponent implements OnInit {
     this.showDeleted = ! this.showDeleted;
     this.loadData();
   }
+
+  toggleShowArchived() {
+    this.showArchived = ! this.showArchived;
+    this.loadData();
+  }
+
+  /**
+   * UI multiple delete
+   */
+
+  /** Clean selections array */
+  cleanSelection() {
+    // console.log('in cleanSelection');
+    if (this.selection) {
+      if (this.selection.length > 0) {
+        this.selection.splice(0, this.selection.length);
+      }
+    }
+  }
+
+  /** Checks if there is an element selected in the table */
+  hasSelection(): boolean {
+    // console.log('in hasSelection');
+    if (this.selection) {
+      return this.selection.length > 0;
+    }
+    return false;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    // console.log('in isAllSelected');
+    if (this.selection) {
+      const numSelected = this.selection.length;
+      const numRows = (this.page) ? this.page.numberOfElements : 0;
+      // console.log('numSelected : ' + numSelected);
+      // console.log('numRows     : ' + numRows);
+      return numSelected === numRows;
+    }
+    return false;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isSelected(row: Customer): boolean {
+    // console.log('in isSelected for row ' + row.username);
+    if (this.selection) {
+      return this.selection.includes(row.id);
+    }
+    return false;
+  }
+
+  /** Togle selection of a row */
+  toggleSelection(row: Customer) {
+    // console.log('in toggleSelection for row ' + row.username);
+    if (this.isSelected(row)) {
+      this.selection.splice(this.selection.indexOf(row.id), 1);
+    } else {
+      if (!this.selection) {
+        this.selection = new Array();
+      }
+      this.selection.push(row.id);
+    }
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    // console.log('in masterToggle');
+    if (this.isAllSelected()) {
+      this.cleanSelection();
+    } else {
+      this.cleanSelection();
+      this.page.content.forEach(row => this.selection.push(row.id));
+    }
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: Customer): string {
+    // console.log('in checkboxLabel for row ' + (!row ? 'undefined' : row.username));
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.isSelected(row)} ? 'deselect' : 'select'} row ${row.id}`;
+  }
+
+  /** Delete selected ids */
+  clickDeleteSelected() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px', data: {title: 'Confirm Mutiple Deletions',
+        message: 'Are you sure you want to delete the ' + this.selection.length + ' selected customers ?',
+        cancelText: 'Cancel', confirmText: 'OK'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log('deleting ', this.selection);
+        this.customerService.deleteCustomers(this.selection).subscribe(
+          data => { this.loadData(); }
+        );
+      }
+    });
+  }
+
 }

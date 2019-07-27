@@ -1,8 +1,29 @@
 <h2>Manage Customers</h2>
 <br/>
- <mat-checkbox [checked]="showDeleted" (change)="toggleShowDeleted()"><span class="check-box-label">Show deleted</span></mat-checkbox>
+<mat-checkbox [checked]="showDeleted" [disabled]="showArchived" (change)="toggleShowDeleted()"><span class="check-box-label">Show deleted</span></mat-checkbox>
+<br/>
+<mat-checkbox [checked]="showArchived" (change)="toggleShowArchived()"><span class="check-box-label">Show archived</span></mat-checkbox>
 <br/>
 <table mat-table [dataSource]="page?.content">
+
+  <ng-container matColumnDef="selector">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+          [checked]="hasSelection() && isAllSelected()"
+          [indeterminate]="hasSelection() && !isAllSelected()"
+          [disabled]="showArchived"
+          [aria-label]="checkboxLabel()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? toggleSelection(row) : null"
+                    [checked]="isSelected(row)"
+                    [disabled]="showArchived"
+                    [aria-label]="checkboxLabel(row)">
+      </mat-checkbox>
+    </td>    
+  </ng-container>
 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Username </th>
@@ -25,11 +46,17 @@
       <button mat-icon-button title="Edit Customer" (click)="clickEdit(row)"> 
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button title="Delete Customer" (click)="clickDelete(row)">
+      <button mat-icon-button *ngIf="!showArchived" title="Delete Customer" (click)="clickDelete(row)">
         <mat-icon>delete_outline</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="showDeleted && row.deleted" title="Undelete user" (click)="clickUndelete(row)">
+      <button mat-icon-button *ngIf="!showArchived && showDeleted && row.deleted" title="Undelete customer" (click)="clickUndelete(row)">
         <mat-icon>undo</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="!row.archived" title="Archive customer" (click)="clickArchive(row)">
+        <mat-icon>archive</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="row.archived" title="Unarchive customer" (click)="clickUnarchive(row)">
+        <mat-icon>unarchive</mat-icon>
       </button>
     </td>
   </ng-container>
@@ -38,12 +65,12 @@
   <tr mat-row *matRowDef="let customer; columns: displayedColumns;"></tr>
 
 </table>
-<!--mat-toolbar>
+<mat-toolbar>
   <mat-toolbar-row>
     <button mat-icon-button title="Delete all selected rows" [disabled]="!hasSelection()" (click)="clickDeleteSelected()">
       <mat-icon>delete_outline</mat-icon>
     </button>
-    <span class="fill-space"></span>
+    <span class="spacer"></span>
     <mat-paginator [length]="page?.totalElements"
         [pageSize]="pageSize"
         [pageSizeOptions]="pageSizeOptions"
@@ -52,4 +79,4 @@
         (page)="getData($event)">
     </mat-paginator>
   </mat-toolbar-row>
-</mat-toolbar-->
+</mat-toolbar>
