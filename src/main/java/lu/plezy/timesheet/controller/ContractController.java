@@ -1,8 +1,10 @@
 package lu.plezy.timesheet.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -13,14 +15,19 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import lu.plezy.timesheet.entities.Contract;
 import lu.plezy.timesheet.entities.ContractTypeEnum;
+import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.ContractDto;
 import lu.plezy.timesheet.entities.messages.ContractType;
 import lu.plezy.timesheet.i18n.StaticText;
@@ -220,6 +227,48 @@ public class ContractController {
         return new PageImpl<ContractDto>(pageContent.stream()
             .map(contract->ContractDto.convertToDto(contract))
             .collect(Collectors.toList()), p, pageContent.getTotalElements());
+    }
+
+    /**
+     * archive contract.
+     * 
+     * @param id Contract's id
+     * 
+     */
+    @PutMapping(value = "/archive/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+    public Contract archiveCustomer(@PathVariable("id") long id) {
+        Optional<Contract> result = contractRepository.findById(id);
+
+        if (result.isPresent()) {
+            Contract contract = result.get();
+            contract.setArchived(true);
+            log.info("Archive contract");
+            contractRepository.save(contract);
+            return contract;
+        }
+        return result.isPresent() ? result.get() : null;
+    }
+
+    /**
+     * Unachive user.
+     * 
+     * @param id Customer's id
+     * 
+     */
+    @PutMapping(value = "/unarchive/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+    public Contract unarchivCustomer(@PathVariable("id") long id) {
+        Optional<Contract> result = contractRepository.findById(id);
+
+        if (result.isPresent()) {
+            Contract contract = result.get();
+            contract.setDeleted(false);
+            contract.setArchived(false);
+            log.info("Unarchive customer");
+            contractRepository.save(contract);
+        }
+        return result.isPresent() ? result.get() : null;
     }
 
 }

@@ -84,6 +84,31 @@ export class ContractListComponent implements OnInit {
     }
   }
 
+  clickArchive(row: ContractDto) {
+    if (!row.archived) {
+      console.log('Archiving contract');
+      this.contractService.archiveContract(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      )
+    }
+  }
+
+  clickUnarchive(row: ContractDto) {
+    if (row.archived) {
+      console.log('Unarchiving customer');
+      this.contractService.unarchiveContract(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      )
+    }
+  }
+
+  /**
+   * UI
+   */
   toggleShowDeleted() {
     this.showDeleted = ! this.showDeleted;
     this.loadData();

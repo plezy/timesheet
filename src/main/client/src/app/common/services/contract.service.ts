@@ -71,12 +71,12 @@ export class ContractService {
         return this.http.put<Contract>(url, null);
     }
 
-    archiveContract(contract: Contract): Observable<Contract> {
+    archiveContract(contract: ContractDto): Observable<Contract> {
         const url = this.contractBaseUrl + '/archive/' + contract.id.toString();
         return this.http.put<Contract>(url, null);
     }
 
-    unarchiveContract(contract: Contract): Observable<Contract> {
+    unarchiveContract(contract: ContractDto): Observable<Contract> {
         const url = this.contractBaseUrl + '/unarchive/' + contract.id.toString();
         return this.http.put<Contract>(url, null);
     }
