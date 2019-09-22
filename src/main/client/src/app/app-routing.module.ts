@@ -6,6 +6,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/core/home', pathMatch: 'full' },
   { path: 'core', loadChildren: './core/core.module#CoreModule'},
   { path: 'cust', loadChildren: './customer/customer.module#CustomerModule'},
+  { path: 'cntrct', loadChildren: './contract/contract.module#ContractModule'},
   { path: '**', redirectTo: '/core/home' }
 ];
 

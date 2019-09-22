@@ -11,6 +11,8 @@ import { httpInterceptorProviders } from './core/auth/auth-interceptor';
 import 'hammerjs';
 import { CustomerModule } from './customer/customer.module';
 import { ConfirmDialogComponent } from './common/dialog/confirm-dialog/confirm-dialog.component';
+import { ContractModule } from './contract/contract.module';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -23,10 +25,14 @@ import { ConfirmDialogComponent } from './common/dialog/confirm-dialog/confirm-d
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
-    CustomerModule
+    CustomerModule,
+    ContractModule
   ],
   entryComponents: [ ConfirmDialogComponent ],
-  providers: [ httpInterceptorProviders ],
+  providers: [
+    httpInterceptorProviders,
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}
+  ],
   bootstrap: [ AppComponent ]
 })
 

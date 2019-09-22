@@ -66,7 +66,7 @@ public class User {
     @ElementCollection(targetClass = RoleEnum.class)
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USR_ID"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE")
+    @Column(name = "ROLE", length=32)
     private Set<RoleEnum> roles;
 
 }

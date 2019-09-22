@@ -22,7 +22,7 @@
                     [disabled]="showArchived"
                     [aria-label]="checkboxLabel(row)">
       </mat-checkbox>
-    </td>    
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="name">
@@ -36,17 +36,17 @@
   </ng-container>
 
   <ng-container matColumnDef="action">
-    <th mat-header-cell *matHeaderCellDef> Actions 
+    <th mat-header-cell *matHeaderCellDef> Actions
         <span class="fill-space"></span>
         <button mat-icon-button title="Add new Customer" (click)="clickAdd()">
           <mat-icon style="color: black;">add_circle</mat-icon>
-        </button>  
+        </button>
     </th>
     <td mat-cell *matCellDef="let row">
-      <button mat-icon-button title="Edit Customer" (click)="clickEdit(row)"> 
+      <button mat-icon-button title="Edit Customer" (click)="clickEdit(row)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="!showArchived" title="Delete Customer" (click)="clickDelete(row)">
+      <button mat-icon-button *ngIf="!showArchived && !row.deleted" title="Delete Customer" (click)="clickDelete(row)">
         <mat-icon>delete_outline</mat-icon>
       </button>
       <button mat-icon-button *ngIf="!showArchived && showDeleted && row.deleted" title="Undelete customer" (click)="clickUndelete(row)">

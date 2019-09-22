@@ -38,12 +38,12 @@
           <a mat-list-item routerLinkActive="active-link" routerLink="/core/passwd">
             <div style="padding-right: 5px;"><mat-icon>vpn_key</mat-icon></div><span>Set password</span></a>
         <mat-divider></mat-divider>
-        <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_PROJECTS'])">
-          <h3 matSubheader>Customers / Projects</h3>
+        <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_CONTRACTS'])">
+          <h3 matSubheader>Customers / Contracts</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/cust/home" *ngIf="hasAuthority('MANAGE_CUSTOMERS')">
               <div style="padding-right: 5px;"><mat-icon>business</mat-icon></div><span>Customers</span></a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/projects" *ngIf="hasAuthority('MANAGE_PROJECTS')">
-              <div style="padding-right: 5px;"><mat-icon>work</mat-icon></div><span>Projects</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/cntrct" *ngIf="hasAuthority('MANAGE_CONTRACTS')">
+              <div style="padding-right: 5px;"><mat-icon>work</mat-icon></div><span>Contracts</span></a>
         </div>
         <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">

@@ -1,0 +1,12 @@
+table {
+    width: 100%;
+}
+
+.mat-cell {
+    padding: 0px 5px 0px 5px;
+}
+
+.check-box-label {
+    font-size: 14px;
+    font-weight: 400;
+}
