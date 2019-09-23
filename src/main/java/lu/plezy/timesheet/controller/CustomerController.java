@@ -440,7 +440,7 @@ public class CustomerController {
     }
 
     /**
-     * returns a page of a paged list of all active users.
+     * returns a page of a paged list of all active customers.
      * 
      * @param page page to fetch (0 based)
      * @param size page's size
@@ -524,7 +524,7 @@ public class CustomerController {
     }
 
     /**
-     * returns a page of a paged list of all archived users.
+     * returns a page of a paged list of all archived customers.
      * 
      * @param page page to fetch (0 based)
      * @param size page's size
@@ -561,7 +561,7 @@ public class CustomerController {
      */
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS')")
-    public Customer updateUser(@PathVariable("id") long id, @Valid @RequestBody Customer updatedCustomer, Authentication authentication) {
+    public Customer updateCustomer(@PathVariable("id") long id, @Valid @RequestBody Customer updatedCustomer, Authentication authentication) {
         Optional<User> loggedUser = usersRepository.findByUsername(authentication.getName());
         if (!loggedUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authenticated user not Found");
@@ -612,14 +612,14 @@ public class CustomerController {
     /**
      * Deletes a customer logically.
      * 
-     * @param user Customer entity
+     * @param customer Customer entity
      */
     @Transactional
     private void deleteCustomerLogically(Customer customer, User loggedUser) {
         customer.setDeleted(true);
         customer.setUpdatedBy(loggedUser);
         customer.setUpdatedOn(new Date());
-        // update user for logical deletion
+        // update customer for logical deletion
         log.info("Perform customer logical deletion");
         customerRepository.save(customer);
     }
@@ -673,7 +673,7 @@ public class CustomerController {
     }
 
     /**
-     * Undelete (logically customer) user.
+     * Undelete (logically) customer.
      * 
      * @param id Customer's id
      * 
@@ -694,7 +694,7 @@ public class CustomerController {
             customer.setArchived(false);
             customer.setUpdatedBy(loggedUser.get());
             customer.setUpdatedOn(new Date());
-            // update user to reset logical deletion
+            // update customer to reset logical deletion
             log.info("Undelete customer");
             customerRepository.save(customer);
         }
@@ -702,7 +702,7 @@ public class CustomerController {
     }
 
     /**
-     * archive user.
+     * archive customer.
      * 
      * @param id Customer's id
      * 
@@ -730,14 +730,14 @@ public class CustomerController {
     }
 
     /**
-     * Unachive user.
+     * Unachive customer.
      * 
      * @param id Customer's id
      * 
      */
     @PutMapping(value = "/unarchive/{id}")
     @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS')")
-    public Customer unarchivCustomer(@PathVariable("id") long id, Authentication authentication) {
+    public Customer unarchiveCustomer(@PathVariable("id") long id, Authentication authentication) {
         Optional<User> loggedUser = usersRepository.findByUsername(authentication.getName());
         if (!loggedUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authenticated user not Found");
