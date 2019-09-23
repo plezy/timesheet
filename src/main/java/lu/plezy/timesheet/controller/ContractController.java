@@ -1,6 +1,7 @@
 package lu.plezy.timesheet.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -230,6 +233,105 @@ public class ContractController {
     }
 
     /**
+     * Delete a Contract. The contract is first logically deleted and then an attempt to
+     * delete the contract physically is performed.
+     * 
+     * @param id Contract's ID
+     * @param Authentication User's logged details
+     */
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+    public void deleteContract(@PathVariable("id") long id) {
+        Optional<Contract> result = contractRepository.findById(id);
+
+        if (result.isPresent()) {
+            Contract contract = result.get();
+
+            deleteContractLogically(contract);
+
+            deleteContractPhysically(contract.getId());
+        }
+    }
+
+    /**
+     * Deletes a contract logically.
+     * 
+     * @param contract Contract entity
+     */
+    @Transactional
+    private void deleteContractLogically(Contract contract) {
+        contract.setDeleted(true);
+        // update user for logical deletion
+        log.info("Perform contract logical deletion");
+        contractRepository.save(contract);
+    }
+
+    /**
+     * Attempt to delete physically a contract with ID. If an exception occurs it is
+     * trapped in order to avoid returning an error.
+     * 
+     * @param id Contract's ID
+     */
+    @Transactional
+    private void deleteContractPhysically(Long id) {
+        // attempt physical deletion is possible ...
+        log.info("Attempt contract physical deletion");
+        try {
+            contractRepository.deleteById(id);
+        } catch (Exception ex) {
+            log.info("Contract can not be deleted physically ...");
+        }
+    }
+
+    /**
+     * Deletes contracts in list.
+     * 
+     * @param contractIds contracts IDs list
+     */
+    @DeleteMapping(path = "/list/{ids}")
+    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+    public void deleteContracts(@PathVariable("ids") String contractIds) {
+        log.info("Deleting contracts with Ids : " + contractIds);
+        List<Long> idsList = Arrays.asList(contractIds.split(",")).stream().map(Long::parseLong)
+                .collect(Collectors.toList());
+        log.info("list of ids : " + idsList);
+
+        for (Long id : idsList) {
+            Optional<Contract> result = contractRepository.findById(id);
+            if (result.isPresent()) {
+                Contract contract = result.get();
+
+                deleteContractLogically(contract);
+                
+                deleteContractPhysically(contract.getId());
+            }
+        }
+
+    }
+
+    /**
+     * Undelete (logically contract) user.
+     * 
+     * @param id Contract's id
+     * 
+     */
+    @PutMapping(value = "/undelete/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+    public Contract undeleteContract(@PathVariable("id") long id) {
+        Optional<Contract> result = contractRepository.findById(id);
+
+        if (result.isPresent()) {
+            Contract contract = result.get();
+            contract.setDeleted(false);
+            contract.setArchived(false);
+            // update user to reset logical deletion
+            log.info("Undelete contract");
+            contractRepository.save(contract);
+        }
+        return result.isPresent() ? result.get() : null;
+    }
+
+    /**
      * archive contract.
      * 
      * @param id Contract's id
@@ -237,7 +339,7 @@ public class ContractController {
      */
     @PutMapping(value = "/archive/{id}")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
-    public Contract archiveCustomer(@PathVariable("id") long id) {
+    public Contract archiveContract(@PathVariable("id") long id) {
         Optional<Contract> result = contractRepository.findById(id);
 
         if (result.isPresent()) {
@@ -253,19 +355,19 @@ public class ContractController {
     /**
      * Unachive user.
      * 
-     * @param id Customer's id
+     * @param id Contract's id
      * 
      */
     @PutMapping(value = "/unarchive/{id}")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
-    public Contract unarchivCustomer(@PathVariable("id") long id) {
+    public Contract unarchivContract(@PathVariable("id") long id) {
         Optional<Contract> result = contractRepository.findById(id);
 
         if (result.isPresent()) {
             Contract contract = result.get();
             contract.setDeleted(false);
             contract.setArchived(false);
-            log.info("Unarchive customer");
+            log.info("Unarchive contract");
             contractRepository.save(contract);
         }
         return result.isPresent() ? result.get() : null;

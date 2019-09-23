@@ -16,7 +16,7 @@ export class ContractDto {
   name: string;
   contractType: string;
   customerId: number;
-  customer: string;
+  customerName: string;
   plannedStart: Date;
   plannedEnd: Date;
   archived = false;

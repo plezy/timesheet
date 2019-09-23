@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { ContractService } from 'src/app/common/services/contract.service';
 import { ContractAddEditDialogComponent } from '../contract-add-edit-dialog/contract-add-edit-dialog.component';
+import { ConfirmDialogComponent } from 'src/app/common/dialog/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-contract-list',
@@ -81,6 +82,36 @@ export class ContractListComponent implements OnInit {
           }
         );
       }
+    }
+  }
+
+  /** Delete contract */
+  clickDelete(row: ContractDto) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px', data: {title: 'Confirm Deletion',
+        message: 'Are you sure you want to delete contract ' + row.name + ' with customer ' + row.customerName + ' ?',
+        cancelText: 'Cancel', confirmText: 'OK'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.contractService.deleteContract(row).subscribe(
+          res => {
+            this.loadData();
+          }
+        );
+      }
+    });
+  }
+
+  clickUndelete(row: ContractDto) {
+    if (row.deleted) {
+      this.contractService.undeleteContract(row).subscribe(
+        res => {
+          this.loadData();
+        }
+      );
     }
   }
 

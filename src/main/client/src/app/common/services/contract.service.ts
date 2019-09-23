@@ -47,7 +47,7 @@ export class ContractService {
         return this.http.put<Contract>(url, contract);
     }
 
-    deleteContract(contract: Contract): Observable<{}> {
+    deleteContract(contract: ContractDto): Observable<{}> {
         const url = this.contractBaseUrl + '/' + contract.id.toString();
         return this.http.delete<Contract>(url);
     }
@@ -66,7 +66,7 @@ export class ContractService {
         return this.http.delete(url);
     }
 
-    undeleteContract(contract: Contract) {
+    undeleteContract(contract: ContractDto) {
         const url = this.contractBaseUrl + '/undelete/' + contract.id.toString();
         return this.http.put<Contract>(url, null);
     }
