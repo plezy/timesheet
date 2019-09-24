@@ -25,7 +25,7 @@ export class ContractListComponent implements OnInit {
   pageIndex = 0;
   pageFirstLast = true;
 
-  displayedColumns: string[] = [/*'selector',*/ 'name', 'type', 'customer', 'action'];
+  displayedColumns: string[] = [ 'selector', 'name', 'type', 'customer', 'action'];
 
   showDeleted = false;
   showArchived = false;
@@ -83,6 +83,13 @@ export class ContractListComponent implements OnInit {
         );
       }
     }
+  }
+
+  getData(event) {
+    console.log('getData');
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadData();
   }
 
   /** Delete contract */
@@ -170,4 +177,103 @@ export class ContractListComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * UI multiple delete
+   */
+
+  /** Clean selections array */
+  cleanSelection() {
+    // console.log('in cleanSelection');
+    if (this.selection) {
+      if (this.selection.length > 0) {
+        this.selection.splice(0, this.selection.length);
+      }
+    }
+  }
+
+  /** Checks if there is an element selected in the table */
+  hasSelection(): boolean {
+    // console.log('in hasSelection');
+    if (this.selection) {
+      return this.selection.length > 0;
+    }
+    return false;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    // console.log('in isAllSelected');
+    if (this.selection) {
+      const numSelected = this.selection.length;
+      const numRows = (this.page) ? this.page.numberOfElements : 0;
+      // console.log('numSelected : ' + numSelected);
+      // console.log('numRows     : ' + numRows);
+      return numSelected === numRows;
+    }
+    return false;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isSelected(row: ContractDto): boolean {
+    // console.log('in isSelected for row ' + row.username);
+    if (this.selection) {
+      return this.selection.includes(row.id);
+    }
+    return false;
+  }
+
+  /** Togle selection of a row */
+  toggleSelection(row: ContractDto) {
+    // console.log('in toggleSelection for row ' + row.username);
+    if (this.isSelected(row)) {
+      this.selection.splice(this.selection.indexOf(row.id), 1);
+    } else {
+      if (!this.selection) {
+        this.selection = new Array();
+      }
+      this.selection.push(row.id);
+    }
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    // console.log('in masterToggle');
+    if (this.isAllSelected()) {
+      this.cleanSelection();
+    } else {
+      this.cleanSelection();
+      this.page.content.forEach(row => this.selection.push(row.id));
+    }
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: ContractDto): string {
+    // console.log('in checkboxLabel for row ' + (!row ? 'undefined' : row.name));
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.isSelected(row)} ? 'deselect' : 'select'} row ${row.id}`;
+  }
+
+  /** Delete selected ids */
+  clickDeleteSelected() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px', data: {title: 'Confirm Mutiple Deletions',
+        message: 'Are you sure you want to delete the ' + this.selection.length + ' selected contracts ?',
+        cancelText: 'Cancel', confirmText: 'OK'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        console.log('deleting ', this.selection);
+        this.contractService.deleteContracts(this.selection).subscribe(
+          data => { this.loadData(); }
+        );
+        this.cleanSelection();
+      }
+    });
+  }
+
 }
