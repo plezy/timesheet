@@ -29,7 +29,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("select c from #{#entityName} c where c.archived=false")
     Page<Customer> findAllNotArchived(Pageable p);
 
-    List<Customer> findFirst10ByDeletedFalseAndArchivedFalse();
+    List<Customer> findFirst10ByDeletedFalseAndArchivedFalseOrderByName();
 
-    List<Customer> findFirst10ByDeletedFalseAndArchivedFalseAndNameContainsIgnoringCase(String filter);
+    List<Customer> findFirst10ByDeletedFalseAndArchivedFalseAndNameContainsIgnoringCaseOrderByName(String filter);
 }

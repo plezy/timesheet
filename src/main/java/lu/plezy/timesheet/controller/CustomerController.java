@@ -355,6 +355,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import lu.plezy.timesheet.entities.Customer;
 import lu.plezy.timesheet.entities.User;
+import lu.plezy.timesheet.entities.messages.CustomerDto;
+import lu.plezy.timesheet.entities.messages.StringMessage;
 import lu.plezy.timesheet.repository.CustomerRepository;
 import lu.plezy.timesheet.repository.UsersRepository;
 
@@ -396,9 +398,10 @@ public class CustomerController {
      * @return list of customers
      */
     @GetMapping(value = "/list/active")
-    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
-    public List<Customer> getAllActiveCustomers() {
-        return customerRepository.findFirst10ByDeletedFalseAndArchivedFalse();
+    @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS') || hasAuthority('MANAGE_CONTRACTS')")
+    public List<CustomerDto> getAllActiveCustomers() {
+        List<Customer> liste = customerRepository.findFirst10ByDeletedFalseAndArchivedFalseOrderByName();
+        return liste.stream().map(customer->CustomerDto.convertToDto(customer)).collect(Collectors.toList());
     }
 
     /**
@@ -406,10 +409,11 @@ public class CustomerController {
      * 
      * @return list of customers
      */
-    @GetMapping(value = "/list/active/:filter")
-    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
-    public List<Customer> getAllActiveFilteredCustomers(@PathVariable("filter") String filter) {
-        return customerRepository.findFirst10ByDeletedFalseAndArchivedFalseAndNameContainsIgnoringCase(filter);
+    @PostMapping(value = "/list/active")
+    @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS') || hasAuthority('MANAGE_CONTRACTS')")
+    public List<CustomerDto> getAllActiveFilteredCustomers(@Valid @RequestBody StringMessage message) {
+      List<Customer> liste = customerRepository.findFirst10ByDeletedFalseAndArchivedFalseAndNameContainsIgnoringCaseOrderByName(message.getMessage());
+      return liste.stream().map(customer->CustomerDto.convertToDto(customer)).collect(Collectors.toList());
     }
 
     /**
@@ -554,7 +558,7 @@ public class CustomerController {
     }
 
     /**
-     * Update of a Customer.     * 
+     * Update of a Customer. 
      * @param id Customer's ID
      * @param updatedCustomer Updated customer bean
      * @param authentication User's logged details
