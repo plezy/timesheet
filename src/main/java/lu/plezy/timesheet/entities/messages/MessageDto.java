@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class StringMessage {
+public class MessageDto {
     private Long id;
+    private Integer number;
     @NonNull
     private String message;
 }

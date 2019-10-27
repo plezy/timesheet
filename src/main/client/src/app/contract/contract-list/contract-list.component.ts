@@ -165,7 +165,6 @@ export class ContractListComponent implements OnInit {
       console.log('The dialog was closed');
       if (result) {
         console.log(result);
-        /*
         if (result.contract) {
           this.contractService.addContract(result.contract).subscribe(
             addedContract => {
@@ -173,8 +172,28 @@ export class ContractListComponent implements OnInit {
               this.loadData();
           });
         }
-        */
       }
+    });
+  }
+
+  clickEdit(row: ContractDto) {
+    this.contractService.getContract(row.id).subscribe(contract => {
+      const dialogRef = this.dialog.open(ContractAddEditDialogComponent, {
+        width: '700px', data: { title: 'Edit Contract', contract: contract }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        if (result) {
+          console.log(result);
+          if (result.contract) {
+            this.contractService.updateContract(result.contract).subscribe(
+              updatedContract => {
+                console.log('Contract updated');
+                this.loadData();
+            });
+          }
+        }
+      });
     });
   }
 

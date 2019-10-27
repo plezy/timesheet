@@ -22,8 +22,23 @@
     </div>
     <div class="row">
         <mat-form-field class="col-md-6">
+          <mat-label>Customer</mat-label>
+          <input matInput placeholder="Customer" aria-label="Customer" [matAutocomplete]="auto" formControlName="customer" required>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomerFn">
+            <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+            <ng-container *ngIf="!isLoading">
+              <mat-option *ngFor="let customer of filteredCustomerList" [value]="customer" (onSelectionChange)="customerSelected($event)">
+                <span>{{customer.name}}</span>
+              </mat-option>
+            </ng-container>
+          </mat-autocomplete>
+          <mat-error *ngIf="form.controls.customer.hasError('required')">
+              Customer's name is required !
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-md-6">
             <mat-label>Contract Type</mat-label>
-            <mat-select name="contractType" formControlName="contractType" required>
+            <mat-select name="contractType" formControlName="contractType" required [disabled]="editMode">
                 <mat-option *ngFor="let type of types" [value]="type.id">
                     {{type.description}}
                 </mat-option>

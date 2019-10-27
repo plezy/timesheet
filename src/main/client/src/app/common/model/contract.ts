@@ -1,7 +1,10 @@
+import { Customer } from './customer';
+
 export class Contract {
     id: number;
     name: string;
     description: string;
+    customer: Customer;
     archived = false;
     deleted = false;
     contractType: string;

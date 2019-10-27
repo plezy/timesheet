@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import lu.plezy.timesheet.entities.Customer;
@@ -32,4 +33,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findFirst10ByDeletedFalseAndArchivedFalseOrderByName();
 
     List<Customer> findFirst10ByDeletedFalseAndArchivedFalseAndNameContainsIgnoringCaseOrderByName(String filter);
+
+    @Query("SELECT c FROM #{#entityName} c WHERE UPPER(c.name) LIKE CONCAT('%', UPPER(:filter), '%') AND c.deleted=false AND c.archived=false ORDER BY c.name")
+    List<Customer> findWithFilter(@Param("filter") String filter, Pageable pageable);
+
 }

@@ -8,7 +8,7 @@ import lu.plezy.timesheet.entities.RoleEnum;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.Role;
 import lu.plezy.timesheet.entities.messages.RoleSet;
-import lu.plezy.timesheet.entities.messages.StringMessage;
+import lu.plezy.timesheet.entities.messages.MessageDto;
 import lu.plezy.timesheet.i18n.StaticText;
 import lu.plezy.timesheet.repository.UsersRepository;
 import lu.plezy.tools.RandomString;
@@ -160,7 +160,7 @@ public class ManageUserController {
     @PutMapping(value = "/setPassword/{id}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public User setUserPassword(Authentication authentication, @PathVariable("id") long id,
-            @Valid @RequestBody StringMessage message) {
+            @Valid @RequestBody MessageDto message) {
         Optional<User> result = usersRepository.findById(id);
         if (result.isPresent()) {
 
@@ -187,7 +187,7 @@ public class ManageUserController {
      */
     @PutMapping(value = "/setPassword")
     @PreAuthorize("isAuthenticated()")
-    public User setUserPassword(Authentication authentication, @Valid @RequestBody StringMessage message) {
+    public User setUserPassword(Authentication authentication, @Valid @RequestBody MessageDto message) {
         Optional<User> result = usersRepository.findByUsername(authentication.getName());
         if (result.isPresent()) {
             if (result.get().getId() != message.getId().longValue()) {

@@ -89,4 +89,9 @@ export class ContractService {
         const url = this.custListUrl + '/' + filter;
         return this.http.get<Customer[]>(url);
     }
+
+    getContract(id: Number): Observable<Customer> {
+        const url = this.contractBaseUrl + '/' + id.toString();
+        return this.http.get<Customer>(url);
+    }
 }

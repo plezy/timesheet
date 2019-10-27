@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page } from '../model/page';
-import { Customer } from '../model/customer';
+import { Customer, CustomerDto } from '../model/customer';
+import { MessageDto } from './message';
 
 @Injectable({
     providedIn: 'root'
@@ -71,5 +72,11 @@ export class CustomerService {
     unarchiveCustomer(customer: Customer): Observable<Customer> {
         const url = this.customerBaseUrl + '/unarchive/' + customer.id.toString();
         return this.http.put<Customer>(url, null);
+    }
+
+    autocompleteCustomer(filter: string): Observable<CustomerDto> {
+      const url = this.customerBaseUrl + '/list';
+      const request = new MessageDto(filter);
+      return this.http.post<CustomerDto>(url, request);
     }
 }

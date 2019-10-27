@@ -356,7 +356,7 @@ import org.springframework.web.server.ResponseStatusException;
 import lu.plezy.timesheet.entities.Customer;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.CustomerDto;
-import lu.plezy.timesheet.entities.messages.StringMessage;
+import lu.plezy.timesheet.entities.messages.MessageDto;
 import lu.plezy.timesheet.repository.CustomerRepository;
 import lu.plezy.timesheet.repository.UsersRepository;
 
@@ -397,24 +397,28 @@ public class CustomerController {
      * 
      * @return list of customers
      */
+    /*
     @GetMapping(value = "/list/active")
     @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS') || hasAuthority('MANAGE_CONTRACTS')")
     public List<CustomerDto> getAllActiveCustomers() {
         List<Customer> liste = customerRepository.findFirst10ByDeletedFalseAndArchivedFalseOrderByName();
         return liste.stream().map(customer->CustomerDto.convertToDto(customer)).collect(Collectors.toList());
     }
+    */
 
     /**
      * returns list of all active customers.
      * 
      * @return list of customers
      */
+    /*
     @PostMapping(value = "/list/active")
     @PreAuthorize("hasAuthority('MANAGE_CUSTOMERS') || hasAuthority('MANAGE_CONTRACTS')")
-    public List<CustomerDto> getAllActiveFilteredCustomers(@Valid @RequestBody StringMessage message) {
+    public List<CustomerDto> getAllActiveFilteredCustomers(@Valid @RequestBody MessageDto message) {
       List<Customer> liste = customerRepository.findFirst10ByDeletedFalseAndArchivedFalseAndNameContainsIgnoringCaseOrderByName(message.getMessage());
       return liste.stream().map(customer->CustomerDto.convertToDto(customer)).collect(Collectors.toList());
     }
+    */
 
     /**
      * returns first page of a paged list of all active customers. Page sise is
@@ -427,6 +431,19 @@ public class CustomerController {
     public Page<Customer> getCustomers() {
         Pageable p = PageRequest.of(0, defaultPageSize, Sort.by("name"));
         return customerRepository.findAllActive(p);
+    }
+
+    /**
+     * Returns a filtered list of customers for customer autocomplete inputs
+     * @param message message contains the text filter and the maximum number of lines returned
+     * @return Customer list (id and name)
+     */
+    @PostMapping(value = "/list")
+    @PreAuthorize("isAuthenticated()")
+    public List<CustomerDto> getCustomersFiltered(@Valid @RequestBody MessageDto message) {
+      Integer size = message.getNumber() == null ? 10 : message.getNumber();
+      List<Customer> liste = customerRepository.findWithFilter(message.getMessage(), PageRequest.of(0, size));
+      return liste.stream().map(customer->CustomerDto.convertToDto(customer)).collect(Collectors.toList());
     }
 
     /**

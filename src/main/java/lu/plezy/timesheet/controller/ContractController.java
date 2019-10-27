@@ -2,12 +2,14 @@ package lu.plezy.timesheet.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +18,19 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import lu.plezy.timesheet.entities.Contract;
 import lu.plezy.timesheet.entities.ContractTypeEnum;
-import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.ContractDto;
 import lu.plezy.timesheet.entities.messages.ContractType;
 import lu.plezy.timesheet.i18n.StaticText;
@@ -230,6 +230,30 @@ public class ContractController {
         return new PageImpl<ContractDto>(pageContent.stream()
             .map(contract->ContractDto.convertToDto(contract))
             .collect(Collectors.toList()), p, pageContent.getTotalElements());
+    }
+
+    /**
+     * Get a Contract by id.
+     * 
+     * @param id Contract's ID
+     * @param Authentication User's logged details
+     */
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+    public Optional<Contract> getContract(@PathVariable("id") long id) {
+        return contractRepository.findById(id);
+    }
+
+    /**
+     * Adds a Contract
+     * @param newContract contract to be added
+     * @param authentication User's logged details
+     * @return created Contract
+     */
+    @PostMapping(value = "/add")
+    @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+    public Contract addCustomer(@Valid @RequestBody Contract newContract, Authentication authentication) {    
+        return contractRepository.save(newContract);
     }
 
     /**
