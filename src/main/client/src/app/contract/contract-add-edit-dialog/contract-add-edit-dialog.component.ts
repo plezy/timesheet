@@ -66,8 +66,8 @@ export class ContractAddEditDialogComponent implements OnInit {
     this.form = this.fb.group({
         name: [this.contract.name, validatorsName],
         description: [this.contract.description, []],
-        contractType: [this.contract.contractType, []],
-        customer: [this.contract.customer, []],
+        contractType: [{value: this.contract.contractType, disabled: this.editMode}, []],
+        customer: [{value: this.contract.customer, disabled: this.editMode}, []],
         orderNumber: [this.contract.orderNumber, []],
         orderDate: [this.contract.orderDate, []],
         plannedStart: [this.contract.plannedStart, []],

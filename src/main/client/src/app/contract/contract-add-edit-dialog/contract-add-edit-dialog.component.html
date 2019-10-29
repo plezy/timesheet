@@ -38,7 +38,7 @@
         </mat-form-field>
         <mat-form-field class="col-md-6">
             <mat-label>Contract Type</mat-label>
-            <mat-select name="contractType" formControlName="contractType" required [disabled]="editMode">
+            <mat-select name="contractType" formControlName="contractType" required>
                 <mat-option *ngFor="let type of types" [value]="type.id">
                     {{type.description}}
                 </mat-option>
