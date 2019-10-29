@@ -1,6 +1,8 @@
 package lu.plezy.timesheet.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,8 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,12 +27,12 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="PROJECTS_OR_TASKS")
-@SequenceGenerator(name = "PROJECTS_OR_TASKS_SEQ", initialValue = 100, allocationSize = 1)
-public class ProjectOrTask {
+@Table(name="CONTRACT_PROFILES")
+@SequenceGenerator(name = "CONTRACT_PROFILES_SEQ", initialValue = 100, allocationSize = 1)
+public class ContractProfile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECTS_OR_TASKS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTRACT_PROFILES_SEQ")
     @Column(name = "ID", updatable = false, nullable = false)
     private long id;
     
@@ -43,9 +46,10 @@ public class ProjectOrTask {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdOn;
 
-    @ManyToOne(targetEntity=Customer.class)
-    @JoinColumn(name="CUST_ID")
-    private Customer customer;
+    /* Contract */
+    @ManyToOne(targetEntity=Contract.class)
+    @JoinColumn(name="CONTRACT_ID")
+    private Contract contract;
 
     @NonNull
     @Column(name="NAME", length=64, nullable=false)
@@ -54,18 +58,29 @@ public class ProjectOrTask {
     @Column(name="DESCRIPTION", length=1024, nullable=true)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name="PARENT_ID")
-    public ProjectOrTask parent;
-
-    @OneToMany(mappedBy="parent")
-    public Set<ProjectOrTask> children;
-
     @Column(name = "COMPLETED", length=1)
     @Convert(converter=BooleanToStringConverter.class)
     private boolean completed = false;
 
-    @Column(name = "ARCHIVED", length=1)
-    @Convert(converter=BooleanToStringConverter.class)
-    private boolean archived = false;
+    /* Invoice rate */
+    @Column(name = "HOURLY_RATE")
+    private Double hourlyRate;
+
+    /* Minimum units (hours) invoiced */
+    @Column(name = "MIN_DAILY_INVOICED")
+    private Integer minimumDailyInvoiced;
+    
+    /* Maximum units (hours) invoiced */
+    @Column(name = "MAX_DAILY_INVOICED")
+    private Integer maximumDailyInvoiced;
+    
+    /* Daily units modules (hours) invoiced */
+    @Column(name = "DAIY_MULT_INVOICED")
+    private Integer multipleUnitInvoiced;
+
+    @ManyToMany
+	@JoinTable(name = "USERS_CONTRACT_PROFILES",
+		joinColumns = { @JoinColumn(name = "CPF_ID") },
+		inverseJoinColumns = { @JoinColumn(name = "USR_ID") })
+	private List<User> authors = new ArrayList<User>();
 }
