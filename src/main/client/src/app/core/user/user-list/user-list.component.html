@@ -14,7 +14,7 @@
                     [checked]="isSelected(row)"
                     [aria-label]="checkboxLabel(row)">
       </mat-checkbox>
-    </td>    
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="username">
@@ -38,17 +38,17 @@
   </ng-container>
 
   <ng-container matColumnDef="action">
-    <th mat-header-cell *matHeaderCellDef> Actions 
+    <th mat-header-cell *matHeaderCellDef> Actions
         <span class="fill-space"></span>
         <button mat-icon-button title="Add new user" (click)="clickAdd()">
           <mat-icon style="color: black;">person_add</mat-icon>
-        </button>  
+        </button>
     </th>
     <td mat-cell *matCellDef="let row">
-      <button mat-icon-button *ngIf="!isMe(row)" [title]="getLockTitle(row)" (click)="clickLock(row)" [disabled]="row.username === 'admin'"> 
+      <button mat-icon-button *ngIf="!isMe(row)" [title]="getLockTitle(row)" (click)="clickLock(row)" [disabled]="row.username === 'admin'">
         <mat-icon>{{getLockIcon(row)}}</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="!isMe(row)" title="Edit user" (click)="clickEdit(row)"> 
+      <button mat-icon-button *ngIf="!isMe(row)" title="Edit user" (click)="clickEdit(row)">
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button *ngIf="!isMe(row)" title="Set user password" (click)="clickPassword(row)">
@@ -57,10 +57,10 @@
       <button mat-icon-button *ngIf="!isMe(row)" title="Set user roles" (click)="clickRoles(row)" [disabled]="row.username === 'admin'">
           <mat-icon>playlist_add_check</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="!isMe(row)" title="Delete user" (click)="clickDelete(row)" [disabled]="row.username === 'admin'">
+      <button mat-icon-button *ngIf="!(isMe(row) || row.deleted)" title="Delete user" (click)="clickDelete(row)" [disabled]="row.username === 'admin'">
         <mat-icon>delete_outline</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="showDeleted && row.deleted" title="Undelete user" (click)="clickUndelete(row)">
+      <button mat-icon-button *ngIf="row.deleted" title="Undelete user" (click)="clickUndelete(row)">
         <mat-icon>undo</mat-icon>
       </button>
     </td>
