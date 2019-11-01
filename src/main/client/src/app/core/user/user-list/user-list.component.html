@@ -57,10 +57,10 @@
       <button mat-icon-button *ngIf="!isMe(row)" title="Set user roles" (click)="clickRoles(row)" [disabled]="row.username === 'admin'">
           <mat-icon>playlist_add_check</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="!isMe(row)" title="Delete user" (click)="clickDelete(row)" [disabled]="row.username === 'admin'">
+      <button mat-icon-button *ngIf="!(isMe(row) || row.deleted)" title="Delete user" (click)="clickDelete(row)" [disabled]="row.username === 'admin'">
         <mat-icon>delete_outline</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="showDeleted && row.deleted" title="Undelete user" (click)="clickUndelete(row)">
+      <button mat-icon-button *ngIf="row.deleted" title="Undelete user" (click)="clickUndelete(row)">
         <mat-icon>undo</mat-icon>
       </button>
     </td>
