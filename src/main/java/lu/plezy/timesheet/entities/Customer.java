@@ -46,14 +46,12 @@ public class Customer {
     @JsonIgnore
     private Date createdOn;
 
-    @NonNull
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "UPDATED_BY")
     @JsonIgnore
     private User updatedBy;
 
-    @NonNull
-    @Column(name = "UPDATED_ON", nullable = false)
+    @Column(name = "UPDATED_ON", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
     private Date updatedOn;

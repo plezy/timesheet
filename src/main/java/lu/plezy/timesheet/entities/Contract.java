@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -43,6 +45,16 @@ public class Contract {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdOn;
 
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "UPDATED_BY")
+    @JsonIgnore
+    private User updatedBy;
+
+    @Column(name = "UPDATED_ON", nullable=true)
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
+    private Date updatedOn;
+    
     @ManyToOne(targetEntity=Customer.class)
     @JoinColumn(name="CUST_ID")
     private Customer customer;
@@ -63,12 +75,15 @@ public class Contract {
     private String orderNumber;
 
     @Column(name="ORDER_DATE", nullable=true)
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
 
     @Column(name="PLANNED_START_DATE", nullable=true)
+    @Temporal(TemporalType.DATE)
     private Date plannedStart;
 
     @Column(name="PLANNED_END_DATE", nullable=true)
+    @Temporal(TemporalType.DATE)
     private Date plannedEnd;
 
     @Column(name = "DELETED", length=1)
