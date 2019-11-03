@@ -51,6 +51,12 @@
       <button mat-icon-button title="Edit Contract" (click)="clickEdit(row)">
         <mat-icon>edit</mat-icon>
       </button>
+      <button mat-icon-button *ngIf="row.contractType === 'Times & Means'" title="View contract detail" (click)="clickViewDetails(row)">
+        <mat-icon>group</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="row.contractType === 'Project'" title="View contract detail" (click)="clickViewDetails(row)">
+        <mat-icon>list</mat-icon>
+      </button>
       <button mat-icon-button *ngIf="!showArchived && !row.deleted" title="Delete Contract" (click)="clickDelete(row)">
         <mat-icon>delete_outline</mat-icon>
       </button>
