@@ -45,6 +45,7 @@ export class ContractAddEditDialogComponent implements OnInit {
     private customerService: CustomerService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ContractAddEditDialogComponent>,
+
     @Inject(MAT_DIALOG_DATA) public data: ContractAddEditDialogData) {
       this.title = data.title;
       if (data.contract) {
@@ -66,7 +67,7 @@ export class ContractAddEditDialogComponent implements OnInit {
     this.form = this.fb.group({
         name: [this.contract.name, validatorsName],
         description: [this.contract.description, []],
-        contractTypeName: [{value: this.contract.contractTypeName, disabled: this.editMode}, []],
+        contractType: [{value: this.contract.contractType, disabled: this.editMode}, []],
         customer: [{value: this.contract.customer, disabled: this.editMode}, []],
         orderNumber: [this.contract.orderNumber, []],
         orderDate: [this.contract.orderDate, []],
@@ -117,7 +118,7 @@ export class ContractAddEditDialogComponent implements OnInit {
       this.contract.plannedStart = this.form.controls.plannedStart.value;
       this.contract.plannedEnd = this.form.controls.plannedEnd.value;
       if (!this.editMode) {
-        this.contract.contractTypeName = this.form.controls.contractType.value;
+        this.contract.contractType = this.form.controls.contractType.value;
         this.contract.customer = this.form.controls.customer.value;
       }
       this.dialogRef.close( { contract: this.contract } );

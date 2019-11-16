@@ -7,7 +7,7 @@ export class Contract {
     customer: Customer;
     archived = false;
     deleted = false;
-    contractTypeName: string;
+    contractType: string;
     orderNumber: string;
     orderDate: Date;
     plannedStart: Date;
@@ -17,6 +17,7 @@ export class Contract {
 export class ContractDto {
   id: number;
   name: string;
+  contractType: string;
   contractTypeName: string;
   customerId: number;
   customerName: string;
