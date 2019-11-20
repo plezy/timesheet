@@ -203,6 +203,16 @@ export class ContractListComponent implements OnInit {
     });
   }
 
+  clickDetail(row: ContractDto) {
+    console.log('Row contract clicked : ' + row.id.toString());
+    if (row.contractType === "TIMES_MEANS") {
+      this.router.navigate(['/cntrct/tm-details', {contractId: row.id }]);
+    }
+    if (row.contractType === "PROJECT") {
+      this.router.navigate(['/cntrct/pj-details', {contractId: row.id }]);
+    }
+  }
+
   /**
    * UI multiple delete
    */

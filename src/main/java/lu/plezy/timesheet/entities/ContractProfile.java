@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,8 +50,10 @@ public class ContractProfile {
     private Date createdOn;
 
     /* Contract */
-    @ManyToOne(targetEntity=Contract.class)
+    @ManyToOne(targetEntity=Contract.class, fetch = FetchType.LAZY)
     @JoinColumn(name="CONTRACT_ID")
+    @JsonIgnore // to prevent errors on serialization due to lazy initialization
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // to prevent errors on serialization due to lazy initialization, in this case data is fetched
     private Contract contract;
 
     @NonNull
@@ -65,21 +71,22 @@ public class ContractProfile {
     @Column(name = "HOURLY_RATE")
     private Double hourlyRate;
 
-    /* Minimum units (hours) invoiced */
+    /* Minimum units (hours) invoiced per day */
     @Column(name = "MIN_DAILY_INVOICED")
     private Integer minimumDailyInvoiced;
     
-    /* Maximum units (hours) invoiced */
+    /* Maximum units (hours) invoiced per day */
     @Column(name = "MAX_DAILY_INVOICED")
     private Integer maximumDailyInvoiced;
     
     /* Daily units modules (hours) invoiced */
-    @Column(name = "DAIY_MULT_INVOICED")
+    /* TODO: explain usage ... not used for the moement */
+    @Column(name = "DAILY_MULT_INVOICED")
     private Integer multipleUnitInvoiced;
 
     @ManyToMany
 	@JoinTable(name = "USERS_CONTRACT_PROFILES",
 		joinColumns = { @JoinColumn(name = "CPF_ID") },
 		inverseJoinColumns = { @JoinColumn(name = "USR_ID") })
-	private List<User> authors = new ArrayList<User>();
+	private List<User> assignees = new ArrayList<User>();
 }

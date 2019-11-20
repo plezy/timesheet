@@ -6,11 +6,6 @@ table {
     padding: 0px 5px 0px 5px;
 }
 
-.check-box-label {
-    font-size: 14px;
-    font-weight: 400;
-}
-
 .mat-row:hover {
     background: #eee;
 }
