@@ -9,3 +9,9 @@ table {
 .mat-row:hover {
     background: #eee;
 }
+
+.col-head {
+    background: #eee;
+    color: #888;
+    font-weight: bold;
+}

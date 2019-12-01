@@ -21,7 +21,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -79,10 +78,16 @@ public class ContractProfile {
     @Column(name = "MAX_DAILY_INVOICED")
     private Integer maximumDailyInvoiced;
     
-    /* Daily units modules (hours) invoiced */
-    /* TODO: explain usage ... not used for the moement */
+    /**
+     * Daily units modules (hours) invoiced.
+     * This number is used to check granularity of the amount of hours to be invoiced
+     * If you need two invoice only multiple of 4 hours, indicate 4.
+     * If you can invoice by half of hours, indicate here 0.5
+     * 0 -> check is not performed
+     * Could be a limited range of values -> 0: disabled, quarter hour, half hour, 1, 2 or 4 hours
+     */
     @Column(name = "DAILY_MULT_INVOICED")
-    private Integer multipleUnitInvoiced;
+    private Double multipleUnitInvoiced;
 
     @ManyToMany
 	@JoinTable(name = "USERS_CONTRACT_PROFILES",

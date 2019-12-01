@@ -1,12 +1,12 @@
 <h2>Times & Means Contract Details</h2>
 <br/>
 <table>
-  <tr><td>Contract's Name : &nbsp;</td><td>{{contract?.name}}</td></tr>
-  <tr><td>Customer's Name : &nbsp;</td><td>{{contract?.customer.name}}</td></tr>
+  <tr class="row"><td class="col-md-4 col-head">Contract's Name : &nbsp;</td><td class="col-md-8">{{contract?.name}}</td></tr>
+  <tr class="row"><td class="col-md-4 col-head">Customer's Name : &nbsp;</td><td class="col-md-8">{{contract?.customer.name}}</td></tr>
 </table>
 <br/>
 <h3>Profiles</h3>
-<div id="form-container">
+<div id="list">
   <table mat-table [dataSource]="profiles">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Profile Name </th>
@@ -32,6 +32,7 @@
       <th mat-header-cell *matHeaderCellDef> Max. daily<BR/>invoice </th>
       <td mat-cell style="text-align: right;" *matCellDef="let profile"> {{profile.maximumDailyInvoiced}} </td>
     </ng-container>
+
 <!--
     multipleUnitInvoiced: number;
 -->
@@ -55,8 +56,8 @@
           </button>
       </th>
 
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button title="Edit Profile" (click)="clickEdit(row)">
+      <td mat-cell *matCellDef="let row; let i = index;">
+        <button mat-icon-button title="Edit Profile" (click)="clickEdit(row, i)">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -72,7 +73,8 @@
       <span class="spacer"></span>
       <button mat-raised-button (click)="cancel()">Cancel</button>
       <!--button mat-raised-button  color="primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button-->
-      <button mat-raised-button  color="primary" (click)="save()">Save</button>
+      &nbsp;
+      <button mat-raised-button  color="primary" [disabled]="saveDisabled" (click)="save()">Save</button>
     </mat-toolbar-row>  
   </mat-toolbar>
 

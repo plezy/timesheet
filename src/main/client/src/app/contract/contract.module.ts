@@ -4,15 +4,21 @@ import { ContractRoutingModule } from './contract-routing.module';
 import { MaterialModule } from '../material.module';
 import { ContractListComponent } from './contract-list/contract-list.component';
 import { ContractAddEditDialogComponent } from './contract-add-edit-dialog/contract-add-edit-dialog.component';
-import { ContratAddEditTmDetailsComponent } from './contrat-add-edit-tm-details/contrat-add-edit-tm-details.component';
+import { ContractListTmDetailsComponent } from './contract-list-tm-details/contract-list-tm-details.component';
+import { ContractAddEditTmProfileDialogComponent } from './contract-add-edit-tm-profile-dialog/contract-add-edit-tm-profile-dialog.component';
 
 @NgModule({
-  declarations: [ ContractListComponent, ContractAddEditDialogComponent, ContratAddEditTmDetailsComponent ],
+  declarations: [ 
+    ContractListComponent, 
+    ContractAddEditDialogComponent, 
+    ContractListTmDetailsComponent, 
+    ContractAddEditTmProfileDialogComponent 
+  ],
   imports: [
     CommonModule,
     ContractRoutingModule,
     MaterialModule
   ],
-  entryComponents: [ ContractAddEditDialogComponent ]
+  entryComponents: [ ContractAddEditDialogComponent, ContractAddEditTmProfileDialogComponent ]
 })
 export class ContractModule { }

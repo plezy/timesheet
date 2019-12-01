@@ -4,7 +4,7 @@ export class ContractProfile {
     id: number;
     name: string;
     description: string;
-    completed: false;
+    completed: boolean;
     hourlyRate: number;
     maximumDailyInvoiced: number;
     minimumDailyInvoiced: number;
