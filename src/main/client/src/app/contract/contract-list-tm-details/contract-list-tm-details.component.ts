@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ContractService } from 'src/app/common/services/contract.service';
@@ -9,7 +9,8 @@ import { Contract } from 'src/app/common/model/contract';
 import { User } from 'src/app/common/model/user';
 import { ContractProfile } from 'src/app/common/model/contractProfile';
 import { ContractAddEditTmProfileDialogComponent } from '../contract-add-edit-tm-profile-dialog/contract-add-edit-tm-profile-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, throwMatDialogContentAlreadyAttachedError, MatTableDataSource } from '@angular/material';
+import G = require('glob');
 
 @Component({
   selector: 'app-contract-list-tm-details',
@@ -21,7 +22,9 @@ export class ContractListTmDetailsComponent implements OnInit {
   contract: Contract;
   contractId: number;
   me: User;
-  profiles: ContractProfile[];
+  //profiles: ContractProfile[];
+  datasource: MatTableDataSource<ContractProfile>; 
+
   displayedColumns: string[] = [ 'name', 'description', 'hourlyRate', 'minimumDailyInvoiced',
           'maximumDailyInvoiced', 'multipleUnitInvoiced', 'completed', 'action'];
   saveDisabled = true;
@@ -30,7 +33,7 @@ export class ContractListTmDetailsComponent implements OnInit {
     private profileService: ContractProfileService,
     private authService: AuthService, private userService: UserService,
     private activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private router: Router, private location: Location) { }
 
   ngOnInit() {
@@ -80,7 +83,8 @@ export class ContractListTmDetailsComponent implements OnInit {
   loadData() {
       this.profileService.getProfileForCOntract(this.contractId).subscribe( profiles =>{
         console.log(profiles);
-        this.profiles = profiles;
+        //this.profiles = profiles;
+        this.datasource = new MatTableDataSource(profiles);
         this.saveDisabled = true;
       });
   }
@@ -95,16 +99,8 @@ export class ContractListTmDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  toggleCompleted(profile: ContractProfile) {
-    this.profiles.some(element => {
-      if (element.id == profile.id) {
-        console.log('Toggling profile id : ' + element.id);
-        element.completed = !profile.completed;
-        this.saveDisabled = false;
-        return true; // exit if found
-      }
-      return false; //  continue if not found
-    });
+  toggleCompleted(index: number) {
+    this.datasource.data[index].completed = ! this.datasource.data[index].completed
   }
 
   /**
@@ -119,11 +115,9 @@ export class ContractListTmDetailsComponent implements OnInit {
       if (result) {
         console.log(result);
         if (result.profile) {
-          let profilesClone :ContractProfile[];
-          profilesClone = this.profiles;
-          profilesClone.push(result.profile);
-          //console.log(profilesClone);
-          this.profiles = profilesClone;
+          let profiles: ContractProfile[] = this.datasource.data;
+          profiles.push(result.profile);
+          this.datasource = new MatTableDataSource(profiles);
           this.saveDisabled = false;
         }
       }
@@ -143,13 +137,11 @@ export class ContractListTmDetailsComponent implements OnInit {
       if (result) {
         console.log(result);
         if (result.profile) {
-          this.profiles[index] = result.profile;
+          this.datasource.data[index] = result.profile;
           this.saveDisabled = false;
-          console.log(this.profiles);
+          console.log(this.datasource.data);
         }
       }
     });
   }
-
-
 }

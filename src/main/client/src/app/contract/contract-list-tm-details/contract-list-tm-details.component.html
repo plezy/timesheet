@@ -7,7 +7,7 @@
 <br/>
 <h3>Profiles</h3>
 <div id="list">
-  <table mat-table [dataSource]="profiles">
+  <table mat-table [dataSource]="datasource">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Profile Name </th>
       <td mat-cell *matCellDef="let profile"> {{profile.name}} </td>
@@ -40,9 +40,9 @@
 
     <ng-container matColumnDef="completed">
       <th mat-header-cell *matHeaderCellDef> Completed </th>
-      <td mat-cell style="text-align: center;" *matCellDef="let profile">
+      <td mat-cell style="text-align: center;" *matCellDef="let profile; let i = index;">
         <mat-checkbox (click)="$event.stopPropagation()"
-            (change)="$event ? toggleCompleted(profile) : null"
+            (change)="$event ? toggleCompleted(i) : null"
             [checked]="profile.completed"
             aria-label="Task completion state">
         </mat-checkbox>
