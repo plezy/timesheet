@@ -23,7 +23,7 @@ export class ContractListTmDetailsComponent implements OnInit {
   me: User;
   profiles: ContractProfile[];
   displayedColumns: string[] = [ 'name', 'description', 'hourlyRate', 'minimumDailyInvoiced',
-          'maximumDailyInvoiced', 'completed', 'action'];
+          'maximumDailyInvoiced', 'multipleUnitInvoiced', 'completed', 'action'];
   saveDisabled = true;
 
   constructor(private contractService: ContractService, 
@@ -119,7 +119,11 @@ export class ContractListTmDetailsComponent implements OnInit {
       if (result) {
         console.log(result);
         if (result.profile) {
-          this.profiles.push(result.profile);
+          let profilesClone :ContractProfile[];
+          profilesClone = this.profiles;
+          profilesClone.push(result.profile);
+          //console.log(profilesClone);
+          this.profiles = profilesClone;
           this.saveDisabled = false;
         }
       }
@@ -141,6 +145,7 @@ export class ContractListTmDetailsComponent implements OnInit {
         if (result.profile) {
           this.profiles[index] = result.profile;
           this.saveDisabled = false;
+          console.log(this.profiles);
         }
       }
     });

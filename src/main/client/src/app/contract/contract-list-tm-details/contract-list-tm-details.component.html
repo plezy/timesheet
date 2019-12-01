@@ -33,9 +33,10 @@
       <td mat-cell style="text-align: right;" *matCellDef="let profile"> {{profile.maximumDailyInvoiced}} </td>
     </ng-container>
 
-<!--
-    multipleUnitInvoiced: number;
--->
+    <ng-container matColumnDef="multipleUnitInvoiced">
+      <th mat-header-cell *matHeaderCellDef> Unit increment<BR/>invoiced </th>
+      <td mat-cell style="text-align: right;" *matCellDef="let profile"> {{profile.multipleUnitInvoiced}} </td>
+    </ng-container>
 
     <ng-container matColumnDef="completed">
       <th mat-header-cell *matHeaderCellDef> Completed </th>
