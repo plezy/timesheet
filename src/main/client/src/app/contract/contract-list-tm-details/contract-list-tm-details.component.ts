@@ -10,7 +10,6 @@ import { User } from 'src/app/common/model/user';
 import { ContractProfile } from 'src/app/common/model/contractProfile';
 import { ContractAddEditTmProfileDialogComponent } from '../contract-add-edit-tm-profile-dialog/contract-add-edit-tm-profile-dialog.component';
 import { MatDialog, throwMatDialogContentAlreadyAttachedError, MatTableDataSource } from '@angular/material';
-import G = require('glob');
 
 @Component({
   selector: 'app-contract-list-tm-details',

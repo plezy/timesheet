@@ -8,6 +8,7 @@ import lu.plezy.timesheet.entities.RoleEnum;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.Role;
 import lu.plezy.timesheet.entities.messages.RoleSet;
+import lu.plezy.timesheet.entities.messages.UserDto;
 import lu.plezy.timesheet.entities.messages.MessageDto;
 import lu.plezy.timesheet.i18n.StaticText;
 import lu.plezy.timesheet.repository.UsersRepository;
@@ -532,4 +533,16 @@ public class ManageUserController {
         return user;
     }
 
+    /**
+     * Gets filtered Billeable users. These are users which have the rights to record times in timesheet
+     * 
+     */
+
+     @PostMapping(value = "/billable")
+     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
+     List<UserDto> getInvoiceableUsers(@Valid @RequestBody MessageDto message) {
+        Integer size = message.getNumber() == null ? 10 : message.getNumber();
+        List<User> users = usersRepository.findWithFilter(message.getMessage(), PageRequest.of(0, size));
+        return users.stream().map(user->UserDto.convertToDto(user)).collect(Collectors.toList());
+     }
 }
