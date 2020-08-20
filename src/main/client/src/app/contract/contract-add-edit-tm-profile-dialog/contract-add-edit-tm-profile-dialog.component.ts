@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ContractProfile } from 'src/app/common/model/contractProfile';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface ContractAddEditTmProfileDialogData {
   title: string;
@@ -19,15 +19,15 @@ const validatorsDesc = [Validators.required, Validators.minLength(6), Validators
 })
 export class ContractAddEditTmProfileDialogComponent implements OnInit {
 
-  private title: string;
+  public title: string;
   private profile: ContractProfile;
   public editMode = true;
-  private form: FormGroup;
+  public form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ContractAddEditTmProfileDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ContractAddEditTmProfileDialogData) { 
+    @Inject(MAT_DIALOG_DATA) public data: ContractAddEditTmProfileDialogData) {
       this.title = data.title;
       if (data.profile) {
         this.profile = data.profile;

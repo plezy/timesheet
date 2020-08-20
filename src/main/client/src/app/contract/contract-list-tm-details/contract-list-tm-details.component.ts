@@ -9,7 +9,8 @@ import { Contract } from 'src/app/common/model/contract';
 import { User } from 'src/app/common/model/user';
 import { ContractProfile } from 'src/app/common/model/contractProfile';
 import { ContractAddEditTmProfileDialogComponent } from '../contract-add-edit-tm-profile-dialog/contract-add-edit-tm-profile-dialog.component';
-import { MatDialog, throwMatDialogContentAlreadyAttachedError, MatTableDataSource } from '@angular/material';
+import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table'
 
 @Component({
   selector: 'app-contract-list-tm-details',
@@ -22,13 +23,13 @@ export class ContractListTmDetailsComponent implements OnInit {
   contractId: number;
   me: User;
   //profiles: ContractProfile[];
-  datasource: MatTableDataSource<ContractProfile>; 
+  datasource: MatTableDataSource<ContractProfile>;
 
   displayedColumns: string[] = [ 'name', 'description', 'hourlyRate', 'minimumDailyInvoiced',
           'maximumDailyInvoiced', 'multipleUnitInvoiced', 'completed', 'action'];
   saveDisabled = true;
 
-  constructor(private contractService: ContractService, 
+  constructor(private contractService: ContractService,
     private profileService: ContractProfileService,
     private authService: AuthService, private userService: UserService,
     private activatedRoute: ActivatedRoute,
@@ -66,7 +67,7 @@ export class ContractListTmDetailsComponent implements OnInit {
       // + needed to covert string to number
       this.contractId = +params.get('contractId');
       this.contractService.getContract(this.contractId).subscribe(contract => {
-          this.contract = contract; 
+          this.contract = contract;
           console.log(contract);
         });
     });
