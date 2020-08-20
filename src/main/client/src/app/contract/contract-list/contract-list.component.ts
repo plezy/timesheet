@@ -4,7 +4,7 @@ import { ContractDto } from 'src/app/common/model/contract';
 import { User } from 'src/app/common/model/user';
 import { UserService } from 'src/app/common/services/user.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ContractService } from 'src/app/common/services/contract.service';
 import { ContractAddEditDialogComponent } from '../contract-add-edit-dialog/contract-add-edit-dialog.component';
