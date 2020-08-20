@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Customer } from 'src/app/common/model/customer';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Address } from 'src/app/common/model/address';
 
 export interface CustomerAddEditDialogData {
@@ -29,8 +29,8 @@ const validatorsCity = [Validators.required, Validators.maxLength(80)];
 
 export class CustomerAddEditDialogComponent implements OnInit {
 
-  private form: FormGroup;
-  private title: string;
+  public form: FormGroup;
+  public title: string;
   private customer: Customer;
   private editMode = true;
 
@@ -133,7 +133,7 @@ export class CustomerAddEditDialogComponent implements OnInit {
       } else {
         this.customer.billingAddress = null;
       }
-      
+
       this.dialogRef.close( { customer: this.customer } );
     }
   }

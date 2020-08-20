@@ -6,7 +6,7 @@ import { User } from 'src/app/common/model/user';
 import { CustomerService } from 'src/app/common/services/customer.service';
 import { Page } from 'src/app/common/model/page';
 import { Customer } from 'src/app/common/model/customer';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { CustomerAddEditDialogComponent } from '../cust-add-edit-dialog/cust-add-edit-dialog.component';
 import { ConfirmDialogComponent } from 'src/app/common/dialog/confirm-dialog/confirm-dialog.component';
 

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  private form: FormGroup;
+  public form: FormGroup;
   private id: number;
   private username: string;
   private roles: string[];

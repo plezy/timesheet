@@ -11,7 +11,7 @@ import { AuthService } from '../../auth/auth.service';
 export class GitComponent implements OnInit {
 
   private gitInfos: any;
-  private gitInfosKeys: Array<string>;
+  public gitInfosKeys: Array<string>;
 
   displayedColumns: string[] = ['key', 'value'];
 

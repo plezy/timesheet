@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from 'src/app/common/model/user';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
@@ -7,6 +7,7 @@ export interface UserAddEditDialogData {
   title: string;
   user: User;
 }
+
 @Component({
   selector: 'app-user-add-edit-dialog',
   templateUrl: './user-add-edit-dialog.component.html',
@@ -18,10 +19,10 @@ export interface UserAddEditDialogData {
 })
 export class UserAddEditDialogComponent implements OnInit {
 
-  private form: FormGroup;
-  private title: string;
-  private user: User;
-  private editMode = true;
+  public form: FormGroup;
+  public title: string;
+  public user: User;
+  public editMode = true;
 
   constructor(
     private fb: FormBuilder,

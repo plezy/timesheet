@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class JavaComponent implements OnInit {
 
   private javaInfos: any;
-  private javaInfosKeys: Array<string>;
+  public javaInfosKeys: Array<string>;
 
   displayedColumns: string[] = ['key', 'value'];
 

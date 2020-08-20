@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class EnvComponent implements OnInit {
 
   private envInfos: any;
-  private envInfosKeys: Array<string>;
+  public envInfosKeys: Array<string>;
 
   displayedColumns: string[] = ['key', 'value'];
 
