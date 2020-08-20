@@ -18,6 +18,7 @@ export class ContractDto {
   id: number;
   name: string;
   contractType: string;
+  contractTypeName: string;
   customerId: number;
   customerName: string;
   plannedStart: Date;

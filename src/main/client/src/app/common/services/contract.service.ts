@@ -90,8 +90,8 @@ export class ContractService {
         return this.http.get<Customer[]>(url);
     }
 
-    getContract(id: Number): Observable<Customer> {
+    getContract(id: Number): Observable<Contract> {
         const url = this.contractBaseUrl + '/' + id.toString();
-        return this.http.get<Customer>(url);
+        return this.http.get<Contract>(url);
     }
 }

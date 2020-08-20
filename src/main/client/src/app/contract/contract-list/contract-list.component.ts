@@ -66,6 +66,8 @@ export class ContractListComponent implements OnInit {
       this.contractService.getArchivedContracts(this.pageSize, this.pageIndex).subscribe(
         result =>  {
           this.page = result;
+          console.log('getArchivedContracts result : ');
+          console.log(result);
         }
       );
     } else {
@@ -73,12 +75,16 @@ export class ContractListComponent implements OnInit {
         this.contractService.getAllContracts(this.pageSize, this.pageIndex).subscribe(
           result =>  {
             this.page = result;
+            console.log('getAllContracts result : ');
+            console.log(result);
           }
         );
       } else {
         this.contractService.getContracts(this.pageSize, this.pageIndex).subscribe(
           result =>  {
             this.page = result;
+            console.log('getContracts result : ');
+            console.log(result);
           }
         );
       }
@@ -270,9 +276,9 @@ export class ContractListComponent implements OnInit {
   checkboxLabel(row?: ContractDto): string {
     // console.log('in checkboxLabel for row ' + (!row ? 'undefined' : row.name));
     if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.isSelected(row)} ? 'deselect' : 'select'} row ${row.id}`;
+    return `${this.isSelected(row) ? 'select' : 'deselect'} row ${row.id}`;
   }
 
   /** Delete selected ids */

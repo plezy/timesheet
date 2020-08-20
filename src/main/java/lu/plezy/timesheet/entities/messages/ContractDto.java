@@ -12,6 +12,7 @@ import lu.plezy.timesheet.i18n.StaticText;
 public class ContractDto {
     private long id;
     private String name;
+    private String contractType;
     private String contractTypeName;
     private long customerId;
     private String customerName;
@@ -24,6 +25,7 @@ public class ContractDto {
         return new ContractDto(
             contract.getId(),
             contract.getName(),
+            contract.getContractType().name(),
             StaticText.getInstance().getText(contract.getContractType().toString()),
             contract.getCustomer().getId(),
             contract.getCustomer().getName(),
