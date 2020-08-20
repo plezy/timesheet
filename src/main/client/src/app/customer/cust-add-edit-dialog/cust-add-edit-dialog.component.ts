@@ -29,8 +29,8 @@ const validatorsCity = [Validators.required, Validators.maxLength(80)];
 
 export class CustomerAddEditDialogComponent implements OnInit {
 
-  private form: FormGroup;
-  private title: string;
+  public form: FormGroup;
+  public title: string;
   private customer: Customer;
   private editMode = true;
 
@@ -133,7 +133,7 @@ export class CustomerAddEditDialogComponent implements OnInit {
       } else {
         this.customer.billingAddress = null;
       }
-      
+
       this.dialogRef.close( { customer: this.customer } );
     }
   }

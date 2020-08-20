@@ -15,8 +15,8 @@ import { User } from 'src/app/common/model/user';
 })
 export class UserSetPasswordDialogComponent implements OnInit {
 
-  private form: FormGroup;
-  private user: User;
+  public form: FormGroup;
+  public user: User;
 
   constructor(
     private fb: FormBuilder,

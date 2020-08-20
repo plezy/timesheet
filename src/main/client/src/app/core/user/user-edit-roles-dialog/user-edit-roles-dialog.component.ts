@@ -26,9 +26,9 @@ export class UserEditRolesDialogData {
 })
 export class UserEditRolesDialogComponent implements OnInit {
 
-  private form: FormGroup;
-  private user: User;
-  private listRoles: Role[];
+  public form: FormGroup;
+  public user: User;
+  public listRoles: Role[];
   private selectedRolesID: string[];
 
   constructor(

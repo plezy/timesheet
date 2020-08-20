@@ -24,17 +24,17 @@ const validatorsName = [Validators.required, Validators.minLength(6), Validators
 })
 export class ContractAddEditDialogComponent implements OnInit {
 
-  private title: string;
+  public title: string;
   private contract: Contract;
   public editMode = true;
-  private form: FormGroup;
+  public form: FormGroup;
 
   /** Customer autocomplete */
   filteredCustomerList: any;
   selectedCustomer: CustomerDto;
   isLoading = false;
 
-  private types: ContractType[];
+  public types: ContractType[];
   /*
    = [
     {id: "PROJECT", description: "Projet"},

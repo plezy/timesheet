@@ -12,12 +12,12 @@ import { fbind } from 'q';
 })
 export class PasswordComponent implements OnInit {
 
-  private form: FormGroup;
+  public form: FormGroup;
 
   private id: number;
-  private username: string;
-  private firstName: string;
-  private lastName: string;
+  public username: string;
+  public firstName: string;
+  public lastName: string;
 
   constructor(private fb: FormBuilder, private userService: UserService, private authService: AuthService, private router: Router) { }
 
