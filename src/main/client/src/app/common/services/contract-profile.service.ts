@@ -8,12 +8,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ContractProfileService {
 
-  private contractProfileBaseUrl = '/profile';
+  private contractProfileBaseUrl = '/contract/profiles';
 
   constructor(private http: HttpClient) { }
 
   getProfileForCOntract(contractId: number): Observable<ContractProfile[]> {
-      const url = this.contractProfileBaseUrl + '/for/' + contractId.toString();
+      const url = this.contractProfileBaseUrl + "/" + contractId.toString();
       return this.http.get<ContractProfile[]>(url);
   }
 }
