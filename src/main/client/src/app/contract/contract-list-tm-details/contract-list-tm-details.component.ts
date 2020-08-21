@@ -26,7 +26,7 @@ export class ContractListTmDetailsComponent implements OnInit {
   datasource: MatTableDataSource<ContractProfile>;
 
   displayedColumns: string[] = [ 'name', 'description', 'hourlyRate', 'minimumDailyInvoiced',
-          'maximumDailyInvoiced', 'multipleUnitInvoiced', 'completed', 'action'];
+          'maximumDailyInvoiced', 'multipleUnitInvoiced', 'assignments', 'completed', 'action'];
   saveDisabled = true;
 
   constructor(private contractService: ContractService,
@@ -143,5 +143,15 @@ export class ContractListTmDetailsComponent implements OnInit {
         }
       }
     });
+  }
+
+  /** add task assignment */
+  addAssignment(profile: ContractProfile, index: number) {
+    console.log("add assignment on profile " + profile.name)
+  }
+
+  /** remove assignment */
+  removeAssignment(profile: ContractProfile, assignee: User) {
+    console.log("remove '" + assignee.firstName + " " + assignee.lastName + "' from profile " + profile.name);
   }
 }

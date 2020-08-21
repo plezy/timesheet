@@ -1,9 +1,7 @@
 <h2>Times & Means Contract Details</h2>
 <br/>
-<table>
-  <tr class="row"><td class="col-md-4 col-head">Contract's Name : &nbsp;</td><td class="col-md-8">{{contract?.name}}</td></tr>
-  <tr class="row"><td class="col-md-4 col-head">Customer's Name : &nbsp;</td><td class="col-md-8">{{contract?.customer.name}}</td></tr>
-</table>
+<h3>Contract</h3>
+  <span style="padding-left: 10px;">{{contract?.customer.name}}</span>&nbsp;/&nbsp;<span>{{contract?.name}}</span>
 <br/>
 <h3>Profiles</h3>
 <div id="list">
@@ -20,27 +18,41 @@
 
     <ng-container matColumnDef="hourlyRate">
       <th mat-header-cell *matHeaderCellDef> Hourly<BR/>Rate </th>
-      <td mat-cell style="text-align: right;" *matCellDef="let profile"> {{profile.hourlyRate}} </td>
+      <td mat-cell style="text-align: justify-all;" *matCellDef="let profile"> {{profile.hourlyRate}} </td>
     </ng-container>
 
     <ng-container matColumnDef="minimumDailyInvoiced">
       <th mat-header-cell *matHeaderCellDef> Min. daily<BR/>invoice </th>
-      <td mat-cell style="text-align: right;" *matCellDef="let profile"> {{profile.minimumDailyInvoiced}} </td>
+      <td mat-cell style="text-align: justify-all;" *matCellDef="let profile"> {{profile.minimumDailyInvoiced}} </td>
     </ng-container>
 
     <ng-container matColumnDef="maximumDailyInvoiced">
       <th mat-header-cell *matHeaderCellDef> Max. daily<BR/>invoice </th>
-      <td mat-cell style="text-align: right;" *matCellDef="let profile"> {{profile.maximumDailyInvoiced}} </td>
+      <td mat-cell style="text-align: justify-all;" *matCellDef="let profile"> {{profile.maximumDailyInvoiced}} </td>
     </ng-container>
 
     <ng-container matColumnDef="multipleUnitInvoiced">
       <th mat-header-cell *matHeaderCellDef> Unit increment<BR/>invoiced </th>
-      <td mat-cell style="text-align: right;" *matCellDef="let profile"> {{profile.multipleUnitInvoiced}} </td>
+      <td mat-cell style="text-align: justify-all;" *matCellDef="let profile"> {{profile.multipleUnitInvoiced}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="assignments">
+      <th mat-header-cell *matHeaderCellDef> Assignments </th>
+      <td mat-cell style="text-align: left;" *matCellDef="let profile">
+        <mat-chip-list aria-label="Assignments">
+          <mat-chip *ngFor="let assignee of profile.assignees"
+            [removable]=true
+            (removed)="removeAssignment(profile, assignee)">
+            {{assignee.firstName}} {{assignee.lastName}}
+            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="completed">
       <th mat-header-cell *matHeaderCellDef> Completed </th>
-      <td mat-cell style="text-align: center;" *matCellDef="let profile; let i = index;">
+      <td mat-cell style="text-align: justify-all;" *matCellDef="let profile; let i = index;">
         <mat-checkbox (click)="$event.stopPropagation()"
             (change)="$event ? toggleCompleted(i) : null"
             [checked]="profile.completed"
@@ -57,26 +69,29 @@
           </button>
       </th>
 
-      <td mat-cell *matCellDef="let row; let i = index;">
-        <button mat-icon-button title="Edit Profile" (click)="clickEdit(row, i)">
+      <td mat-cell *matCellDef="let profile; let i = index;">
+        <button mat-icon-button title="Edit Profile" (click)="clickEdit(profile, i)">
           <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button title="Add assignment" (click)="addAssignment(profile, i)">
+          <mat-icon>person_add</mat-icon>
         </button>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let profile; columns: displayedColumns;"></tr>
-  
+
   </table>
 
   <mat-toolbar>
-    <mat-toolbar-row>  
+    <mat-toolbar-row>
       <span class="spacer"></span>
       <button mat-raised-button (click)="cancel()">Cancel</button>
       <!--button mat-raised-button  color="primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button-->
       &nbsp;
       <button mat-raised-button  color="primary" [disabled]="saveDisabled" (click)="save()">Save</button>
-    </mat-toolbar-row>  
+    </mat-toolbar-row>
   </mat-toolbar>
 
 </div>
