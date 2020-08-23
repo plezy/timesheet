@@ -27,10 +27,16 @@ public interface UsersRepository extends JpaRepository<User, Long> {
     Boolean existsByEmail(String email);
 
     @Query("SELECT u FROM #{#entityName} u " +
-           "WHERE (UPPER(u.firstName) LIKE CONCAT('%', UPPER(:filter), '%') OR UPPER(u.lastName) LIKE CONCAT('%', UPPER(:filter), '%')) " +
-           "AND u.deleted=false " +
-           "AND 'ENTER_TIME_TRACK' MEMBER OF u.roles " +
-           "ORDER BY u.firstName, u.lastName")
-    List<User> findWithFilter(@Param("filter") String filter, Pageable pageable);
+            "WHERE (UPPER(u.firstName) LIKE CONCAT('%', UPPER(:filter), '%') OR UPPER(u.lastName) LIKE CONCAT('%', UPPER(:filter), '%')) " +
+            "AND u.deleted=false " +
+            "AND 'ENTER_TIME_TRACK' MEMBER OF u.roles " +
+            "ORDER BY u.firstName, u.lastName")
+    List<User> findBillableWithFilter(@Param("filter") String filter);
+
+    @Query("SELECT u FROM #{#entityName} u " +
+            "WHERE u.deleted=false " +
+            "AND 'ENTER_TIME_TRACK' MEMBER OF u.roles " +
+            "ORDER BY u.firstName, u.lastName")
+    List<User> findBillable();
 
 }

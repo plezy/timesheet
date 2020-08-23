@@ -11,6 +11,7 @@ import { ContractProfile } from 'src/app/common/model/contractProfile';
 import { ContractAddEditTmProfileDialogComponent } from '../contract-add-edit-tm-profile-dialog/contract-add-edit-tm-profile-dialog.component';
 import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table'
+import {ContractTmAddAssigneeDialogComponent} from "../contract-tm-add-assignee-dialog/contract-tm-add-assignee-dialog.component";
 
 @Component({
   selector: 'app-contract-list-tm-details',
@@ -53,15 +54,7 @@ export class ContractListTmDetailsComponent implements OnInit {
         this.me = me;
       }
     );
-    /*
-    this.contract = this.activatedRoute.paramMap.pipe(
-      switchMap(params => {
-        console.log(params);
-        this.contractId = +params.get('contractId');
-        return this.contractService.getContract(this.contractId);
-      })
-    );
-    */
+
     this.activatedRoute.paramMap.subscribe(params => {
       console.log(params);
       // + needed to covert string to number
@@ -83,7 +76,6 @@ export class ContractListTmDetailsComponent implements OnInit {
   loadData() {
       this.profileService.getProfileForCOntract(this.contractId).subscribe( profiles =>{
         console.log(profiles);
-        //this.profiles = profiles;
         this.datasource = new MatTableDataSource(profiles);
         this.saveDisabled = true;
       });
@@ -146,12 +138,30 @@ export class ContractListTmDetailsComponent implements OnInit {
   }
 
   /** add task assignment */
-  addAssignment(profile: ContractProfile, index: number) {
-    console.log("add assignment on profile " + profile.name)
+  addAssignment(profile: ContractProfile) {
+    console.log("add assignment on profile " + profile.name);
+
+    this.profileService.getAssignable(profile.id).subscribe(users => {
+        const dialogRef = this.dialog.open(ContractTmAddAssigneeDialogComponent, {
+          width: '700px', data: { title: 'Add Assignee', users: users }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('dialog closed');
+          if (result) {
+            if (result.assignees) {
+              if (result.assignees.length > 0) {
+                this.profileService.addAssignees(this.contract.id, profile.id, result.assignees).subscribe(result => { this.loadData() });
+              }
+            }
+          }
+        });
+    });
+
   }
 
   /** remove assignment */
   removeAssignment(profile: ContractProfile, assignee: User) {
-    console.log("remove '" + assignee.firstName + " " + assignee.lastName + "' from profile " + profile.name);
+    console.log("remove '" + assignee.firstName + " " + assignee.lastName + "' ("+ assignee.id + ") from contract ID: " + this.contract.id + ", profile ID : " + profile.id);
+    this.profileService.removeAssignee(this.contract.id, profile.id, [ assignee.id ]).subscribe(result => { this.loadData() });
   }
 }

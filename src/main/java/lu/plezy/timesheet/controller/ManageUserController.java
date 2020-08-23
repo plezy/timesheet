@@ -274,7 +274,7 @@ public class ManageUserController {
      * @param user User entity
      */
     @Transactional
-    private void deleteUserLogically(User user) {
+    void deleteUserLogically(User user) {
         user.setDeleted(true);
         // update user for logical deletion
         log.info("Perform user logical deletion");
@@ -288,7 +288,7 @@ public class ManageUserController {
      * @param id user's ID
      */
     @Transactional
-    private void deleteUserPhysically(Long id) {
+    void deleteUserPhysically(Long id) {
         // attempt physical deletion is possible ...
         log.info("Attempt user physical deletion");
         try {
@@ -542,7 +542,7 @@ public class ManageUserController {
      @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
      List<UserDto> getInvoiceableUsers(@Valid @RequestBody MessageDto message) {
         Integer size = message.getNumber() == null ? 10 : message.getNumber();
-        List<User> users = usersRepository.findWithFilter(message.getMessage(), PageRequest.of(0, size));
+        List<User> users = usersRepository.findBillableWithFilter(message.getMessage());
         return users.stream().map(user->UserDto.convertToDto(user)).collect(Collectors.toList());
      }
 }

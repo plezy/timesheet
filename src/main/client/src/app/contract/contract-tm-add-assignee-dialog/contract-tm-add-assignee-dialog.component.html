@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<mat-dialog-content>
+  <mat-selection-list #selectedUsers>
+    <mat-list-option *ngFor="let user of users" [value]="user.id">
+      {{user.firstName}} {{user.lastName}}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <span class="spacer"></span>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button  color="primary" [disabled]="selectedUsers.selectedOptions.selected.length < 1" (click)="ok(selectedUsers.selectedOptions.selected)">Ok</button>
+</mat-dialog-actions>

@@ -7,13 +7,15 @@ import { ContractAddEditDialogComponent } from './contract-add-edit-dialog/contr
 import { ContractListTmDetailsComponent } from './contract-list-tm-details/contract-list-tm-details.component';
 import { ContractAddEditTmProfileDialogComponent } from './contract-add-edit-tm-profile-dialog/contract-add-edit-tm-profile-dialog.component';
 import { MatChipsModule } from "@angular/material/chips";
+import { ContractTmAddAssigneeDialogComponent } from './contract-tm-add-assignee-dialog/contract-tm-add-assignee-dialog.component';
 
 @NgModule({
   declarations: [
     ContractListComponent,
     ContractAddEditDialogComponent,
     ContractListTmDetailsComponent,
-    ContractAddEditTmProfileDialogComponent
+    ContractAddEditTmProfileDialogComponent,
+    ContractTmAddAssigneeDialogComponent
   ],
   imports: [
     CommonModule,
@@ -21,6 +23,6 @@ import { MatChipsModule } from "@angular/material/chips";
     MaterialModule,
     MatChipsModule
   ],
-  entryComponents: [ ContractAddEditDialogComponent, ContractAddEditTmProfileDialogComponent ]
+  entryComponents: [ ContractAddEditDialogComponent, ContractAddEditTmProfileDialogComponent, ContractTmAddAssigneeDialogComponent ]
 })
 export class ContractModule { }
