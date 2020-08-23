@@ -74,7 +74,7 @@ export class ContractListTmDetailsComponent implements OnInit {
 
   /** retrieve rows */
   loadData() {
-      this.profileService.getProfileForCOntract(this.contractId).subscribe( profiles =>{
+      this.profileService.getProfileForContract(this.contractId).subscribe( profiles =>{
         console.log(profiles);
         this.datasource = new MatTableDataSource(profiles);
         this.saveDisabled = true;
@@ -83,11 +83,7 @@ export class ContractListTmDetailsComponent implements OnInit {
 
   /* UI interface */
 
-  cancel() {
-    this.location.back();
-  }
-
-  save() {
+  back() {
     this.location.back();
   }
 
@@ -107,6 +103,7 @@ export class ContractListTmDetailsComponent implements OnInit {
       if (result) {
         console.log(result);
         if (result.profile) {
+          // TODO handle save of new profile and reload data instead of pushing data to datasource !!!!
           let profiles: ContractProfile[] = this.datasource.data;
           profiles.push(result.profile);
           this.datasource = new MatTableDataSource(profiles);

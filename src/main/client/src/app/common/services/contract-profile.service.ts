@@ -13,7 +13,7 @@ export class ContractProfileService {
 
   constructor(private http: HttpClient) { }
 
-  getProfileForCOntract(contractId: number): Observable<ContractProfile[]> {
+  getProfileForContract(contractId: number): Observable<ContractProfile[]> {
       const url = this.contractProfileBaseUrl + "/" + contractId.toString();
       return this.http.get<ContractProfile[]>(url);
   }
