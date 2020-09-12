@@ -32,12 +32,14 @@
         <a mat-list-item routerLinkActive="active-link" routerLink="/core/home">
           <div style="padding-right: 5px;"><mat-icon>home</mat-icon></div><span>Home</span></a>
         <mat-divider></mat-divider>
-        <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_CONTRACTS'])">
+        <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_CONTRACTS', 'ENTER_TIME_TRACK'])">
           <h3 matSubheader>Customers / Contracts</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/cust/home" *ngIf="hasAuthority('MANAGE_CUSTOMERS')">
               <div style="padding-right: 5px;"><mat-icon>business</mat-icon></div><span>Customers</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/cntrct" *ngIf="hasAuthority('MANAGE_CONTRACTS')">
-              <div style="padding-right: 5px;"><mat-icon>work</mat-icon></div><span>Contracts</span></a>
+            <div style="padding-right: 5px;"><mat-icon>work</mat-icon></div><span>Contracts</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/timesheet" *ngIf="hasAuthority('ENTER_TIME_TRACK')">
+            <div style="padding-right: 5px;"><mat-icon>timer</mat-icon></div><span>Enter Time Track</span></a>
         </div>
         <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">

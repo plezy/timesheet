@@ -7,13 +7,14 @@ const routes: Routes = [
   { path: 'core', loadChildren: () => import('./core/core.module').then(m => m.CoreModule)},
   { path: 'cust', loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)},
   { path: 'cntrct', loadChildren: () => import('./contract/contract.module').then(m => m.ContractModule)},
+  { path: 'timesheet', loadChildren: () => import('./timesheet/timesheet.module').then(m => m.TimesheetModule)},
   { path: '**', redirectTo: '/core/home' }
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes,
-        //{ enableTracing: true } // <-- debugging purposes only
+        // { enableTracing: true } // <-- debugging purposes only
       )],
   exports: [RouterModule]
 })
