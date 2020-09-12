@@ -32,12 +32,6 @@
         <a mat-list-item routerLinkActive="active-link" routerLink="/core/home">
           <div style="padding-right: 5px;"><mat-icon>home</mat-icon></div><span>Home</span></a>
         <mat-divider></mat-divider>
-        <h3 matSubheader>Current User</h3>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/core/profile">
-            <div style="padding-right: 5px;"><mat-icon>account_circle</mat-icon></div><span>Profile</span></a>
-          <a mat-list-item routerLinkActive="active-link" routerLink="/core/passwd">
-            <div style="padding-right: 5px;"><mat-icon>vpn_key</mat-icon></div><span>Set password</span></a>
-        <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_CUSTOMERS', 'MANAGE_CONTRACTS'])">
           <h3 matSubheader>Customers / Contracts</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/cust/home" *ngIf="hasAuthority('MANAGE_CUSTOMERS')">
@@ -53,6 +47,12 @@
           <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">
             <div style="padding-right: 5px;"><mat-icon>notification_important</mat-icon></div><span>Set notifications</span></a>
         </div>
+        <mat-divider></mat-divider>
+          <h3 matSubheader>Current User</h3>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/profile">
+            <div style="padding-right: 5px;"><mat-icon>account_circle</mat-icon></div><span>Profile</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/passwd">
+            <div style="padding-right: 5px;"><mat-icon>vpn_key</mat-icon></div><span>Set password</span></a>
         <mat-divider></mat-divider>
         <div *ngIf="hasAuthority('MANAGE_SETTINGS')">
         <h3 matSubheader>Application information</h3>
