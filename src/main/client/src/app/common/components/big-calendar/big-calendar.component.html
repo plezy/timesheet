@@ -1,0 +1,31 @@
+<div class="calendar">
+  <div class="calendar-top">
+    <button class="calendar-page-button" aria-label="Previous month" (click)="decrementMonth()">
+      <div>&lt;</div>
+    </button>
+    <button class="calendar-page-month"><div>{{monthName}} {{year}}</div></button>
+    <button class="calendar-page-button" aria-label="Next month" (click)="incrementMonth()">
+      <div>&gt;</div>
+    </button>
+  </div>
+  <div class="calendar-body">
+    <div class="calendar-day-names">
+      <div class="calendar-week-title">Semaine</div>
+      <div class="calendar-day-title" *ngFor="let dayName of dayNames">{{dayName}}</div>
+    </div>
+    <div class="calendar-day-row">
+      <div *ngFor="let week of weeks" class="calendar-day-week">
+        <div class="calendar-day-week-head">
+          {{week[0].momentDate.isoWeek()}}
+        </div>
+        <div class="" *ngFor="let day of week"
+             [ngClass]="{ 'calendar-day-item': day.isCurrentMonth,
+                          'calendar-day-item-not-month': !day.isCurrentMonth,
+                          'calendar-day-item-not-month-pointer': !day.isCurrentMonth && !selectOnlyInMonth}"
+              (click)="itemClicked(day)">
+          {{day.momentDate.date()}}
+        </div>
+      </div>
+    <div>
+  </div>
+</div>

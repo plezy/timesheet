@@ -1,0 +1,98 @@
+$dayBaseWidth: 120px;
+$weekBasewidth: 80px;
+$rowHeight: 60px;
+$basePadding: 5px;
+
+.calendar {
+  display: block;
+  width: $dayBaseWidth * 7 + $weekBasewidth;
+  margin: 0 auto;
+
+  .calendar-top {
+
+  }
+
+  .calendar-page-button {
+    div {
+      min-height: 28px;
+      max-height: 28px;
+      min-width:  28px;
+      max-width:  28px;
+    }
+  }
+
+  .calendar-page-month {
+    div {
+      min-height: 28px;
+      max-height: 28px;
+      min-width: 256px;
+      max-width: 256px;
+    }
+  }
+
+
+  .calendar-body {
+    padding-top: 20px;
+    .calendar-day-names {
+      display: flex;
+      text-align: center;
+
+      .calendar-week-title {
+        background: lightgray;
+        border-style: solid;
+        border-width: 1px;
+        border-color: gray;
+        width: $weekBasewidth;
+      }
+      .calendar-day-title {
+        background: lightgoldenrodyellow;
+        border-style: solid;
+        border-width: 1px;
+        border-color: lightgray;
+        width: $dayBaseWidth;
+      }
+    }
+
+    .calendar-day-row {
+      .calendar-day-week {
+        display: flex;
+        .calendar-day-week-head {
+          padding: 0px 5px;
+          background: lightgray;
+          border-style: solid;
+          border-width: 1px;
+          border-color: gray;
+          width: $weekBasewidth;
+          text-align: center;
+          color: #7f7f7f;
+        }
+        .calendar-day-item {
+          padding: 0px 5px;
+          border-style: solid;
+          border-width: 1px;
+          border-color: lightgray;
+          width: $dayBaseWidth;
+          height: $rowHeight;
+          text-align: right;
+        }
+        .calendar-day-item:hover {
+          background-color: lightsteelblue;
+          cursor: pointer;
+        }
+        .calendar-day-item-not-month {
+          padding: 0px 5px;
+          border-style: solid;
+          border-width: 1px;
+          border-color: lightgray;
+          width: $dayBaseWidth;
+          height: $rowHeight;
+          text-align: right;
+          color: lightgray;
+        }
+        .calendar-day-item-not-month-pointer:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
