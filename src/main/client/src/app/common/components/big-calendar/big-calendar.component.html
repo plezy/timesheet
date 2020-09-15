@@ -1,11 +1,17 @@
 <div class="calendar">
   <div class="calendar-top">
+    <button class="calendar-page-button" aria-label="Previous year" *ngIf="yearlyMoveButton" (click)="decrementYear()">
+      <div>&lt;&lt;</div>
+    </button>
     <button class="calendar-page-button" aria-label="Previous month" (click)="decrementMonth()">
       <div>&lt;</div>
     </button>
     <button class="calendar-page-month"><div>{{monthName}} {{year}}</div></button>
     <button class="calendar-page-button" aria-label="Next month" (click)="incrementMonth()">
       <div>&gt;</div>
+    </button>
+    <button class="calendar-page-button" aria-label="Next near" *ngIf="yearlyMoveButton" (click)="incrementYear()">
+      <div>&gt;&gt;</div>
     </button>
   </div>
   <div class="calendar-body">
@@ -24,6 +30,8 @@
                           'calendar-day-item-not-month-pointer': !day.isCurrentMonth && !selectOnlyInMonth}"
               (click)="itemClicked(day)">
           {{day.momentDate.date()}}
+          <div class="calendar-day-item-line1"><div *ngIf="line1Texts.has(day.momentDate.unix())">{{line1Texts.get(day.momentDate.unix())}}</div></div>
+          <div class="calendar-day-item-line2"><div *ngIf="line2Texts.has(day.momentDate.unix())">{{line2Texts.get(day.momentDate.unix())}}</div></div>
         </div>
       </div>
     <div>

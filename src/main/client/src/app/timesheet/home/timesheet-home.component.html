@@ -1,2 +1,4 @@
 <h2>Enter Timesheet</h2>
-<big-calendar [selectOnlyInMonth]="true"></big-calendar>
+<big-calendar [selectOnlyInMonth]="true" [yearlyMoveButton]="true" (onItemClicked)="calendarDateClicked($event)" (onMonthChanged)="onMonthChanged()"></big-calendar>
+
+<span>{{selectedDate?.momentDate.format('DD-MM-YYYY')}}</span>

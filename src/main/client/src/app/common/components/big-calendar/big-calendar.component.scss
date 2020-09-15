@@ -74,6 +74,19 @@ $basePadding: 5px;
           width: $dayBaseWidth;
           height: $rowHeight;
           text-align: right;
+
+          div.calendar-day-item-line1 {
+            display: block;
+            font-size: 8pt;
+            min-height: 12px;
+            max-height: 12px;
+          }
+          div.calendar-day-item-line2 {
+            display: block;
+            font-size: 8pt;
+            min-height: 12px;
+            max-height: 12px;
+          }
         }
         .calendar-day-item:hover {
           background-color: lightsteelblue;
@@ -88,6 +101,19 @@ $basePadding: 5px;
           height: $rowHeight;
           text-align: right;
           color: lightgray;
+
+          div.calendar-day-item-line1 {
+            display: block;
+            font-size: 8pt;
+            min-height: 12px;
+            max-height: 12px;
+          }
+          div.calendar-day-item-line2 {
+            display: block;
+            font-size: 8pt;
+            min-height: 12px;
+            max-height: 12px;
+          }
         }
         .calendar-day-item-not-month-pointer:hover {
           cursor: pointer;
