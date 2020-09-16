@@ -1,9 +1,9 @@
 package lu.plezy.timesheet.controller;
 
-import lu.plezy.timesheet.entities.ContractProfile;
+import lu.plezy.timesheet.entities.ProfileTask;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.TaskDto;
-import lu.plezy.timesheet.repository.ContractProfileRepository;
+import lu.plezy.timesheet.repository.ProfileTaskRepository;
 import lu.plezy.timesheet.repository.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,7 +26,7 @@ public class TimeTrackController {
     private static Logger log = LoggerFactory.getLogger(TimeTrackController.class);
 
     @Autowired
-    private ContractProfileRepository contractProfileRepository;
+    private ProfileTaskRepository profileTaskRepository;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -49,8 +48,8 @@ public class TimeTrackController {
         log.debug("Requested Date {}", requestedDate);
         Optional<User> userOpt = usersRepository.findByUsername(authentication.getName());
         if (userOpt.isPresent()) {
-            List<ContractProfile> contractProfileList = contractProfileRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
-            return contractProfileList.stream()
+            List<ProfileTask> profileTaskList = profileTaskRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
+            return profileTaskList.stream()
                     .map(contractProfile -> TaskDto.convertToDto(contractProfile))
                     .collect(Collectors.toList());
         } else {
@@ -74,8 +73,8 @@ public class TimeTrackController {
         log.debug("Requested Date {}", requestedDate);
         Optional<User> userOpt = usersRepository.findById(userId);
         if (userOpt.isPresent()) {
-            List<ContractProfile> contractProfileList = contractProfileRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
-            return contractProfileList.stream()
+            List<ProfileTask> profileTaskList = profileTaskRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
+            return profileTaskList.stream()
                     .map(contractProfile -> TaskDto.convertToDto(contractProfile))
                     .collect(Collectors.toList());
         } else {

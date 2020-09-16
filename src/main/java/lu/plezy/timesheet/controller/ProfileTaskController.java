@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import lu.plezy.timesheet.entities.ContractProfile;
-import lu.plezy.timesheet.repository.ContractProfileRepository;
+import lu.plezy.timesheet.entities.ProfileTask;
+import lu.plezy.timesheet.repository.ProfileTaskRepository;
 import lu.plezy.timesheet.repository.UsersRepository;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,14 +22,14 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/contract/profiles")
-public class ContractProfileController {
+public class ProfileTaskController {
     
     private static Logger log = LoggerFactory.getLogger(ApplicationInfosController.class);
 
     //private int defaultPageSize = 10;
 
     @Autowired
-    ContractProfileRepository profilesRepository;
+    ProfileTaskRepository profilesRepository;
 
     @Autowired
     UsersRepository usersRepository;
@@ -42,7 +42,7 @@ public class ContractProfileController {
      */
     @GetMapping("{id}")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
-    public List<ContractProfile> getProfilesForContract(@PathVariable("id") Long contractId) {
+    public List<ProfileTask> getProfilesForContract(@PathVariable("id") Long contractId) {
         log.info("Get profiles for contract id {}", contractId);
         return profilesRepository.findByContractId(contractId);
     }
@@ -50,8 +50,8 @@ public class ContractProfileController {
     // TODO : A-t-on besoin du contract ID ? On pourrait simplifier en supprimant la référence qu contrat ...
     @DeleteMapping("delassignees/{id}/{profileId}/{assigneeId}")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
-    public ContractProfile deleteAssignmentForProfile(@PathVariable("id") Long contractId, @PathVariable("profileId") Long profileId, @PathVariable("assigneeId") Long assigneeId) {
-        Optional<ContractProfile> contractProfile = profilesRepository.findById(profileId);
+    public ProfileTask deleteAssignmentForProfile(@PathVariable("id") Long contractId, @PathVariable("profileId") Long profileId, @PathVariable("assigneeId") Long assigneeId) {
+        Optional<ProfileTask> contractProfile = profilesRepository.findById(profileId);
         if (contractProfile.isPresent()) {
             if (contractProfile.get().getContract().getId() == contractId) {
                 List<User> assignees = contractProfile.get().getAssignees();
@@ -84,8 +84,8 @@ public class ContractProfileController {
     @PutMapping("addassignees")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
     //public ContractProfile addAssignmentForProfile(@PathVariable("id") Long contractId, @PathVariable("profileId") Long profileId, @PathVariable("assigneeIds") Long[] assigneeIds) {
-    public ContractProfile addAssignmentForProfile(@Valid @RequestBody AddAssigneeMessageDto addAssigneeMessageDto) {
-        Optional<ContractProfile> contractProfile = profilesRepository.findById(addAssigneeMessageDto.getProfileId());
+    public ProfileTask addAssignmentForProfile(@Valid @RequestBody AddAssigneeMessageDto addAssigneeMessageDto) {
+        Optional<ProfileTask> contractProfile = profilesRepository.findById(addAssigneeMessageDto.getProfileId());
         if (contractProfile.isPresent()) {
             for (Long assigneeId : addAssigneeMessageDto.getAssigneeIds()) {
                 Optional<User> user = usersRepository.findById(assigneeId);
@@ -118,9 +118,9 @@ public class ContractProfileController {
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
     public List<User> addAssignableForProfile(@PathVariable("profileId") Long profileId) {
         List<User> usersInResult = usersRepository.findBillable();
-        Optional<ContractProfile> contractProfile = profilesRepository.findById(profileId);
+        Optional<ProfileTask> contractProfile = profilesRepository.findById(profileId);
         if (contractProfile.isPresent()) {
-            ContractProfile profile = contractProfile.get();
+            ProfileTask profile = contractProfile.get();
             if (profile.getAssignees().size() > 0) {
                 for (User assignee : profile.getAssignees()) {
                     usersInResult.remove(assignee);

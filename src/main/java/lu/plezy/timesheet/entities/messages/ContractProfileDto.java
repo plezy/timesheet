@@ -5,7 +5,7 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lu.plezy.timesheet.entities.ContractProfile;
+import lu.plezy.timesheet.entities.ProfileTask;
 import lu.plezy.timesheet.entities.User;
 
 @Data
@@ -22,21 +22,21 @@ public class ContractProfileDto {
     private Double multipleUnitInvoiced;
     private List<Long> assigneesId = new ArrayList<Long>();
     
-    public static ContractProfileDto convertToDto(ContractProfile contractProfile) {
+    public static ContractProfileDto convertToDto(ProfileTask profileTask) {
         List<Long> assignees = new ArrayList<>();
-        for (User user : contractProfile.getAssignees()) {
+        for (User user : profileTask.getAssignees()) {
             assignees.add(user.getId());
         }
         return new ContractProfileDto(
-            contractProfile.getId(),
-            contractProfile.getContract().getId(),
-            contractProfile.getName(),
-            contractProfile.getDescription(),
-            contractProfile.isCompleted(),
-            contractProfile.getHourlyRate(),
-            contractProfile.getMinimumDailyInvoiced(),
-            contractProfile.getMaximumDailyInvoiced(),
-            contractProfile.getMultipleUnitInvoiced(),
+            profileTask.getId(),
+            profileTask.getContract().getId(),
+            profileTask.getName(),
+            profileTask.getDescription(),
+            profileTask.isCompleted(),
+            profileTask.getHourlyRate(),
+            profileTask.getMinimumDailyInvoiced(),
+            profileTask.getMaximumDailyInvoiced(),
+            profileTask.getMultipleUnitInvoiced(),
             assignees
         );
     }
