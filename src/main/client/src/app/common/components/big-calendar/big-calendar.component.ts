@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
 import * as moment from "moment";
 import { Subscription} from "rxjs";
-import { BigCalendarService, TextLine } from "./big-calendar.service";
+import { BigCalendarService } from "./big-calendar.service";
 
 const monthNames: string[] = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 

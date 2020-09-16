@@ -3,11 +3,9 @@ package lu.plezy.timesheet.controller;
 import java.util.List;
 import java.util.Optional;
 
-import lombok.Data;
 import lu.plezy.timesheet.entities.RoleEnum;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.AddAssigneeMessageDto;
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
