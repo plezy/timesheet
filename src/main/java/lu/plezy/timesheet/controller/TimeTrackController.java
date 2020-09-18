@@ -92,7 +92,7 @@ public class TimeTrackController {
                     .map(contractProfile -> TaskDto.convertToDto(contractProfile))
                     .collect(Collectors.toList());
         } else {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "current user can not be retrieved");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
 
     }
@@ -139,7 +139,8 @@ public class TimeTrackController {
         ttt.setDate(newTaskTimeTrackDto.getDate());
         ttt.setDuration(newTaskTimeTrackDto.getDuration());
         ttt.setNote(newTaskTimeTrackDto.getNote());
-
+        ttt.setUpdatedBy(userOpt.get());
+        ttt.setUpdatedOn(new Date());
         TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
 
         return result;
@@ -166,6 +167,8 @@ public class TimeTrackController {
 
         ttt.setDuration(newTaskTimeTrackDto.getDuration());
         ttt.setNote(newTaskTimeTrackDto.getNote());
+        ttt.setUpdatedBy(userOpt.get());
+        ttt.setUpdatedOn(new Date());
 
         TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
 
@@ -192,6 +195,108 @@ public class TimeTrackController {
         }
 
         taskTimeTrackRepository.delete(ttt);
+    }
+
+
+    @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")
+    @GetMapping("/timetrack/{userId}/{date}")
+    public List<TaskTimeTrack> getTaskTimeTrackForOthers(@PathVariable("userId") long userId, @PathVariable("date") String dateStr) {
+        log.debug("getTaskTimeTrackForOthers called");
+        Date requestedDate = null;
+        try {
+            requestedDate = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            log.error("Exception occurs while parsing date");
+            log.error(e.toString());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "date format incorrect  use dd-MM-yyyy format");
+        }
+        log.debug("Received requested date : {}", requestedDate);
+        Optional<User> userOpt = usersRepository.findById(userId);
+        if (!userOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
+        }
+        log.debug("User ID found : {}", userOpt.get().getId());
+        List<TaskTimeTrack> listTaskTimeTracks = taskTimeTrackRepository.findByUserIdAndDate(userOpt.get().getId(), requestedDate);
+
+        return listTaskTimeTracks;
+    }
+
+    @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")
+    @PostMapping("/timetrack")
+    public TaskTimeTrack addTaskTimeTrackForOthers(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
+        log.debug("addTaskTimeTrackForOthers called");
+        Optional<User> requestUserOpt = usersRepository.findByUsername(authentication.getName());
+        if (!requestUserOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "current user can not be retrieved");
+        }
+        Optional<User> userOpt = usersRepository.findById(newTaskTimeTrackDto.getUserID());
+        if (!userOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
+        }
+        Optional<ContractualTask> contractTask = contractualTaskRepository.findById(newTaskTimeTrackDto.getTaskID());
+        if (!contractTask.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "task not found");
+        }
+
+        TaskTimeTrack ttt = new TaskTimeTrack();
+        ttt.setUser(userOpt.get());
+        ttt.setTask(contractTask.get());
+        ttt.setDate(newTaskTimeTrackDto.getDate());
+        ttt.setDuration(newTaskTimeTrackDto.getDuration());
+        ttt.setNote(newTaskTimeTrackDto.getNote());
+        ttt.setUpdatedBy(requestUserOpt.get());
+        ttt.setUpdatedOn(new Date());
+
+        TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
+
+        return result;
+    }
+
+    @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")
+    @PutMapping("/timetrack")
+    public TaskTimeTrack updateTaskTimeTrackForOthers(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
+        log.debug("updateTaskTimeTrackForOthers called");
+        Optional<User> requestUserOpt = usersRepository.findByUsername(authentication.getName());
+        if (!requestUserOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "current user can not be retrieved");
+        }
+        Optional<User> userOpt = usersRepository.findById(newTaskTimeTrackDto.getUserID());
+        if (!userOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
+        }
+
+        Optional<TaskTimeTrack> tttOpt = taskTimeTrackRepository.findById(newTaskTimeTrackDto.getTastTimetrackID());
+        if (!tttOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "task time track not found");
+        }
+
+        TaskTimeTrack ttt = tttOpt.get();
+
+        ttt.setDuration(newTaskTimeTrackDto.getDuration());
+        ttt.setNote(newTaskTimeTrackDto.getNote());
+        ttt.setUpdatedBy(requestUserOpt.get());
+        ttt.setUpdatedOn(new Date());
+
+        TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
+
+        return result;
+    }
+
+    @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")
+    @DeleteMapping("/timetrack/{id}")
+    public void deleteTaskTimeTrackForOthers(Authentication authentication, @PathVariable("id") long tttId) {
+        log.debug("deleteTaskTimeTrackForOthers called");
+        Optional<User> requestUserOpt = usersRepository.findByUsername(authentication.getName());
+        if (!requestUserOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "current user can not be retrieved");
+        }
+
+        Optional<TaskTimeTrack> tttOpt = taskTimeTrackRepository.findById(tttId);
+        if (!tttOpt.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "task time track not found");
+        }
+
+        taskTimeTrackRepository.delete(tttOpt.get());
     }
 
 }

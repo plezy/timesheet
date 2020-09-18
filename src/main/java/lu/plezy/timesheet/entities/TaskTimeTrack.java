@@ -1,5 +1,6 @@
 package lu.plezy.timesheet.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -38,4 +39,14 @@ public class TaskTimeTrack {
 
     @Column(name="NOTE", length=128)
     private String note;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "UPDATED_BY", foreignKey = @ForeignKey(name = "FK_TASK_TIME_TRACK_UPDATEDBY_USR"))
+    @JsonIgnore
+    private User updatedBy;
+
+    @Column(name = "UPDATED_ON", nullable=true)
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
+    private Date updatedOn;
 }
