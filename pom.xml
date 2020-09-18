@@ -58,7 +58,13 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-		</dependency>	
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.21</version>
+		</dependency>
 
 		<!-- JJWT dependencies -->
 		<dependency>
@@ -86,6 +92,14 @@
 			<scope>runtime</scope>
 		</dependency>
 		-->
+
+		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.14.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -176,7 +190,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-
 	</build>
 
 	<profiles>
@@ -188,19 +201,6 @@
 			<properties>
 				<spring.active.profiles>mysql</spring.active.profiles>
 			</properties>
-			<dependencies>
-				<!-- the only way found to remove h2 dependency when using mysql profile -->
-				<dependency>
-					<groupId>com.h2database</groupId>
-					<artifactId>h2</artifactId>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-					<scope>runtime</scope>
-				</dependency>	
-			</dependencies>
 		</profile>
 	</profiles>
 

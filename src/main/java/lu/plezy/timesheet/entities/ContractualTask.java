@@ -24,7 +24,7 @@ public class ContractualTask {
 
     @NonNull
     @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="CREATED_BY")
+    @JoinColumn(name="CREATED_BY", foreignKey = @ForeignKey(name = "FK_CONTRACTUAL_TASK_CREATEDBY_USR"))
     private User createdBy;
 
     @NonNull
@@ -34,7 +34,7 @@ public class ContractualTask {
 
     /* Contract */
     @ManyToOne(targetEntity=Contract.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="CONTRACT_ID")
+    @JoinColumn(name="CONTRACT_ID", foreignKey = @ForeignKey(name = "FK_CONTRACTUAL_TASK_CONTRACT"))
     @JsonIgnore // to prevent errors on serialization due to lazy initialization
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // to prevent errors on serialization due to lazy initialization, in this case data is fetched
     private Contract contract;
@@ -55,7 +55,7 @@ public class ContractualTask {
 
     @ManyToMany
     @JoinTable(name = "USERS_CONTRACTUAL_TASK",
-            joinColumns = { @JoinColumn(name = "CTK_ID") },
-            inverseJoinColumns = { @JoinColumn(name = "USR_ID") })
+            joinColumns = { @JoinColumn(name = "CTK_ID", foreignKey = @ForeignKey(name = "FK_USER_CONTRACTUAL_CONTRACTUALTASK")) },
+            inverseJoinColumns = { @JoinColumn(name = "USR_ID", foreignKey = @ForeignKey(name = "FK_USER_CONTRACTUAL_USER")) })
     private List<User> assignees = new ArrayList<User>();
 }

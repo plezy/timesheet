@@ -2,20 +2,7 @@ package lu.plezy.timesheet.entities;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,7 +24,7 @@ public class Contract {
     
     @NonNull
     @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="CREATED_BY")
+    @JoinColumn(name="CREATED_BY", foreignKey = @ForeignKey(name = "FK_CONTRACT_CREATEDBY_USR"))
     private User createdBy;
 
     @NonNull
@@ -46,7 +33,7 @@ public class Contract {
     private Date createdOn;
 
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "UPDATED_BY")
+    @JoinColumn(name = "UPDATED_BY", foreignKey = @ForeignKey(name = "FK_CONTRACT_UPDATEDBY_USR"))
     @JsonIgnore
     private User updatedBy;
 
@@ -56,7 +43,7 @@ public class Contract {
     private Date updatedOn;
     
     @ManyToOne(targetEntity=Customer.class)
-    @JoinColumn(name="CUST_ID")
+    @JoinColumn(name="CUST_ID", foreignKey = @ForeignKey(name = "FK_CONTRACT_CUSTOMER_ID"))
     private Customer customer;
 
     @NonNull

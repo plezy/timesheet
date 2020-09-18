@@ -2,20 +2,7 @@ package lu.plezy.timesheet.entities;
 
 import java.util.Date;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,7 +23,7 @@ public class Customer {
 
     @NonNull
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "CREATED_BY")
+    @JoinColumn(name = "CREATED_BY", foreignKey = @ForeignKey(name = "FK_CUSTOMER_CREATEDBY_USER"))
     @JsonIgnore
     private User createdBy;
 
@@ -47,7 +34,7 @@ public class Customer {
     private Date createdOn;
 
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "UPDATED_BY")
+    @JoinColumn(name = "UPDATED_BY", foreignKey = @ForeignKey(name = "FK_CUSTOMER_UPDATEDBY_USER"))
     @JsonIgnore
     private User updatedBy;
 
