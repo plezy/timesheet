@@ -245,7 +245,6 @@ public class ContractController {
      * Get a Contract by id.
      * 
      * @param id Contract's ID
-     * @param Authentication User's logged details
      */
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
@@ -257,7 +256,6 @@ public class ContractController {
      * Update contract with id.
      * 
      * @param id Contract's ID
-     * @param Authentication User's logged details
      */
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
@@ -311,11 +309,11 @@ public class ContractController {
      * delete the contract physically is performed.
      * 
      * @param id Contract's ID
-     * @param Authentication User's logged details
+     * @param authentication User's logged details
      */
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
-    public void deleteContract(@PathVariable("id") long id) {
+    public void deleteContract(Authentication authentication,@PathVariable("id") long id) {
         Optional<Contract> result = contractRepository.findById(id);
 
         if (result.isPresent()) {

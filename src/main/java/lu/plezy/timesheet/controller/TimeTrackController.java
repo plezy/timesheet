@@ -37,9 +37,6 @@ public class TimeTrackController {
     private ContractualTaskRepository contractualTaskRepository;
 
     @Autowired
-    private ProfileTaskRepository profileTaskRepository;
-
-    @Autowired
     private UsersRepository usersRepository;
 
     @Autowired
@@ -62,8 +59,8 @@ public class TimeTrackController {
         log.debug("Requested Date {}", requestedDate);
         Optional<User> userOpt = usersRepository.findByUsername(authentication.getName());
         if (userOpt.isPresent()) {
-            List<ProfileTask> profileTaskList = profileTaskRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
-            return profileTaskList.stream()
+            List<ContractualTask> contractualTaskList = contractualTaskRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
+            return contractualTaskList.stream()
                     .map(contractProfile -> TaskDto.convertToDto(contractProfile))
                     .collect(Collectors.toList());
         } else {
@@ -87,8 +84,8 @@ public class TimeTrackController {
         log.debug("Requested Date {}", requestedDate);
         Optional<User> userOpt = usersRepository.findById(userId);
         if (userOpt.isPresent()) {
-            List<ProfileTask> profileTaskList = profileTaskRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
-            return profileTaskList.stream()
+            List<ContractualTask> contractualTaskList = contractualTaskRepository.findActiveByUserId(userOpt.get().getId(), requestedDate);
+            return contractualTaskList.stream()
                     .map(contractProfile -> TaskDto.convertToDto(contractProfile))
                     .collect(Collectors.toList());
         } else {
