@@ -7,7 +7,6 @@ import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.TaskDto;
 import lu.plezy.timesheet.entities.messages.TaskTimeTrackDto;
 import lu.plezy.timesheet.repository.ContractualTaskRepository;
-import lu.plezy.timesheet.repository.ProfileTaskRepository;
 import lu.plezy.timesheet.repository.TaskTimeTrackRepository;
 import lu.plezy.timesheet.repository.UsersRepository;
 import org.slf4j.Logger;
@@ -96,7 +95,7 @@ public class TimeTrackController {
 
     @PreAuthorize("hasAuthority('ENTER_TIME_TRACK')")
     @GetMapping("/mytimetrack/{date}")
-    public List<TaskTimeTrack> getTaskTimeTrackForMe(Authentication authentication, @PathVariable("date") String dateStr) {
+    public List<TaskTimeTrackDto> getTaskTimeTrackForMe(Authentication authentication, @PathVariable("date") String dateStr) {
         log.debug("getTaskTimeTrackForMe called");
         Date requestedDate = null;
         try {
@@ -114,12 +113,14 @@ public class TimeTrackController {
         log.debug("User ID found : {}", userOpt.get().getId());
         List<TaskTimeTrack> listTaskTimeTracks = taskTimeTrackRepository.findByUserIdAndDate(userOpt.get().getId(), requestedDate);
 
-        return listTaskTimeTracks;
+        return listTaskTimeTracks.stream()
+                .map(taskTimeTrack -> TaskTimeTrackDto.convertToDto(taskTimeTrack))
+                .collect(Collectors.toList());
     }
 
     @PreAuthorize("hasAuthority('ENTER_TIME_TRACK')")
     @PostMapping("/mytimetrack")
-    public TaskTimeTrack addTaskTimeTrackForMe(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
+    public TaskTimeTrackDto addTaskTimeTrackForMe(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
         log.debug("addTaskTimeTrackForMe called");
         Optional<User> userOpt = usersRepository.findByUsername(authentication.getName());
         if (!userOpt.isPresent()) {
@@ -140,12 +141,12 @@ public class TimeTrackController {
         ttt.setUpdatedOn(new Date());
         TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
 
-        return result;
+        return TaskTimeTrackDto.convertToDto(result);
     }
 
     @PreAuthorize("hasAuthority('ENTER_TIME_TRACK')")
     @PutMapping("/mytimetrack")
-    public TaskTimeTrack updateTaskTimeTrackForMe(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
+    public TaskTimeTrackDto updateTaskTimeTrackForMe(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
         log.debug("updateTaskTimeTrackForMe called");
         Optional<User> userOpt = usersRepository.findByUsername(authentication.getName());
         if (!userOpt.isPresent()) {
@@ -158,6 +159,10 @@ public class TimeTrackController {
         }
 
         TaskTimeTrack ttt = tttOpt.get();
+        if (ttt.isLocked()) {
+            throw new ResponseStatusException(HttpStatus.LOCKED, "task time track is locked");
+        }
+
         if (ttt.getUser().getId() != userOpt.get().getId()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "task time track does not belong to you");
         }
@@ -169,7 +174,7 @@ public class TimeTrackController {
 
         TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
 
-        return result;
+        return TaskTimeTrackDto.convertToDto(result);
     }
 
     @PreAuthorize("hasAuthority('ENTER_TIME_TRACK')")
@@ -197,7 +202,7 @@ public class TimeTrackController {
 
     @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")
     @GetMapping("/timetrack/{userId}/{date}")
-    public List<TaskTimeTrack> getTaskTimeTrackForOthers(@PathVariable("userId") long userId, @PathVariable("date") String dateStr) {
+    public List<TaskTimeTrackDto> getTaskTimeTrackForOthers(@PathVariable("userId") long userId, @PathVariable("date") String dateStr) {
         log.debug("getTaskTimeTrackForOthers called");
         Date requestedDate = null;
         try {
@@ -215,12 +220,14 @@ public class TimeTrackController {
         log.debug("User ID found : {}", userOpt.get().getId());
         List<TaskTimeTrack> listTaskTimeTracks = taskTimeTrackRepository.findByUserIdAndDate(userOpt.get().getId(), requestedDate);
 
-        return listTaskTimeTracks;
+        return listTaskTimeTracks.stream()
+                .map(taskTimeTrack -> TaskTimeTrackDto.convertToDto(taskTimeTrack))
+                .collect(Collectors.toList());
     }
 
     @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")
     @PostMapping("/timetrack")
-    public TaskTimeTrack addTaskTimeTrackForOthers(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
+    public TaskTimeTrackDto addTaskTimeTrackForOthers(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
         log.debug("addTaskTimeTrackForOthers called");
         Optional<User> requestUserOpt = usersRepository.findByUsername(authentication.getName());
         if (!requestUserOpt.isPresent()) {
@@ -246,12 +253,12 @@ public class TimeTrackController {
 
         TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
 
-        return result;
+        return TaskTimeTrackDto.convertToDto(result);
     }
 
     @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")
     @PutMapping("/timetrack")
-    public TaskTimeTrack updateTaskTimeTrackForOthers(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
+    public TaskTimeTrackDto updateTaskTimeTrackForOthers(Authentication authentication, @Valid @RequestBody TaskTimeTrackDto newTaskTimeTrackDto) {
         log.debug("updateTaskTimeTrackForOthers called");
         Optional<User> requestUserOpt = usersRepository.findByUsername(authentication.getName());
         if (!requestUserOpt.isPresent()) {
@@ -268,6 +275,9 @@ public class TimeTrackController {
         }
 
         TaskTimeTrack ttt = tttOpt.get();
+        if (ttt.isLocked()) {
+            throw new ResponseStatusException(HttpStatus.LOCKED, "task time track is locked");
+        }
 
         ttt.setDuration(newTaskTimeTrackDto.getDuration());
         ttt.setNote(newTaskTimeTrackDto.getNote());
@@ -276,7 +286,7 @@ public class TimeTrackController {
 
         TaskTimeTrack result = taskTimeTrackRepository.save(ttt);
 
-        return result;
+        return TaskTimeTrackDto.convertToDto(result);
     }
 
     @PreAuthorize("hasAuthority('ENTER_OTHERS_TIME_TRACK')")

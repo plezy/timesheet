@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -39,6 +38,10 @@ public class TaskTimeTrack {
 
     @Column(name="NOTE", length=128)
     private String note;
+
+    @Column(name="LOCKED", columnDefinition = "VARCHAR(1) DEFAULT 'N'")
+    @Convert(converter=BooleanToStringConverter.class)
+    private boolean locked = false;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "UPDATED_BY", foreignKey = @ForeignKey(name = "FK_TASK_TIME_TRACK_UPDATEDBY_USR"))

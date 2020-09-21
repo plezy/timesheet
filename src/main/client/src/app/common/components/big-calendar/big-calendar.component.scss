@@ -88,9 +88,31 @@ $basePadding: 5px;
             max-height: 12px;
           }
         }
+        .calendar-day-item-selected {
+          border-width: 2px;
+          border-color: orange;
+        }
         .calendar-day-item:hover {
           background-color: lightsteelblue;
           cursor: pointer;
+        }
+        .calendar-day-item-saturdays {
+          background: repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 10px,
+              #eee 10px,
+              #eee 20px
+          );
+        }
+        .calendar-day-item-sundays {
+          background: repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 10px,
+              #ddd 10px,
+              #ddd 20px
+          );
         }
         .calendar-day-item-not-month {
           padding: 0px 5px;

@@ -26,8 +26,11 @@
         </div>
         <div class="" *ngFor="let day of week"
              [ngClass]="{ 'calendar-day-item': day.isCurrentMonth,
+                          'calendar-day-item-selected': day.selected,
                           'calendar-day-item-not-month': !day.isCurrentMonth,
-                          'calendar-day-item-not-month-pointer': !day.isCurrentMonth && !selectOnlyInMonth}"
+                          'calendar-day-item-not-month-pointer': !day.isCurrentMonth && !selectOnlyInMonth,
+                          'calendar-day-item-saturdays': day.isSaturday,
+                          'calendar-day-item-sundays': day.isSunday }"
               (click)="itemClicked(day)">
           {{day.momentDate.date()}}
           <div class="calendar-day-item-line1"><div *ngIf="line1Texts.has(day.momentDate.unix())">{{line1Texts.get(day.momentDate.unix())}}</div></div>

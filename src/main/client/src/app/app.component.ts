@@ -24,8 +24,8 @@ export class AppComponent {
 
   onLogout() {
     this.authService.logout();
-    window.location.reload();
-  }
+    window.location.replace("/")
+}
 
   hasAuthority(auth: string): boolean {
     return this.authService.hasAuthority(auth);

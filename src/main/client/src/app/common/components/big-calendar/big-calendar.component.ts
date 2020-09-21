@@ -2,14 +2,17 @@ import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angula
 import * as moment from "moment";
 import { Subscription} from "rxjs";
 import { BigCalendarService } from "./big-calendar.service";
+import {Moment} from "moment";
 
 const monthNames: string[] = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
 export interface CalendarDate {
-  momentDate: moment.Moment;
+  momentDate: Moment;
   selected?: boolean;
   isToday?: boolean;
   isCurrentMonth?: boolean;
+  isSaturday?:boolean;
+  isSunday?:boolean;
 }
 
 @Component({
@@ -26,7 +29,7 @@ export class BigCalendarComponent implements OnInit, OnDestroy {
   month: number;
   year: number;
 
-  currentDate: moment.Moment;
+  currentDate: Moment;
   today = moment();
 
   weeks: CalendarDate[][] = [];
@@ -69,21 +72,21 @@ export class BigCalendarComponent implements OnInit, OnDestroy {
     this.listenLine2Text.unsubscribe();
   }
 
-  setMoment(date: moment.Moment) {
+  setMoment(date: Moment, selectedDate?: Moment) {
     this.currentDate = date;
-    this.updateDate();
+    this.updateDate(selectedDate);
   }
 
-  setDate(date: Date) {
+  setDate(date: Date, selectedDate?: Moment) {
     this.currentDate = moment(date);
-    this.updateDate();
+    this.updateDate(selectedDate);
   }
 
-  private updateDate() {
+  private updateDate(selectedDate?: Moment) {
     this.month = this.currentDate.month();
     this.monthName = monthNames[this.month];
     this.year = this.currentDate.year();
-    const dates = this.fillCalendarArray(this.currentDate);
+    const dates = this.fillCalendarArray(this.currentDate, selectedDate);
     // removes week beyond the current month
     if (!dates[35].isCurrentMonth) {
       dates.splice(35);
@@ -100,11 +103,11 @@ export class BigCalendarComponent implements OnInit, OnDestroy {
     this.onMonthChanged.emit();
   }
 
-  isToday(date: moment.Moment): boolean {
+  isToday(date: Moment): boolean {
     return this.today.isSame(moment(date), 'day');
   }
 
-  fillCalendarArray(currentMoment: moment.Moment): CalendarDate[] {
+  fillCalendarArray(currentMoment: Moment, selectedDate?: Moment): CalendarDate[] {
     // first day of month (from monday 0, to sunday 6)
     const firstOfMonth = (moment(currentMoment).startOf('month').day() + 6) % 7;
     // console.log('firstOfMonth : ' + firstOfMonth);
@@ -119,9 +122,11 @@ export class BigCalendarComponent implements OnInit, OnDestroy {
       //console.log(day);
       return {
         momentDate: day,
-        selected: false,
+        selected: day.isSame(selectedDate),
         isToday: this.isToday(day),
-        isCurrentMonth: day.month() == this.month
+        isCurrentMonth: day.month() == this.month,
+        isSaturday: day.weekday() == 6,
+        isSunday: day.weekday() == 0,
       }
     });
   }
@@ -175,10 +180,26 @@ export class BigCalendarComponent implements OnInit, OnDestroy {
     console.log("Item clicked");
     if (!this.selectOnlyInMonth || item.isCurrentMonth) {
       this.onItemClicked.emit(item);
+      this.selectItem(item);
       if ((!item.isCurrentMonth) && this.autoSwitchMonth) {
         //console.log("Autoswitching month");
-        this.setMoment(item.momentDate);
+        this.setMoment(item.momentDate, item.momentDate);
       }
     }
+  }
+
+  selectItem(item: CalendarDate) {
+    this.unselectItems();
+    item.selected = true;
+  }
+
+  unselectItems() {
+    this.weeks.forEach(
+      week => {
+        week.forEach(
+          item => {
+            item.selected = false;
+          })
+      });
   }
 }
