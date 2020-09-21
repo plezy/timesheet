@@ -23,7 +23,7 @@
 
     <ng-container matColumnDef="duration">
       <th mat-header-cell *matHeaderCellDef> Duration </th>
-      <td mat-cell *matCellDef="let task">
+      <td mat-cell *matCellDef="let task; let i = index">
         <div *ngIf="task.locked">{{task.duration}}</div>
         <mat-form-field *ngIf="!task.locked">
           <input matInput type=text [(ngModel)]="task.duration" (focusout)="noteLostFocus(task, i)" (change)="noteChanged(task, i)"/>
