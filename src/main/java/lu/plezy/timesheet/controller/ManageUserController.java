@@ -541,7 +541,7 @@ public class ManageUserController {
      @PostMapping(value = "/billable")
      @PreAuthorize("hasAuthority('MANAGE_CONTRACTS')")
      List<UserDto> getInvoiceableUsers(@Valid @RequestBody MessageDto message) {
-        Integer size = message.getNumber() == null ? 10 : message.getNumber();
+        // Integer size = message.getNumber() == null ? 10 : message.getNumber();
         List<User> users = usersRepository.findBillableWithFilter(message.getMessage());
         return users.stream().map(user->UserDto.convertToDto(user)).collect(Collectors.toList());
      }
