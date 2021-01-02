@@ -1,5 +1,6 @@
 package lu.plezy.timesheet.entities.messages;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -12,7 +13,9 @@ import lu.plezy.timesheet.entities.ApplicationSetting;
 import lu.plezy.timesheet.entities.ApplicationSettingDatedValue;
 
 @Getter
-public class ApplicationSettingDto {
+public class ApplicationSettingDto  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static Logger log = LoggerFactory.getLogger(ApplicationSettingDto.class);
 
@@ -31,8 +34,7 @@ public class ApplicationSettingDto {
     }
 
     public static ApplicationSettingDto convertToDto(ApplicationSetting applicationSetting, Date applicableDate) {
-        log.debug("convertToDto called for date {}", applicableDate);
-        log.debug("convertToDto : setting ID = {}", applicationSetting.getSettingId());
+        log.debug("convertToDto called for setting ID = {} and date {}", applicationSetting.getSettingId(), applicableDate);
         ApplicationSettingDto result = new ApplicationSettingDto();
         result.id = applicationSetting.getId();
         result.settingId = applicationSetting.getSettingId();
@@ -44,7 +46,7 @@ public class ApplicationSettingDto {
             } else {
                 result.applicableDate = applicableDate;
             }
-            log.debug("Applicable date used : {}", result.applicableDate);
+            log.debug("convertToDto : Applicable date used : {}", result.applicableDate);
             if (applicationSetting.getDatedValues().size() > 0) {
                 log.debug("convertToDto : dated values exist, sorting them");
                 Collections.sort(applicationSetting.getDatedValues(), new Comparator<ApplicationSettingDatedValue>(){

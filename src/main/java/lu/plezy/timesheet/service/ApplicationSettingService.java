@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import lu.plezy.timesheet.entities.ApplicationSetting;
@@ -25,16 +27,17 @@ public class ApplicationSettingService {
     /*
      * Retrieve All Application Settings for today's date
      */
+    @Cacheable(cacheNames = "cache4settingNoDate")
 	public List<ApplicationSettingDto> getSettings() {
         log.info("getSettings today's setting");
         return getSettings(null);
 	}
- 
 
     /*
      * Retrieve All Application Settings for given date. If date is null,
      * use today's date
      */
+    @Cacheable(cacheNames = "cache4settingWithDate")
     public List<ApplicationSettingDto> getSettings(Date settingsDate) {
         log.info("getSettings for date : {}", settingsDate);
         List<ApplicationSetting> settings = applicationSettingRepository.findAll();
@@ -49,6 +52,7 @@ public class ApplicationSettingService {
      * 
      * @param settingId Setting string identifier
      */
+    @Cacheable(cacheNames = "cache4settingNoDate")
 	public ApplicationSettingDto getSetting(String settingId) {
         log.info("getSetting [{}] applicable now", settingId);
         return getSetting(settingId, null);
@@ -61,6 +65,7 @@ public class ApplicationSettingService {
      * 
      * @param settingId Setting string identifier
      */
+    @Cacheable(cacheNames = "cache4settingWithDate")
     public ApplicationSettingDto getSetting(String settingId, Date settingsDate) {
         log.info("getSetting [{}] for date : {}", settingId, settingsDate);
 
@@ -71,5 +76,6 @@ public class ApplicationSettingService {
             return null;
     }
     
-
+    @CacheEvict(cacheNames = { "cache4settingNoDate", "cache4settingWithDate" }, allEntries = true)
+    public void clearCache() { }
 }
