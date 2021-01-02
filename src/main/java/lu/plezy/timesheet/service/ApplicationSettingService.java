@@ -27,7 +27,7 @@ public class ApplicationSettingService {
     /*
      * Retrieve All Application Settings for today's date
      */
-    @Cacheable(cacheNames = "cache4settingNoDate")
+    @Cacheable(cacheNames = "cache4settings")
 	public List<ApplicationSettingDto> getSettings() {
         log.info("getSettings today's setting");
         return getSettings(null);
@@ -37,7 +37,7 @@ public class ApplicationSettingService {
      * Retrieve All Application Settings for given date. If date is null,
      * use today's date
      */
-    @Cacheable(cacheNames = "cache4settingWithDate")
+    @Cacheable(cacheNames = "cache4settings")
     public List<ApplicationSettingDto> getSettings(Date settingsDate) {
         log.info("getSettings for date : {}", settingsDate);
         List<ApplicationSetting> settings = applicationSettingRepository.findAll();
@@ -52,7 +52,7 @@ public class ApplicationSettingService {
      * 
      * @param settingId Setting string identifier
      */
-    @Cacheable(cacheNames = "cache4settingNoDate")
+    @Cacheable(cacheNames = "cache4settings")
 	public ApplicationSettingDto getSetting(String settingId) {
         log.info("getSetting [{}] applicable now", settingId);
         return getSetting(settingId, null);
@@ -65,7 +65,7 @@ public class ApplicationSettingService {
      * 
      * @param settingId Setting string identifier
      */
-    @Cacheable(cacheNames = "cache4settingWithDate")
+    @Cacheable(cacheNames = "cache4settings")
     public ApplicationSettingDto getSetting(String settingId, Date settingsDate) {
         log.info("getSetting [{}] for date : {}", settingId, settingsDate);
 
@@ -76,6 +76,6 @@ public class ApplicationSettingService {
             return null;
     }
     
-    @CacheEvict(cacheNames = { "cache4settingNoDate", "cache4settingWithDate" }, allEntries = true)
+    @CacheEvict(cacheNames = { "cache4settings" }, allEntries = true)
     public void clearCache() { }
 }
