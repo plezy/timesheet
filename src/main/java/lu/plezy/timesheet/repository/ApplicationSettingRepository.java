@@ -9,5 +9,5 @@ import lu.plezy.timesheet.entities.ApplicationSetting;
 
 @Repository
 public interface ApplicationSettingRepository extends JpaRepository<ApplicationSetting, Long> {
-    Optional<ApplicationSetting> findBySettingId(String settingId);
+    Optional<ApplicationSetting> findBySettingIdIgnoreCase(String settingId);
 }

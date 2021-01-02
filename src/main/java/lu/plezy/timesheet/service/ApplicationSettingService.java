@@ -64,7 +64,7 @@ public class ApplicationSettingService {
     public ApplicationSettingDto getSetting(String settingId, Date settingsDate) {
         log.info("getSetting [{}] for date : {}", settingId, settingsDate);
 
-        Optional<ApplicationSetting> setting = applicationSettingRepository.findBySettingId(settingId);
+        Optional<ApplicationSetting> setting = applicationSettingRepository.findBySettingIdIgnoreCase(settingId);
         if (setting.isPresent())
             return ApplicationSettingDto.convertToDto(setting.get(), settingsDate);
         else
