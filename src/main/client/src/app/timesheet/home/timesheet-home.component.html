@@ -4,13 +4,6 @@
 <div class="time-track-table">
   <table mat-table [dataSource]="taskTimetracks">
 
-    <ng-container matColumnDef="locked">
-      <th mat-header-cell *matHeaderCellDef style="min-width: 24px; max-width: 24px;">&nbsp;</th>
-      <td mat-cell *matCellDef="let task" style="min-width: 24px; max-width: 24px;">
-        <mat-icon *ngIf="task.locked">lock</mat-icon>
-      </td>
-    </ng-container>
-
     <ng-container matColumnDef="contract">
       <th mat-header-cell *matHeaderCellDef> Contract / Project (Type) </th>
       <td mat-cell *matCellDef="let task">{{task.contractName}}&nbsp;(&nbsp;{{task.contractType}}&nbsp;)</td>
@@ -23,21 +16,25 @@
 
     <ng-container matColumnDef="duration">
       <th mat-header-cell *matHeaderCellDef> Duration </th>
-      <td mat-cell *matCellDef="let task; let i = index">
-        <div *ngIf="task.locked">{{task.duration}}</div>
-        <mat-form-field *ngIf="!task.locked">
-          <input matInput type=text [(ngModel)]="task.duration" (focusout)="noteLostFocus(task, i)" (change)="noteChanged(task, i)"/>
-        </mat-form-field>
-      </td>
+      <td mat-cell *matCellDef="let task; let i = index">{{task.duration}}</td>
     </ng-container>
 
     <ng-container matColumnDef="note">
       <th mat-header-cell *matHeaderCellDef> Note </th>
-      <td mat-cell *matCellDef="let task; let i = index">
-        <div *ngIf="task.locked">{{task.note}}</div>
-        <mat-form-field *ngIf="!task.locked">
-          <input matInput type=text [(ngModel)]="task.note" (focusout)="noteLostFocus(task, i)" (change)="noteChanged(task, i)"/>
-        </mat-form-field>
+      <td mat-cell *matCellDef="let task; let i = index">{{task.note}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef style="min-width: 24px; max-width: 24px;">&nbsp;</th>
+      <td mat-cell *matCellDef="let task" style="min-width: 24px; max-width: 24px;">
+        <div class="locked-icon" *ngIf="task.locked">
+          <mat-icon>lock</mat-icon>
+        </div>
+
+        <button mat-icon-button *ngIf="!task.locked" title="Edit Time Track" (click)="clickEdit(task)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
       </td>
     </ng-container>
 

@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<mat-dialog-content [formGroup]="form" class="container-fluid">
+  <div class="row" *ngIf="editMode">
+    <div class="task-description">
+      {{taskTimeTrack.contractName}} ({{taskTimeTrack.contractType}}) - {{taskTimeTrack.taskName}}
+    </div>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-md-4">
+      <input matInput placeholder="Duration" formControlName="duration" required />
+      <!--
+      <mat-error *ngIf="form.controls.name.hasError('required')">
+        Profile's name is required !
+      </mat-error>
+      <mat-error *ngIf="form.controls.name.hasError('minlength')">
+        Minimum Profile's name length is 2 !
+      </mat-error>
+      <mat-error *ngIf="form.controls.name.hasError('maxlength')">
+        Maximum Profile's name length is 64 !
+      </mat-error>
+      -->
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input matInput placeholder="Note" formControlName="note" />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<!--
+  <p>Form dirty : {{form.dirty}}</p>
+  <p>Form valid : {{form.valid}}</p>
+  <p>Form value: {{ form.value | json }}</p>
+  <p>Form status: {{ form.status | json }}</p>
+  <p>Form username status: {{ form.controls.firstname.errors | json }}</p>
+-->
+<mat-dialog-actions>
+  <span class="spacer"></span>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button  color="primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button>
+  <!--
+  -->
+</mat-dialog-actions>

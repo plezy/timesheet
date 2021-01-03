@@ -7,6 +7,9 @@ import {TimetrackService} from "../../common/services/timetrack.service";
 import {AuthService} from "../../core/auth/auth.service";
 import {Router} from "@angular/router";
 import {UserService} from "../../common/services/user.service";
+import {MatDialog} from "@angular/material/dialog";
+import {ContractAddEditDialogComponent} from "../../contract/contract-add-edit-dialog/contract-add-edit-dialog.component";
+import {TimeTrackAddEditDialogComponent} from "../time-track-add-edit-dialog/time-track-add-edit-dialog.component";
 
 @Component({
   selector: 'timesheet-home',
@@ -17,10 +20,11 @@ export class TimeSheetHomeComponent implements OnInit {
   me: User;
   selectedDate: CalendarDate;
   taskTimetracks: TaskTimetrack[];
-  displayedColumns: string[] = ["locked", "contract", "task", "duration", "note"];
+  displayedColumns: string[] = ["contract", "task", "duration", "note", "action"];
 
-  constructor(private authService: AuthService, private router: Router, private userService: UserService,
-          private calendarService: BigCalendarService, private timetrackService: TimetrackService) {
+  constructor(private authService: AuthService, public dialog: MatDialog, private router: Router,
+              private userService: UserService, private calendarService: BigCalendarService,
+              private timetrackService: TimetrackService) {
 
   }
 
@@ -72,12 +76,10 @@ export class TimeSheetHomeComponent implements OnInit {
     }
   }
 
-  noteLostFocus(task: TaskTimetrack, i: any) {
-    console.log("note left : " + task.note + "(id: " + task.taskID +")");
-  }
-
-
-  noteChanged(task: any, i: any) {
-    console.log("note changed : " + task.note + "(id: " + task.taskID +")");
+  clickEdit(task: TaskTimetrack) {
+    console.log("Edit Time track ID : " + task.taskID);
+    const dialogRef = this.dialog.open(TimeTrackAddEditDialogComponent, {
+      width: '700px', data: { title: 'Edit Time Track', taskTimeTrack: task }
+    });
   }
 }

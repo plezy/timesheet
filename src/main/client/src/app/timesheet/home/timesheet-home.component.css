@@ -88,3 +88,11 @@ table {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+.locked-icon {
+  display: inline;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}

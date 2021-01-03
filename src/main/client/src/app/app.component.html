@@ -40,24 +40,26 @@
             <div style="padding-right: 5px;"><mat-icon>work</mat-icon></div><span>Contracts</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/timesheet" *ngIf="hasAuthority('ENTER_TIME_TRACK')">
             <div style="padding-right: 5px;"><mat-icon>timer</mat-icon></div><span>Enter Time Track</span></a>
+          <mat-divider></mat-divider>
         </div>
-        <mat-divider></mat-divider>
         <div *ngIf="hasOneOfAuthority(['MANAGE_SETTINGS', 'MANAGE_USERS'])">
           <h3 matSubheader>Administration</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/core/users" *ngIf="hasAuthority('MANAGE_USERS')">
             <div style="padding-right: 5px;"><mat-icon>people</mat-icon></div><span>Users management</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">
             <div style="padding-right: 5px;"><mat-icon>notification_important</mat-icon></div><span>Set notifications</span></a>
+          <mat-divider></mat-divider>
         </div>
-        <mat-divider></mat-divider>
+        <div>
           <h3 matSubheader>Current User</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/core/profile">
             <div style="padding-right: 5px;"><mat-icon>account_circle</mat-icon></div><span>Profile</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/core/passwd">
             <div style="padding-right: 5px;"><mat-icon>vpn_key</mat-icon></div><span>Set password</span></a>
-        <mat-divider></mat-divider>
+          <mat-divider></mat-divider>
+        </div>
         <div *ngIf="hasAuthority('MANAGE_SETTINGS')">
-        <h3 matSubheader>Application information</h3>
+          <h3 matSubheader>Application information</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/core/build">
             <div style="padding-right: 5px;"><mat-icon fontSet="fas" fontIcon="fa-cog"></mat-icon></div><span>Build</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/core/javaprops">
