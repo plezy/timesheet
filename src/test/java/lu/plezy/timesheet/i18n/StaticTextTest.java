@@ -58,4 +58,11 @@ public class StaticTextTest {
             System.out.printf("%20s = %s\n", key, st.getText(key, locale));
         }
     }
+
+    @Test
+    public void testLocale() {
+        System.out.println(Locale.forLanguageTag("en").getLanguage());
+        System.out.println(Locale.forLanguageTag("fr-be").getLanguage());
+        System.out.println(Locale.forLanguageTag("fr").getLanguage());
+    }
 }

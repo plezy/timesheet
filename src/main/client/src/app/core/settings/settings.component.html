@@ -1,0 +1,10 @@
+<h2>Application Settings</h2>
+<br/>
+<div *ngFor="let setting of rawSettings">
+    <p>{{setting.settingId}}, {{getI18nText(setting.settingId)}}, {{setting.value}}</p>
+    <div *ngIf="setting.dateLinked">
+        <div *ngFor="let datedSetting of setting.datedValues">
+            {{datedSetting.value}}, {{datedSetting.dateEndValid}}
+        </div>
+    </div>
+</div>

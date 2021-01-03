@@ -33,7 +33,7 @@ public class StaticText {
         if (bundle !=null) {
             String str = null;
             try {
-                str = bundle.getString(in.toLowerCase());
+                str = bundle.getString(in);
             } catch (MissingResourceException mrex) {
                 log.error("MissingResourceException occurs");
                 mrex.printStackTrace();

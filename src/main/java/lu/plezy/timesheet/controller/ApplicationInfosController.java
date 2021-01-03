@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.Data;
-
+import lu.plezy.timesheet.entities.messages.StringResponse;
 import lu.plezy.tools.json.JsonPropertiesSerializer;
 
 @RestController
@@ -39,15 +38,6 @@ public class ApplicationInfosController {
     String jsonGitInfos = null;
     String jsonSysProperties = null;
     String jsonEnvVariables = null;
-
-    @Data
-    class StringResponse {
-        private String value;
-
-        public StringResponse(String s) {
-            this.value = s;
-        }
-    }
 
     @RequestMapping(value = "/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
