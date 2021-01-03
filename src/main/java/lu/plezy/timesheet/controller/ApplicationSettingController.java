@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import lu.plezy.timesheet.entities.ApplicationSetting;
 import lu.plezy.timesheet.entities.messages.ApplicationSettingDto;
 import lu.plezy.timesheet.service.ApplicationSettingService;
 
@@ -32,7 +33,8 @@ public class ApplicationSettingController {
     @Autowired
     ApplicationSettingService applicationSettingService;
 
-    @GetMapping({"", "/"})
+    @GetMapping({"", "/", "/list"})
+    @PreAuthorize("isAuthenticated()")
     public List<ApplicationSettingDto> getSetttings(@RequestParam(name = "date", required = false) Optional<String> dateApplicableParam) {
         log.info("getSetttings called");
         if (dateApplicableParam.isPresent()) {
@@ -48,7 +50,8 @@ public class ApplicationSettingController {
         }
     }
 
-    @GetMapping("/{settingId}")
+    @GetMapping("/value/{settingId}")
+    @PreAuthorize("isAuthenticated()")
     public ApplicationSettingDto getSettting(@PathVariable("settingId") String settingId, @RequestParam(name = "date", required = false) Optional<String> dateApplicableParam) {
         log.info("getSettting called for {}", settingId);
         ApplicationSettingDto dto = null;
@@ -70,10 +73,18 @@ public class ApplicationSettingController {
         return dto;
     }
     
-    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
+    @GetMapping({"/cache/clear"})
     public void clearCache() {
         log.info("clearCache called");
         applicationSettingService.clearCache();
+    }
+
+    @PreAuthorize("hasAuthority('MANAGE_SETTINGS')")
+    @GetMapping({"/raw"})
+    public List<ApplicationSetting> getRawSettings() {
+        log.info("getRawSettings called");
+        return applicationSettingService.getRawSettings();
     }
 
 }

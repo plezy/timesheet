@@ -10,6 +10,7 @@ import { BuildComponent } from './version/build/build.component';
 import { JavaComponent } from './version/java/java.component';
 import { EnvComponent } from './version/env/env.component';
 import { GitComponent } from './version/git/git.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const coreRoutes: Routes = [
   { path: '', redirectTo: '/core/home', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const coreRoutes: Routes = [
   { path: 'users', component: UserListComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'passwd', component: PasswordComponent },
+  { path: 'settings', component: SettingsComponent },
 
   { path: 'build', component: BuildComponent },
   { path: 'javaprops', component: JavaComponent },

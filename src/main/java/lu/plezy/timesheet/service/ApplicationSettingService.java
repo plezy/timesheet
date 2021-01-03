@@ -1,5 +1,7 @@
 package lu.plezy.timesheet.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lu.plezy.timesheet.entities.ApplicationSetting;
+import lu.plezy.timesheet.entities.ApplicationSettingDatedValue;
 import lu.plezy.timesheet.entities.messages.ApplicationSettingDto;
 import lu.plezy.timesheet.repository.ApplicationSettingRepository;
 
@@ -78,4 +82,26 @@ public class ApplicationSettingService {
     
     @CacheEvict(cacheNames = { "cache4settings" }, allEntries = true)
     public void clearCache() { }
+
+    public List<ApplicationSetting> getRawSettings() {
+        List<ApplicationSetting> settings = applicationSettingRepository.findAll(Sort.by(Sort.Direction.ASC, "sorting"));
+        for (ApplicationSetting setting : settings) {
+            if (setting.isDateLinked()) {
+                if (setting.getDatedValues().size() > 0) {
+                    Collections.sort(setting.getDatedValues(), new Comparator<ApplicationSettingDatedValue>(){
+
+                        @Override
+                        public int compare(ApplicationSettingDatedValue o1, ApplicationSettingDatedValue o2) {
+                            Long t1 = o1.getDateEndValid().getTime();
+                            Long t2 = o2.getDateEndValid().getTime();
+                            return t1.compareTo(t2);
+                        }
+                        
+                    });
+                }
+                
+            }
+        }
+        return settings;
+    }
 }

@@ -46,6 +46,8 @@
           <h3 matSubheader>Administration</h3>
           <a mat-list-item routerLinkActive="active-link" routerLink="/core/users" *ngIf="hasAuthority('MANAGE_USERS')">
             <div style="padding-right: 5px;"><mat-icon>people</mat-icon></div><span>Users management</span></a>
+          <a mat-list-item routerLinkActive="active-link" routerLink="/core/settings" *ngIf="hasAuthority('MANAGE_SETTINGS')">
+            <div style="padding-right: 5px;"><mat-icon>tune</mat-icon></div><span>Application settings</span></a>
           <a mat-list-item routerLinkActive="active-link" routerLink="/notifications" *ngIf="hasAuthority('MANAGE_SETTINGS')">
             <div style="padding-right: 5px;"><mat-icon>notification_important</mat-icon></div><span>Set notifications</span></a>
         </div>

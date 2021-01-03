@@ -15,6 +15,7 @@ import { UserAddEditDialogComponent } from './user/user-add-edit-dialog/user-add
 import { UserSetPasswordDialogComponent } from './user/user-set-password-dialog/user-set-password-dialog.component';
 import { UserEditRolesDialogComponent } from './user/user-edit-roles-dialog/user-edit-roles-dialog.component';
 import { MaterialModule } from '../material.module';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MaterialModule } from '../material.module';
     UserListComponent,
     UserAddEditDialogComponent,
     UserSetPasswordDialogComponent,
-    UserEditRolesDialogComponent
+    UserEditRolesDialogComponent,
+    SettingsComponent
   ],
   imports: [
     CommonModule,

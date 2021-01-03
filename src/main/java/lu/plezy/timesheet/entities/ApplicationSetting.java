@@ -38,6 +38,9 @@ public class ApplicationSetting {
     @Column(name = "SETTING_ID", updatable = false, nullable = false, length=64)
     private String settingId;
 
+    @Column(name = "SORTING", updatable = false, nullable = false)
+    private Integer sorting;
+
     @Column(name = "JAVA_TYPE", updatable = false, nullable = false, length=32)
     private String javaType;
 
