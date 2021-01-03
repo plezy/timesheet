@@ -28,4 +28,14 @@
         </resources>
     </cache>
 
+    <cache alias="i18nCache">
+        <expiry>
+            <ttl unit="hours">8</ttl>
+        </expiry>
+
+        <resources>
+            <heap unit="entries">2000</heap>
+            <offheap unit="MB">20</offheap>
+        </resources>
+    </cache>
 </config>
