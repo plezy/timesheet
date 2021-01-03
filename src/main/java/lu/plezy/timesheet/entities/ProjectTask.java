@@ -1,13 +1,9 @@
 package lu.plezy.timesheet.entities;
 
-import java.util.Date;
-import java.util.Set;
-
 import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor

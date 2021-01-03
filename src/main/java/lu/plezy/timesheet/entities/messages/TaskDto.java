@@ -2,8 +2,6 @@ package lu.plezy.timesheet.entities.messages;
 
 import lombok.Data;
 import lu.plezy.timesheet.entities.ContractualTask;
-import lu.plezy.timesheet.entities.ProfileTask;
-import lu.plezy.timesheet.entities.ProjectTask;
 
 @Data
 public class TaskDto {

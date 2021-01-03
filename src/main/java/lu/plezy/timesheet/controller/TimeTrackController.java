@@ -1,7 +1,6 @@
 package lu.plezy.timesheet.controller;
 
 import lu.plezy.timesheet.entities.ContractualTask;
-import lu.plezy.timesheet.entities.ProfileTask;
 import lu.plezy.timesheet.entities.TaskTimeTrack;
 import lu.plezy.timesheet.entities.User;
 import lu.plezy.timesheet.entities.messages.TaskDto;
