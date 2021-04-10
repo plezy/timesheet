@@ -1,1 +1,14 @@
-<p>one-setting works!</p>
+<mat-card class="app-setting">
+  <mat-card-header>
+    <div class="col-md-4">{{i18nSettingText}}</div>
+    <mat-form-field *ngIf="(setting.javaType=='java.lang.Double') || (setting.javaType=='java.lang.Integer') || (setting.javaType=='java.lang.String')" class="col-md-4">
+      <input matInput type="text" placeholder="Current value :" [(ngModel)]="setting.value">
+    </mat-form-field>
+    <mat-slide-toggle *ngIf="setting.javaType=='java.lang.Boolean'" [ngModel]="setting.value=='true'">
+
+    </mat-slide-toggle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="col-md-2">col value</div>
+  </mat-card-content>
+</mat-card>

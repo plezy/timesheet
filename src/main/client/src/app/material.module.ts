@@ -18,6 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from "@angular/material/card";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @NgModule({
     declarations: [],
@@ -40,7 +42,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         MatDatepickerModule,
         MatNativeDateModule,
         MatSelectModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatCardModule,
+        MatSlideToggleModule
     ],
     exports: [
         CommonModule,
@@ -61,7 +65,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         MatDatepickerModule,
         MatNativeDateModule,
         MatSelectModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatCardModule,
+        MatSlideToggleModule
     ]
 })
 export class MaterialModule { }

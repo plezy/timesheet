@@ -13,10 +13,9 @@ import { AuthService } from '../auth/auth.service';
 export class SettingsComponent implements OnInit {
 
   rawSettings: ApplicationSettingRaw[];
-  i18nText = new Map();
   lang: string = 'en';
 
-  constructor(private authService: AuthService, private settingsService: SettingsService, private i18nService: I18nService, private router: Router) { }
+  constructor(private authService: AuthService, private settingsService: SettingsService, private router: Router) { }
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
@@ -39,14 +38,5 @@ export class SettingsComponent implements OnInit {
     );
   }
 
-  getI18nText(textId: string) : string {
-    if (! this.i18nText.has(textId)) {
-      this.i18nService.getText(textId, this.lang).subscribe(
-        result => {
-          this.i18nText.set(textId, result.value);
-        }
-      );
-    }
-    return this.i18nText.get(textId);
-  }
+
 }
