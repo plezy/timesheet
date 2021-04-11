@@ -8,7 +8,7 @@
       </mat-form-field>
   </mat-card-header>
   <mat-card-content>
-    <div style="margin-left: 30px;" *ngIf="setting.dateLinked">
+    <div style="padding-left: 60px;" *ngIf="setting.dateLinked">
       <div class="row">
         <div class="col-md-12">Dated values</div>
       </div>
@@ -20,8 +20,22 @@
             <div class="col-md-6">Date de fin d'applicabilité (inclusive)</div>
           </div>
           <div class="row" *ngFor="let datedValue of setting.datedValues">
-            <div class="col-md-6">{{datedValue.value}}</div>
-            <div class="col-md-6">{{datedValue.dateEndValid}}</div>
+            <!-- {{datedValue.id}} -->
+            <div class="col-md-6">
+              <mat-slide-toggle  *ngIf="setting.javaType=='java.lang.Boolean'" [ngModel]="datedValue.value=='true'">
+              </mat-slide-toggle>
+              <mat-form-field *ngIf="(setting.javaType=='java.lang.Double') || (setting.javaType=='java.lang.Integer') || (setting.javaType=='java.lang.String')" floatLabel="never">
+                <input matInput type="text" placeholder="Current value :" [(ngModel)]="datedValue.value">
+              </mat-form-field>
+            </div>
+            <!-- {{datedValue.dateEndValid}} -->
+            <div class="col-md-6">
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" [value]="datedValue.dateEndValid">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
           </div>
         </div>
       </div>
