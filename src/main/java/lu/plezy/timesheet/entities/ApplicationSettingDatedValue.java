@@ -27,7 +27,7 @@ public class ApplicationSettingDatedValue {
     @Column(name = "ID", updatable = false, nullable = false)
     private long id;
 
-    @Column(name = "VALUE", updatable = false, nullable = false)
+    @Column(name = "SETTING_VALUE", updatable = false, nullable = false)
     private String value;
 
     // setting validity date INCLUSIVE ! When date is over, the setting is changed

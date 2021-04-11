@@ -2,9 +2,10 @@ export class ApplicationSetting {
     id: number;
     settingId: string;
     dateLinked: boolean;
-    // dates value was requested or date value is applicable.
-    // Note: in DB the recorded date is end of applicability INCLUSIVE ! SO, end of applicability = applicableDate - 1 day 
+    // dates value that was requested or current date.
     applicableDate: Date;
+    // Note: in DB the recorded date is end of applicability is INCLUSIVE !
+    // gives end of applicability for the returned setting
     endOfApplicabilityDate: Date;
     value: string;
 }

@@ -33,9 +33,9 @@ public class ApplicationSettingController {
     @Autowired
     ApplicationSettingService applicationSettingService;
 
-    @GetMapping({"", "/", "/list"})
+    @GetMapping({"", "/", "/list", "/list/{date}"})
     @PreAuthorize("isAuthenticated()")
-    public List<ApplicationSettingDto> getSetttings(@RequestParam(name = "date", required = false) Optional<String> dateApplicableParam) {
+    public List<ApplicationSettingDto> getSetttings(@PathVariable(name = "date", required = false) Optional<String> dateApplicableParam) {
         log.info("getSetttings called");
         if (dateApplicableParam.isPresent()) {
             Date dateApplicable = null;
@@ -50,9 +50,9 @@ public class ApplicationSettingController {
         }
     }
 
-    @GetMapping("/value/{settingId}")
+    @GetMapping({"/value/{settingId}", "/value/{settingId}/{date}"})
     @PreAuthorize("isAuthenticated()")
-    public ApplicationSettingDto getSettting(@PathVariable("settingId") String settingId, @RequestParam(name = "date", required = false) Optional<String> dateApplicableParam) {
+    public ApplicationSettingDto getSettting(@PathVariable("settingId") String settingId, @PathVariable(name = "date", required = false) Optional<String> dateApplicableParam) {
         log.info("getSettting called for {}", settingId);
         ApplicationSettingDto dto = null;
         if (dateApplicableParam.isPresent()) {

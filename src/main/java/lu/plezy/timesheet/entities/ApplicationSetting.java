@@ -48,7 +48,13 @@ public class ApplicationSetting {
     @Convert(converter=BooleanToStringConverter.class)
     private boolean dateLinked = false;
 
-    @Column(name = "CURRENT_VALUE", updatable = false, nullable = false)
+    /**
+     *  The current value for the setting. If this setting may change with time, the applicable
+     *  value until date is given in the datedValues List. The date given in this table is the value
+     *  used until the date, inclusive !
+     *  If all dates in this list are in the past then the value used is the one given in the current value column.
+     */
+    @Column(name = "SETTING_VALUE", updatable = false, nullable = false)
     private String value;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

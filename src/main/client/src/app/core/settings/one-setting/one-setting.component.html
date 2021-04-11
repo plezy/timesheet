@@ -1,14 +1,30 @@
 <mat-card class="app-setting">
-  <mat-card-header>
-    <div class="col-md-4">{{i18nSettingText}}</div>
-    <mat-form-field *ngIf="(setting.javaType=='java.lang.Double') || (setting.javaType=='java.lang.Integer') || (setting.javaType=='java.lang.String')" class="col-md-4">
-      <input matInput type="text" placeholder="Current value :" [(ngModel)]="setting.value">
-    </mat-form-field>
-    <mat-slide-toggle *ngIf="setting.javaType=='java.lang.Boolean'" [ngModel]="setting.value=='true'">
-
-    </mat-slide-toggle>
+  <mat-card-header >
+      <div class="col-md-8">{{i18nSettingText}}</div>
+      <mat-slide-toggle  class="col-md-4"*ngIf="setting.javaType=='java.lang.Boolean'" [ngModel]="setting.value=='true'">
+      </mat-slide-toggle>
+      <mat-form-field class="col-md-4" *ngIf="(setting.javaType=='java.lang.Double') || (setting.javaType=='java.lang.Integer') || (setting.javaType=='java.lang.String')" floatLabel="always">
+        <input matInput type="text" placeholder="Current value :" [(ngModel)]="setting.value">
+      </mat-form-field>
   </mat-card-header>
   <mat-card-content>
-    <div class="col-md-2">col value</div>
+    <div style="margin-left: 30px;" *ngIf="setting.dateLinked">
+      <div class="row">
+        <div class="col-md-12">Dated values</div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" *ngIf="setting.datedValues.length < 1">None</div>
+        <div class="col-md-12" *ngIf="setting.datedValues.length > 0">
+          <div class="row">
+            <div class="col-md-6">Valeurs</div>
+            <div class="col-md-6">Date de fin d'applicabilité (inclusive)</div>
+          </div>
+          <div class="row" *ngFor="let datedValue of setting.datedValues">
+            <div class="col-md-6">{{datedValue.value}}</div>
+            <div class="col-md-6">{{datedValue.dateEndValid}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>

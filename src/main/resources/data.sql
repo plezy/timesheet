@@ -164,7 +164,7 @@ VALUES (1, '2020-09-21', 8, 'Test data', 1, 'Y', 2),
       (11, '2020-10-02', 8, 'Test data', 3, 'N', 2),
       (12, '2020-10-03', 8, 'Test data', 1, 'N', 2);
 
-INSERT INTO APP_SETTINGS(ID, SETTING_ID, SORTING, JAVA_TYPE, DATE_LINKED, CURRENT_VALUE)
+INSERT INTO APP_SETTINGS(ID, SETTING_ID, SORTING, JAVA_TYPE, DATE_LINKED, SETTING_VALUE)
 VALUES
   (1, 'USE_CONSTANT_DAILY_WORKING_HOURS', 2, 'java.lang.Boolean', 'Y', 'true'),
   (2, 'CONSTANT_DAILY_WORKING_HOURS', 3, 'java.lang.Double', 'Y', '8.0'),
@@ -175,10 +175,10 @@ VALUES
   (7, 'FRIDAYS_WORKING_HOURS', 8, 'java.lang.Double', 'Y', '8.0'),
   (8, 'SATURDAYS_WORKING_HOURS', 9, 'java.lang.Double', 'Y', '0.0'),
   (9, 'SUNDAYS_WORKING_HOURS', 10, 'java.lang.Double', 'Y', '0.0'),
-  (10, 'USE_SEVEN_DAYS_A_WEEK_WORK', 1, 'java.lang.Boolean', 'N', 'false'),
+  (10, 'USE_SEVEN_DAYS_A_WEEK_WORK', 1, 'java.lang.Boolean', 'N', 'false')
 ;
 
-INSERT INTO APP_SETTING_VALUES(ID, APP_SETTING_ID, VALUE, DATE_END_VALIDITY)
+INSERT INTO APP_SETTING_VALUES(ID, APP_SETTING_ID, SETTING_VALUE, DATE_END_VALIDITY)
 VALUES
   (1, 1, 'false', '2020-12-31'),
   (2, 7, '4.5', '2020-07-31'),
