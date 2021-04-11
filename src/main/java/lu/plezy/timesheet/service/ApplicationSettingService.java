@@ -94,7 +94,7 @@ public class ApplicationSettingService {
                         public int compare(ApplicationSettingDatedValue o1, ApplicationSettingDatedValue o2) {
                             Long t1 = o1.getDateEndValid().getTime();
                             Long t2 = o2.getDateEndValid().getTime();
-                            return t1.compareTo(t2);
+                            return t2.compareTo(t1);
                         }
                         
                     });
