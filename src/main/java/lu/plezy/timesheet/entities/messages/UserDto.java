@@ -9,13 +9,15 @@ import lu.plezy.timesheet.entities.User;
 public class UserDto {
     private long id;
     private String firstName;
-    private String lastName;  
+    private String lastName;
+    private String applicationLanguage;
     
     public static UserDto convertToDto(User user) {
         return new UserDto(
             user.getId(),
             user.getFirstName(),
-            user.getLastName()
+            user.getLastName(),
+            user.getApplicationLanguage()
         );
     }
     

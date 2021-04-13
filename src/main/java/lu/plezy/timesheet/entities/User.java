@@ -69,4 +69,8 @@ public class User {
     @Column(name = "ROLE", length=32)
     private Set<RoleEnum> roles;
 
+    @NonNull
+    @Column(name = "APP_LANG", nullable = false,columnDefinition = "CHAR(2) DEFAULT 'en'")
+    private String applicationLanguage = "en";
+
 }

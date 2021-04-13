@@ -1,4 +1,4 @@
-<h3 mat-dialog-title>Edit user profile</h3>
+<h3>Edit user profile</h3>
 <br/>
 <div>
   <form [formGroup]="form">
@@ -31,7 +31,7 @@
         <mat-error *ngIf="form.controls.email.hasError('email')">
             E-Mail is not a valid mail address !
         </mat-error>
-      </mat-form-field>    
+      </mat-form-field>
     </div>
     <div class="row">
       <mat-form-field class="col-md-6">
@@ -43,6 +43,9 @@
             formControlName="mobile"/>
       </mat-form-field>
     </div>
+
+    <h3>Edit user's preferences</h3>
+
     <button class="btn btn-primary" [disabled]="!form.dirty || !form.valid" (click)="save()">Save</button>
   </form>
   <!--p>Form dirty : {{form.dirty}}</p>
