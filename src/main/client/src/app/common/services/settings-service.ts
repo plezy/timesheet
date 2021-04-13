@@ -13,8 +13,13 @@ export class SettingsService {
 
     constructor(private http: HttpClient) { }
 
-    getRawSettings(): Observable<ApplicationSettingRaw[]> {
-        const url = this.settingsBaseUrl + '/raw';
-        return this.http.get<ApplicationSettingRaw[]>(url);
-    }
+  getRawSettings(): Observable<ApplicationSettingRaw[]> {
+    const url = this.settingsBaseUrl + '/manage';
+    return this.http.get<ApplicationSettingRaw[]>(url);
+  }
+
+  saveRawSettings(settings: ApplicationSettingRaw[]): Observable<ApplicationSettingRaw[]> {
+    const url = this.settingsBaseUrl + '/manage';
+    return this.http.put<ApplicationSettingRaw[]>(url, settings);
+  }
 }

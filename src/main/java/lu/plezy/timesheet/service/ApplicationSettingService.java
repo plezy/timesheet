@@ -104,4 +104,11 @@ public class ApplicationSettingService {
         }
         return settings;
     }
+
+    public List<ApplicationSetting> updateRawSettings(List<ApplicationSetting> settings) {
+        for (ApplicationSetting setting : settings) {
+            applicationSettingRepository.save(setting);
+        }
+        return getRawSettings();
+    }
 }

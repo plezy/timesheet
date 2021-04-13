@@ -1,12 +1,12 @@
 <h2>Application Settings</h2>
 <br/>
 
-<app-setting *ngFor="let setting of rawSettings" [setting]="setting" [lang]="'fr'"></app-setting>
+<div class="app-setting-buttons-head">
+  <div class="app-setting-buttons">
+    <button mat-raised-button class="app-setting-button" (click)="cancel()">Cancel</button>
+    <button mat-raised-button class="app-setting-button" color="primary" [disabled]="! settingsChanged"  (click)="save()">Save</button>
+  </div>
+</div>
+<app-setting *ngFor="let setting of rawSettings" [setting]="setting" [lang]="'fr'" (onSettingChanged)="onSettingChanged()"></app-setting>
 
-  <!--p>{{setting.settingId}}, {{getI18nText(setting.settingId)}}, {{setting.value}}</p>
-    <div *ngIf="setting.dateLinked">
-        <div *ngFor="let datedSetting of setting.datedValues">
-            {{datedSetting.value}}, {{datedSetting.dateEndValid}}
-        </div>
-    </div-->
 

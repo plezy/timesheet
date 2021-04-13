@@ -4,6 +4,8 @@ import { ApplicationSettingRaw } from 'src/app/common/model/applicationSettings'
 import { I18nService } from 'src/app/common/services/i18n-service';
 import { SettingsService } from 'src/app/common/services/settings-service';
 import { AuthService } from '../auth/auth.service';
+import { User } from "../../common/model/user";
+import { UserService } from "../../common/services/user.service";
 
 @Component({
   selector: 'app-settings',
@@ -14,8 +16,10 @@ export class SettingsComponent implements OnInit {
 
   rawSettings: ApplicationSettingRaw[];
   lang: string = 'en';
+  settingsChanged = false;
+  me: User;
 
-  constructor(private authService: AuthService, private settingsService: SettingsService, private router: Router) { }
+  constructor(private authService: AuthService, private userService: UserService, private settingsService: SettingsService, private router: Router) { }
 
   ngOnInit() {
     if (! this.authService.isAuthenticated()) {
@@ -27,6 +31,13 @@ export class SettingsComponent implements OnInit {
       this.router.navigate(['/core/home']);
       return;
     }
+
+    this.userService.getMe().subscribe(
+      me => {
+        this.me = me;
+      }
+    );
+
     this.loadData();
   }
 
@@ -38,5 +49,21 @@ export class SettingsComponent implements OnInit {
     );
   }
 
+  onSettingChanged() {
+    this.settingsChanged = true;
+  }
 
+  cancel() {
+    this.loadData();
+    this.settingsChanged = false;
+  }
+
+  save() {
+    console.log(this.rawSettings);
+    this.settingsService.saveRawSettings(this.rawSettings).subscribe(
+      result => {
+        this.rawSettings = result;
+      }
+    );
+  }
 }

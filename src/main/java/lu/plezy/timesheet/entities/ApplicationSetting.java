@@ -19,6 +19,8 @@ import javax.persistence.UniqueConstraint;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLInsert;
 
 @Data
 @NoArgsConstructor
@@ -26,9 +28,12 @@ import lombok.NoArgsConstructor;
 @Table(name="APP_SETTINGS",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = { "SETTING_ID" }, name = "APS_SETTING_ID_UK")
-    }    
+    }
 )
 @SequenceGenerator(name = "APP_SETTINGS_SEQ", initialValue = 100, allocationSize = 1)
+// NO inserts neither deletes authorised at this level !
+@SQLInsert(sql = "")
+@SQLDelete(sql = "")
 public class ApplicationSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "APP_SETTINGS_SEQ")

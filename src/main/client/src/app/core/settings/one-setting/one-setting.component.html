@@ -1,40 +1,52 @@
 <mat-card class="app-setting">
   <mat-card-header >
       <div class="col-md-8">{{i18nSettingText}}</div>
-      <mat-slide-toggle  class="col-md-4"*ngIf="setting.javaType=='java.lang.Boolean'" [ngModel]="setting.value=='true'">
+      <mat-slide-toggle  class="col-md-4"*ngIf="setting.javaType==='java.lang.Boolean'" [checked]="setting.value === 'true'" (change)="onValueSliderChange($event)">
       </mat-slide-toggle>
-      <mat-form-field class="col-md-4" *ngIf="(setting.javaType=='java.lang.Double') || (setting.javaType=='java.lang.Integer') || (setting.javaType=='java.lang.String')" floatLabel="always">
+      <mat-form-field class="col-md-4" *ngIf="(setting.javaType==='java.lang.Double') || (setting.javaType==='java.lang.Integer') ||
+                                          (setting.javaType==='java.lang.String')" floatLabel="always" (change)="settingChanged()">
         <input matInput type="text" placeholder="Current value :" [(ngModel)]="setting.value">
       </mat-form-field>
   </mat-card-header>
   <mat-card-content>
-    <div style="padding-left: 60px;" *ngIf="setting.dateLinked">
+    <div class="dated-values" *ngIf="setting.dateLinked">
       <div class="row">
-        <div class="col-md-12">Dated values</div>
+        <div class="col-md-10 dated-values-head">Dated values :</div>
+        <div class="col-md-2">
+          <button mat-icon-button title="Add dated setting" (click)="clickAddDatedSetting()">
+            <mat-icon style="color: black;">add_circle</mat-icon>
+          </button>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-12" *ngIf="setting.datedValues.length < 1">None</div>
         <div class="col-md-12" *ngIf="setting.datedValues.length > 0">
           <div class="row">
-            <div class="col-md-6">Valeurs</div>
-            <div class="col-md-6">Date de fin d'applicabilité (inclusive)</div>
+            <div class="col-md-5">Valeurs</div>
+            <div class="col-md-5">Date de fin d'applicabilité (inclusive)</div>
+            <div class="col-md-2">Actions</div>
           </div>
-          <div class="row" *ngFor="let datedValue of setting.datedValues">
+          <div class="row" *ngFor="let datedValue of setting.datedValues; let idx = index" >
             <!-- {{datedValue.id}} -->
-            <div class="col-md-6">
-              <mat-slide-toggle  *ngIf="setting.javaType=='java.lang.Boolean'" [ngModel]="datedValue.value=='true'">
+            <div class="col-md-5">
+              <mat-slide-toggle  *ngIf="setting.javaType=='java.lang.Boolean'" [checked]="datedValue.value === 'true'" (change)="onDatedValueSliderChange(idx, $event)">
               </mat-slide-toggle>
-              <mat-form-field *ngIf="(setting.javaType=='java.lang.Double') || (setting.javaType=='java.lang.Integer') || (setting.javaType=='java.lang.String')" floatLabel="never">
+              <mat-form-field *ngIf="(setting.javaType=='java.lang.Double') || (setting.javaType=='java.lang.Integer') || (setting.javaType=='java.lang.String')" floatLabel="never" (change)="settingChanged()">
                 <input matInput type="text" placeholder="Current value :" [(ngModel)]="datedValue.value">
               </mat-form-field>
             </div>
             <!-- {{datedValue.dateEndValid}} -->
-            <div class="col-md-6">
+            <div class="col-md-5">
               <mat-form-field>
-                <input matInput [matDatepicker]="picker" [value]="datedValue.dateEndValid">
+                <input matInput [matDatepicker]="picker" [(ngModel)]="datedValue.dateEndValid" (dateChange)="settingChanged()">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button mat-icon-button title="Delete dated setting" (click)="clickDeleteDatedSetting(idx)">
+                <mat-icon style="color: black;">delete_outline</mat-icon>
+              </button>
             </div>
           </div>
         </div>
